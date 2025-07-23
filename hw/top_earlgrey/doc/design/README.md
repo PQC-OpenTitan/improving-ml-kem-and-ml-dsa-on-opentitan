@@ -431,7 +431,7 @@ For the purpose of `top_earlgrey`, the first option has been chosen to benefit s
 | aes               | aes           | 0x41100000 (regs) |
 | hmac              | hmac          | 0x41110000 (regs) |
 | kmac              | kmac          | 0x41120000 (regs) |
-| otbn              | otbn          | 0x41130000 (regs) |
+| otbn              | otbn          | 0x41300000 (regs) |
 | keymgr            | keymgr        | 0x41140000 (regs) |
 | csrng             | csrng         | 0x41150000 (regs) |
 | entropy_src       | entropy_src   | 0x41160000 (regs) |
