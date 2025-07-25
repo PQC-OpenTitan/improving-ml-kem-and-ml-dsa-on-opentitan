@@ -42,6 +42,7 @@ filesets:
       - rtl/otbn_mac_bignum.sv
       - rtl/bn_vec_core/unified_mul.sv
       - rtl/bn_vec_core/buffer_bit_double.sv
+      - bnmulv_ver3 ? (rtl/bn_vec_core/cond_sub.sv)
       - rtl/otbn_loop_controller.sv
       - rtl/otbn_stack.sv
       - rtl/otbn_rnd.sv
