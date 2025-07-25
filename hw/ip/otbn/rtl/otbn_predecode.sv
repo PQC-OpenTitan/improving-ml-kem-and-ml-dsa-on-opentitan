@@ -5,6 +5,11 @@
 // Copyright "Towards ML-KEM & ML-DSA on OpenTitan" Authors
 
 `include "prim_assert.sv"
+`ifdef BNMULV_VER1
+  `define BNMULV_VER1_OR_VER2
+`elsif BNMULV_VER2
+  `define BNMULV_VER1_OR_VER2
+`endif
 
 module otbn_predecode
   import otbn_pkg::*;
@@ -182,7 +187,7 @@ module otbn_predecode
 
     csr_addr_sel = 1'b0;
 
-  `ifdef BNMULV_VER1
+  `ifdef BNMULV_VER1_OR_VER2
     insn_rs2 = imem_rdata_i[24:20];
   `endif
 
@@ -484,7 +489,7 @@ module otbn_predecode
           end
         end
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
         ///////////////////////////////////////////
         //            BN.MULV/BN.MULV.L          //
         ///////////////////////////////////////////
@@ -566,6 +571,9 @@ module otbn_predecode
         WsrRnd:    ispr_addr = IsprRnd;
         WsrUrnd:   ispr_addr = IsprUrnd;
         WsrAcc:    ispr_addr = IsprAcc;
+`ifdef BNMULV_VER2
+        WsrAccH:   ispr_addr = IsprAccH;
+`endif
         WsrKeyS0L: ispr_addr = IsprKeyS0L;
         WsrKeyS0H: ispr_addr = IsprKeyS0H;
         WsrKeyS1L: ispr_addr = IsprKeyS1L;
@@ -602,7 +610,7 @@ module otbn_predecode
   assign mac_predec_bignum_o.acc_rd_en = mac_bignum_acc_rd_en;
 
   assign insn_rs1 = imem_rdata_i[19:15];
-`ifndef BNMULV_VER1
+`ifndef BNMULV_VER1_OR_VER2
   assign insn_rs2 = imem_rdata_i[24:20];
 `endif
   assign insn_rd  = imem_rdata_i[11:7];

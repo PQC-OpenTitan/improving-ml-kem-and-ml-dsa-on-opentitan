@@ -3,6 +3,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 `include "prim_assert.sv"
+`ifdef BNMULV_VER1
+  `define BNMULV_VER1_OR_VER2
+`elsif BNMULV_VER2
+  `define BNMULV_VER1_OR_VER2
+`endif
 
 module otbn_mac_bignum
   import otbn_pkg::*;
@@ -27,6 +32,12 @@ module otbn_mac_bignum
   input  logic            sec_wipe_running_i,
   output logic            sec_wipe_err_o,
 
+`ifdef BNMULV_VER2
+  output logic [ExtWLEN-1:0] ispr_acch_intg_o,
+  input  logic [ExtWLEN-1:0] ispr_acch_wr_data_intg_i,
+  input  logic               ispr_acch_wr_en_i,
+`endif
+
   output logic [ExtWLEN-1:0] ispr_acc_intg_o,
   input  logic [ExtWLEN-1:0] ispr_acc_wr_data_intg_i,
   input  logic               ispr_acc_wr_en_i
@@ -34,13 +45,21 @@ module otbn_mac_bignum
   // The MAC operates on quarter-words, QWLEN gives the number of bits in a quarter-word.
   localparam int unsigned QWLEN = WLEN / 4;
 
+`ifdef BNMULV_VER2
+  logic [2*WLEN-1:0] adder_op_a;
+  logic [2*WLEN-1:0] adder_op_b;
+  logic [2*WLEN-1:0] adder_result;
+`else
   logic [WLEN-1:0] adder_op_a;
   logic [WLEN-1:0] adder_op_b;
   logic [WLEN-1:0] adder_result;
+`endif
   logic [1:0]      adder_result_hw_is_zero;
 
 `ifdef BNMULV_VER1
   logic [WLEN-1:0]   mul_res_shifted;
+`elsif BNMULV_VER2
+  logic [2*WLEN-1:0] mul_res_shifted;
 `else
   logic [QWLEN-1:0]  mul_op_a;
   logic [QWLEN-1:0]  mul_op_b;
@@ -52,6 +71,13 @@ module otbn_mac_bignum
   logic [ExtWLEN-1:0] acc_intg_q;
   logic [WLEN-1:0]    acc_blanked;
   logic               acc_en;
+
+`ifdef BNMULV_VER2
+  logic [ExtWLEN-1:0] acch_intg_d;
+  logic [ExtWLEN-1:0] acch_intg_q;
+  logic [WLEN-1:0]    acch_blanked;
+  logic               acch_en;
+`endif
 
   logic [WLEN-1:0] operand_a_blanked, operand_b_blanked;
 
@@ -71,7 +97,7 @@ module otbn_mac_bignum
     .out_o(operand_b_blanked)
   );
 
-`ifndef BNMULV_VER1
+`ifndef BNMULV_VER1_OR_VER2
   // Extract QWLEN multiply operands from WLEN operand inputs based on chosen quarter word from the
   // instruction (operand_[a|b]_qw_sel).
   always_comb begin
@@ -106,13 +132,20 @@ module otbn_mac_bignum
   logic unused_ok;
   assign unused_ok = ^(rst_ni);
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
+  `ifdef BNMULV_VER1
   logic [WLEN-1:0] unified_result;
+  `else
+  logic [2*WLEN-1:0] unified_result;
+  `endif
 
   unified_mul mul (
     .word_mode         ({operation_i.mulv, operation_i.data_type}), // 00 = 64x64, 11 = 4x32x32, 10 = 16x16x16
     .word_sel_A        (operation_i.operand_a_qw_sel),
     .word_sel_B        (operation_i.operand_b_qw_sel),
+    `ifdef BNMULV_VER2
+    .exec_mode         (operation_i.exec_mode),
+    `endif
     .half_sel          (operation_i.sel),
     .lane_mode         (operation_i.lane_mode),
     .lane_word_32      (operation_i.lane_word_32),
@@ -165,6 +198,27 @@ module otbn_mac_bignum
     assign acc_no_intg_q[i_word*32+:32] = acc_intg_q[i_word*39+:32];
   end
 
+`ifdef BNMULV_VER2
+  // ECC encode and decode of accumulator high register
+  logic [WLEN-1:0]                acch_no_intg_d;
+  logic [WLEN-1:0]                acch_no_intg_q;
+  logic [ExtWLEN-1:0]             acch_intg_calc;
+  // logic [2*BaseWordsPerWLEN-1:0]  acch_intg_err;  // FIX ME!
+  for (genvar i_word = 0; i_word < BaseWordsPerWLEN; i_word++) begin : g_acch_words
+    prim_secded_inv_39_32_enc i_secdedh_enc (
+      .data_i (acch_no_intg_d[i_word*32+:32]),
+      .data_o (acch_intg_calc[i_word*39+:39])
+    );
+    prim_secded_inv_39_32_dec i_secdedh_dec (
+      .data_i     (acch_intg_q[i_word*39+:39]),
+      .data_o     (/* unused because we abort on any integrity error */),
+      .syndrome_o (/* unused */),
+      .err_o      (/* FIX ME!! acch_intg_err[i_word*2+:2] */)
+    );
+    assign acch_no_intg_q[i_word*32+:32] = acch_intg_q[i_word*39+:32];
+  end
+`endif
+
   // Propagate integrity error only if accumulator register is used: `acc_intg_q` flows into
   // `operation_result_o` via `acc`, `adder_op_b`, and `adder_result` iff the MAC is enabled and the
   // current operation does not zero the accumulation register.
@@ -172,6 +226,8 @@ module otbn_mac_bignum
   assign acc_used = mac_en_i & ~operation_i.zero_acc;
 `ifdef BNMULV_VER1
   assign operation_intg_violation_err_o = acc_used & |(acc_intg_err[2*BaseWordsPerWLEN-1:0]);
+`elsif BNMULV_VER2
+  assign operation_intg_violation_err_o = acc_used & |(acc_intg_err[2*BaseWordsPerWLEN-1:0]); // FIX ME - add acch
 `else
   assign operation_intg_violation_err_o = acc_used & |(acc_intg_err);
 `endif
@@ -185,10 +241,21 @@ module otbn_mac_bignum
     .en_i (mac_predec_bignum_i.acc_rd_en),
     .out_o(acc_blanked)
   );
+`ifdef BNMULV_VER2
+  prim_blanker #(.Width(WLEN)) u_acch_blanker (
+    .in_i (acch_no_intg_q),
+    .en_i (mac_predec_bignum_i.acc_rd_en & operation_i.mulv),
+    .out_o(acch_blanked)
+  );
+`endif
 
   // Add shifted multiplier result to current accumulator.
   assign adder_op_a = mul_res_shifted;
+`ifdef BNMULV_VER2
+  assign adder_op_b = {acch_blanked, acc_blanked};
+`else
   assign adder_op_b = acc_blanked;
+`endif
 
 `ifdef BNMULV_VER1
   buffer_bit_double adder (
@@ -197,6 +264,24 @@ module otbn_mac_bignum
     .word_mode({operation_i.mulv, operation_i.data_type}), // 00: scalar, 11: vec64, 10: vec32
     .cin      (1'b0),
     .sum      (adder_result),
+    .cout     ()
+  );
+`elsif BNMULV_VER2
+  buffer_bit_double adder (
+    .A        (adder_op_a[WLEN-1:0]),
+    .B        (adder_op_b[WLEN-1:0]),
+    .word_mode({operation_i.mulv, operation_i.data_type}), // 00: scalar, 11: vec64, 10: vec32
+    .cin      (1'b0),
+    .sum      (adder_result[WLEN-1:0]),
+    .cout     ()
+  );
+
+  buffer_bit_double adder16 (
+    .A        (operation_i.mulv ? adder_op_a[WLEN+:WLEN] : 256'b0),
+    .B        (operation_i.mulv ? adder_op_b[WLEN+:WLEN] : 256'b0),
+    .word_mode({1'b1, operation_i.data_type}), // 00: scalar, 11: vec64, 10: vec32
+    .cin      (1'b0),
+    .sum      (adder_result[WLEN+:WLEN]),
     .cout     ()
   );
 `else
@@ -208,7 +293,7 @@ module otbn_mac_bignum
   assign adder_result_hw_is_zero[0] = adder_result[WLEN/2-1:0] == 'h0;
   assign adder_result_hw_is_zero[1] = adder_result[WLEN/2+:WLEN/2] == 'h0;
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
   always_comb begin
     case (operation_i.mulv)
       1'b0 : begin
@@ -288,45 +373,111 @@ module otbn_mac_bignum
         if (ispr_acc_wr_en_i) begin
           acc_intg_d = ispr_acc_wr_data_intg_i;
         end else begin
+`ifdef BNMULV_VER2
+          acc_no_intg_d = operation_i.shift_acc ? {{(QWLEN*2){1'b0}}, adder_result[QWLEN*2+:QWLEN*2]}
+                                                  : adder_result[0+:WLEN];
+`else
           acc_no_intg_d = operation_i.shift_acc ? {{(QWLEN*2){1'b0}}, adder_result[QWLEN*2+:QWLEN*2]}
                                                 : adder_result;
+`endif
           acc_intg_d = acc_intg_calc;
         end
       end
     endcase
   end
 
+`ifdef BNMULV_VER2
+  always_comb begin
+    acch_no_intg_d = '0;
+    unique case (1'b1)
+      // Non-encoded inputs have to be encoded before writing to the register.
+      sec_wipe_acc_urnd_i: begin   // FIX ME!
+        acch_no_intg_d = urnd_data_i;   // FIX ME!
+        acch_intg_d = acch_intg_calc;
+      end
+      default: begin
+        if (ispr_acch_wr_en_i) begin
+          acch_intg_d = ispr_acch_wr_data_intg_i;
+        end else begin
+          acch_no_intg_d = adder_result[WLEN+:WLEN];
+          acch_intg_d = acch_intg_calc;
+        end
+      end
+    endcase
+  end
+`endif
+
   // Only write to accumulator if the MAC is enabled or an ACC ISPR write is occuring or secure
   // wipe of the internal state is occuring.
   assign acc_en = (mac_en_i & mac_commit_i) | ispr_acc_wr_en_i | sec_wipe_acc_urnd_i;
+`ifdef BNMULV_VER2
+  assign acch_en = (mac_en_i & mac_commit_i & operation_i.mulv) | ispr_acch_wr_en_i | sec_wipe_acc_urnd_i;  // FIX ME
+`endif
 
   always_ff @(posedge clk_i) begin
     if (acc_en) begin
       acc_intg_q <= acc_intg_d;
     end
+`ifdef BNMULV_VER2
+    if (acch_en) begin
+      acch_intg_q <= acch_intg_d;
+    end
+`endif
   end
 
   assign ispr_acc_intg_o = acc_intg_q;
+`ifdef BNMULV_VER2
+  assign ispr_acch_intg_o = acch_intg_q;
+`endif
 
   // The operation result is taken directly from the adder, shift_acc only applies to the new value
   // written to the accumulator.
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
   logic [WLEN-1:0] pre_cond;
 
   always_comb begin
     case (operation_i.mulv)
       1'b0 : begin
+        `ifdef BNMULV_VER1
         pre_cond = adder_result;
+        `else
+        pre_cond = adder_result[WLEN-1:0];
+        `endif
       end
       default: begin
         case (operation_i.exec_mode)
           2'b00 : begin
+            `ifdef BNMULV_VER1
             pre_cond = adder_result;
+            `else
+            case (operation_i.data_type)
+              1'b1 : begin
+                pre_cond = {adder_result[384 + 64*operation_i.sel +: 64],
+                                      adder_result[256 + 64*operation_i.sel +: 64],
+                                      adder_result[128 + 64*operation_i.sel +: 64],
+                                      adder_result[      64*operation_i.sel +: 64]};
+              end
+              1'b0 : begin
+                pre_cond = {adder_result[448 + 32*operation_i.sel +: 32],
+                                      adder_result[384 + 32*operation_i.sel +: 32],
+                                      adder_result[320 + 32*operation_i.sel +: 32],
+                                      adder_result[256 + 32*operation_i.sel +: 32],
+                                      adder_result[192 + 32*operation_i.sel +: 32],
+                                      adder_result[128 + 32*operation_i.sel +: 32],
+                                      adder_result[ 64 + 32*operation_i.sel +: 32],
+                                      adder_result[      32*operation_i.sel +: 32]};
+              end
+              default: begin
+                pre_cond = {WLEN{1'b0}};   // ERROR!
+              end
+             endcase
+            `endif
           end
           2'b01 : begin
             case (operation_i.data_type)
               1'b1 : begin
                 case (operation_i.sel)
+                  `ifdef BNMULV_VER1
                   1'b0: begin
                     pre_cond = {operand_a_blanked[224+:32], adder_result[192+:32],
                                           operand_a_blanked[160+:32], adder_result[128+:32],
@@ -339,9 +490,24 @@ module otbn_mac_bignum
                                           adder_result[ 64+:32], operand_a_blanked[ 64+:32],
                                           adder_result[  0+:32], operand_a_blanked[  0+:32]};
                   end
+                  `else
+                  1'b0: begin
+                    pre_cond = {operand_a_blanked[224+:32], adder_result[384+:32],
+                                          operand_a_blanked[160+:32], adder_result[256+:32],
+                                          operand_a_blanked[ 96+:32], adder_result[128+:32],
+                                          operand_a_blanked[ 32+:32], adder_result[  0+:32]};
+                  end
+                  1'b1: begin
+                    pre_cond = {adder_result[384+64+:32], operand_a_blanked[192+:32],
+                                          adder_result[256+64+:32], operand_a_blanked[128+:32],
+                                          adder_result[128+64+:32], operand_a_blanked[ 64+:32],
+                                          adder_result[  0+64+:32], operand_a_blanked[  0+:32]};
+                  end
+                  `endif
                 endcase
               end
               1'b0 : begin
+                `ifdef BNMULV_VER1
                 case (operation_i.sel)
                   1'b0: begin
                     pre_cond = {operand_a_blanked[240+:16], adder_result[224+:16],
@@ -364,6 +530,16 @@ module otbn_mac_bignum
                                           adder_result[  0+:16], operand_a_blanked[  0+:16]};
                   end
                 endcase
+                `else
+                pre_cond = {adder_result[480+:16], adder_result[448+:16],
+                                      adder_result[416+:16], adder_result[384+:16],
+                                      adder_result[352+:16], adder_result[320+:16],
+                                      adder_result[288+:16], adder_result[256+:16],
+                                      adder_result[224+:16], adder_result[192+:16],
+                                      adder_result[160+:16], adder_result[128+:16],
+                                      adder_result[ 96+:16], adder_result[ 64+:16],
+                                      adder_result[ 32+:16], adder_result[  0+:16]};
+                `endif
               end
               default: begin
                 pre_cond = {WLEN{1'b0}};   // ERROR!
@@ -374,6 +550,7 @@ module otbn_mac_bignum
             case (operation_i.data_type)
               1'b1 : begin
                 case (operation_i.sel)
+                  `ifdef BNMULV_VER1
                   1'b0: begin
                     pre_cond = {operand_a_blanked[224+:32], adder_result[192+32+:32],
                                           operand_a_blanked[160+:32], adder_result[128+32+:32],
@@ -386,9 +563,24 @@ module otbn_mac_bignum
                                           adder_result[ 64+32+:32], operand_a_blanked[ 64+:32],
                                           adder_result[  0+32+:32], operand_a_blanked[  0+:32]};
                   end
+                  `else
+                  1'b0: begin
+                    pre_cond = {operand_a_blanked[224+:32], adder_result[416+:32],
+                                          operand_a_blanked[160+:32], adder_result[288+:32],
+                                          operand_a_blanked[ 96+:32], adder_result[160+:32],
+                                          operand_a_blanked[ 32+:32], adder_result[ 32+:32]};
+                  end
+                  1'b1: begin
+                    pre_cond = {adder_result[416+64+:32], operand_a_blanked[192+:32],
+                                          adder_result[288+64+:32], operand_a_blanked[128+:32],
+                                          adder_result[160+64+:32], operand_a_blanked[ 64+:32],
+                                          adder_result[ 32+64+:32], operand_a_blanked[  0+:32]};
+                  end
+                  `endif
                 endcase
               end                                                             
               1'b0 : begin
+                `ifdef BNMULV_VER1                                                 
                 case (operation_i.sel)
                   1'b0: begin
                     pre_cond = {operand_a_blanked[240+:16], adder_result[224+16+:16],
@@ -411,6 +603,16 @@ module otbn_mac_bignum
                                           adder_result[  0+16+:16], operand_a_blanked[  0+:16]};
                   end
                 endcase
+                `else
+                pre_cond = {adder_result[496+:16], adder_result[464+:16],
+                                      adder_result[432+:16], adder_result[400+:16],
+                                      adder_result[368+:16], adder_result[336+:16],
+                                      adder_result[304+:16], adder_result[272+:16],
+                                      adder_result[240+:16], adder_result[208+:16],
+                                      adder_result[176+:16], adder_result[144+:16],
+                                      adder_result[112+:16], adder_result[ 80+:16],
+                                      adder_result[ 48+:16], adder_result[ 16+:16]};
+                `endif
               end
               default: begin
                 pre_cond = {WLEN{1'b0}};   // ERROR!
@@ -429,7 +631,7 @@ module otbn_mac_bignum
   assign operation_result_o = adder_result;
 `endif
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
   assign expected_op_en     = mac_en_i | operation_i.mulv;
 `else
   assign expected_op_en     = mac_en_i;
@@ -440,7 +642,14 @@ module otbn_mac_bignum
   assign predec_error_o = |{expected_op_en     != mac_predec_bignum_i.op_en,
                             expected_acc_rd_en != mac_predec_bignum_i.acc_rd_en};
 
+`ifdef BNMULV_VER2
+  assign sec_wipe_err_o = sec_wipe_acc_urnd_i & ~sec_wipe_running_i; // FIX ME acch
+`else
   assign sec_wipe_err_o = sec_wipe_acc_urnd_i & ~sec_wipe_running_i;
+`endif
 
   `ASSERT(NoISPRAccWrAndMacEn, ~(ispr_acc_wr_en_i & mac_en_i))
+`ifdef BNMULV_VER2
+  `ASSERT(NoISPRAccHWrAndMacEn, ~(ispr_acch_wr_en_i & mac_en_i))
+`endif
 endmodule

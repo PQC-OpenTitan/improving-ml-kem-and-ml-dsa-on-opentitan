@@ -5,6 +5,11 @@
 // Copyright "Towards ML-KEM & ML-DSA on OpenTitan" Authors
 
 `include "prim_assert.sv"
+`ifdef BNMULV_VER1
+  `define BNMULV_VER1_OR_VER2
+`elsif BNMULV_VER2
+  `define BNMULV_VER1_OR_VER2
+`endif
 
 package otbn_pkg;
 
@@ -218,7 +223,7 @@ package otbn_pkg;
     InsnOpcodeBignumMisc     = 7'h0B,
     InsnOpcodeBignumArith    = 7'h2B,
     InsnOpcodeBignumMulqacc  = 7'h3B,
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
     InsnOpcodeBignumMulv     = 7'h4B,
 `endif
     InsnOpcodeBignumTrn      = 7'h5F,
@@ -363,6 +368,24 @@ package otbn_pkg;
   } csr_e;
 
   // Wide Special Purpose Registers (WSRs)
+`ifdef BNMULV_VER2
+  parameter int NWsr = 12; // Number of WSRs
+  parameter int WsrNumWidth = $clog2(NWsr);
+  typedef enum logic [WsrNumWidth-1:0] {
+    WsrMod    = 'd0,
+    WsrRnd    = 'd1,
+    WsrUrnd   = 'd2,
+    WsrAcc    = 'd3,
+    WsrKeyS0L = 'd4,
+    WsrKeyS0H = 'd5,
+    WsrKeyS1L = 'd6,
+    WsrKeyS1H = 'd7,
+    WsrKmacCfg    = 'd8,
+    WsrKmacMsg    = 'd9,
+    WsrKmacDigest = 'd10,
+    WsrAccH   = 'd11
+  } wsr_e;
+`else
   parameter int NWsr = 11; // Number of WSRs
   parameter int WsrNumWidth = $clog2(NWsr);
   typedef enum logic [WsrNumWidth-1:0] {
@@ -378,10 +401,31 @@ package otbn_pkg;
     WsrKmacMsg    = 'd9,
     WsrKmacDigest = 'd10
   } wsr_e;
+`endif
 
   // Internal Special Purpose Registers (ISPRs)
   // CSRs and WSRs have some overlap into what they map into. ISPRs are the actual registers in the
   // design which CSRs and WSRs are mapped on to.
+`ifdef BNMULV_VER2
+  parameter int NIspr = 14;
+  parameter int IsprNumWidth = $clog2(NIspr);
+  typedef enum logic [IsprNumWidth-1:0] {
+    IsprMod    = 'd0,
+    IsprRnd    = 'd1,
+    IsprAcc    = 'd2,
+    IsprFlags  = 'd3,
+    IsprUrnd   = 'd4,
+    IsprKeyS0L = 'd5,
+    IsprKeyS0H = 'd6,
+    IsprKeyS1L = 'd7,
+    IsprKeyS1H = 'd8,
+    IsprKmacCfg     = 'd9,
+    IsprKmacMsg     = 'd10,
+    IsprKmacStatus  = 'd11,
+    IsprKmacDigest  = 'd12,
+    IsprAccH        = 'd13
+  } ispr_e;
+`else
   parameter int NIspr = 13;
   parameter int IsprNumWidth = $clog2(NIspr);
   typedef enum logic [IsprNumWidth-1:0] {
@@ -399,6 +443,7 @@ package otbn_pkg;
     IsprKmacStatus  = 'd11,
     IsprKmacDigest  = 'd12
   } ispr_e;
+`endif
 
   typedef logic [$clog2(NFlagGroups)-1:0] flag_group_t;
 
@@ -516,7 +561,7 @@ package otbn_pkg;
     logic [1:0]              mac_pre_acc_shift;
     logic                    mac_zero_acc;
     logic                    mac_shift_out;
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
     logic                    mac_mulv;
     logic                    mac_data_type;
     logic                    mac_sel;
@@ -621,7 +666,7 @@ package otbn_pkg;
     logic [1:0]      pre_acc_shift_imm;
     logic            zero_acc;
     logic            shift_acc;
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
     logic            mulv;
     logic            data_type;
     logic            sel;

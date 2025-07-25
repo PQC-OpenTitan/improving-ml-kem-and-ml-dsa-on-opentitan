@@ -100,6 +100,12 @@ module otbn_alu_bignum
   output logic [ExtWLEN-1:0]          ispr_acc_wr_data_intg_o,
   output logic                        ispr_acc_wr_en_o,
 
+`ifdef BNMULV_VER2
+  input  logic [ExtWLEN-1:0]          ispr_acch_intg_i,
+  output logic [ExtWLEN-1:0]          ispr_acch_wr_data_intg_o,
+  output logic                        ispr_acch_wr_en_o,
+`endif
+
   output logic                        reg_intg_violation_err_o,
 
   input  logic                        sec_wipe_mod_urnd_i,
@@ -792,20 +798,55 @@ module otbn_alu_bignum
   assign ispr_acc_wr_data_intg_o = ispr_init_i ? EccWideZeroWord
                                                : ispr_acc_bignum_wdata_intg_blanked;
 
+`ifdef BNMULV_VER2
+  //////////
+  // ACCH //
+  //////////
+  assign ispr_acch_wr_en_o = 
+      ((ispr_addr_i == IsprAccH) & ispr_bignum_wr_en_i & ispr_wr_commit_i) | ispr_init_i;
+
+
+  logic [ExtWLEN-1:0] ispr_acch_bignum_wdata_intg_blanked;
+
+  // SEC_CM: DATA_REG_SW.SCA
+  prim_blanker #(.Width(ExtWLEN)) u_ispr_acch_bignum_wdata_intg_blanker (
+    .in_i (ispr_bignum_wdata_intg_i),
+    .en_i (ispr_predec_bignum_i.ispr_wr_en[IsprAccH]),
+    .out_o(ispr_acch_bignum_wdata_intg_blanked)
+  );
+  // If the blanker is enabled, the output will not carry the correct ECC bits.  This is not
+  // a problem because a blanked value should never be used.  If the blanked value is used
+  // nonetheless, an integrity error arises.
+
+  assign ispr_acch_wr_data_intg_o = ispr_init_i ? EccWideZeroWord
+                                               : ispr_acch_bignum_wdata_intg_blanked;
+`endif
+
   // ISPR read data is muxed out in two stages:
   // 1. Select amongst the ISPRs that have no integrity bits. The output has integrity calculated
   //    for it.
   // 2. Select between the ISPRs that have integrity bits and the result of the first stage.
 
   // Number of ISPRs that have integrity protection
+`ifdef BNMULV_VER2
+  localparam int NIntgIspr = 5;
+`else
   localparam int NIntgIspr = 4;
+`endif
   // IDs fpr ISPRs with integrity
   localparam int IsprModIntg = 0;
   localparam int IsprAccIntg = 1;
   localparam int IsprKmacMsgIntg  = 2;
   localparam int IsprKmacDigestIntg = 3;
+`ifdef BNMULV_VER2
+  localparam int IsprAccHIntg = 4;
+`endif
   // ID representing all ISPRs with no integrity
+`ifdef BNMULV_VER2
+  localparam int IsprNoIntg = 5;
+`else
   localparam int IsprNoIntg = 4;
+`endif
 
   logic [NIntgIspr:0] ispr_rdata_intg_mux_sel;
   logic [ExtWLEN-1:0] ispr_rdata_intg_mux_in    [NIntgIspr+1];
@@ -817,6 +858,9 @@ module otbn_alu_bignum
   assign ispr_rdata_no_intg_mux_in[IsprAcc] = 0;
   assign ispr_rdata_no_intg_mux_in[IsprKmacMsg] = 0;
   assign ispr_rdata_no_intg_mux_in[IsprKmacDigest]  = 0;
+`ifdef BNMULV_VER2
+  assign ispr_rdata_no_intg_mux_in[IsprAccH] = 0;
+`endif
 
   assign ispr_rdata_no_intg_mux_in[IsprRnd]    = rnd_data_i;
   assign ispr_rdata_no_intg_mux_in[IsprUrnd]   = urnd_data_i;
@@ -861,11 +905,17 @@ module otbn_alu_bignum
   assign ispr_rdata_intg_mux_in[IsprKmacMsgIntg]    = kmac_msg_intg_q;
   assign ispr_rdata_intg_mux_in[IsprKmacDigestIntg] = kmac_digest_intg_q;
   assign ispr_rdata_intg_mux_in[IsprNoIntg]  = ispr_rdata_intg_calc;
+`ifdef BNMULV_VER2
+  assign ispr_rdata_intg_mux_in[IsprAccHIntg] = ispr_acch_intg_i;
+`endif
 
   assign ispr_rdata_intg_mux_sel[IsprModIntg] = ispr_predec_bignum_i.ispr_rd_en[IsprMod];
   assign ispr_rdata_intg_mux_sel[IsprAccIntg] = ispr_predec_bignum_i.ispr_rd_en[IsprAcc];
   assign ispr_rdata_intg_mux_sel[IsprKmacMsgIntg]     = ispr_predec_bignum_i.ispr_rd_en[IsprKmacMsg];
   assign ispr_rdata_intg_mux_sel[IsprKmacDigestIntg] = ispr_predec_bignum_i.ispr_rd_en[IsprKmacDigest];
+`ifdef BNMULV_VER2
+  assign ispr_rdata_intg_mux_sel[IsprAccHIntg] = ispr_predec_bignum_i.ispr_rd_en[IsprAccH];
+`endif
 
   assign ispr_rdata_intg_mux_sel[IsprNoIntg]  =
     |{ispr_predec_bignum_i.ispr_rd_en[IsprKeyS1H:IsprKeyS0L],
@@ -887,6 +937,10 @@ module otbn_alu_bignum
   `ASSERT(IsprAccMustTakeIntg_A,
     ispr_predec_bignum_i.ispr_rd_en[IsprAcc] |-> !ispr_rdata_intg_mux_sel[IsprNoIntg])
 
+`ifdef BNMULV_VER2
+  `ASSERT(IsprAccHMustTakeIntg_A,
+    ispr_predec_bignum_i.ispr_rd_en[IsprAccH] |-> !ispr_rdata_intg_mux_sel[IsprNoIntg])
+`endif
 
   prim_onehot_mux #(
     .Width  (ExtWLEN),

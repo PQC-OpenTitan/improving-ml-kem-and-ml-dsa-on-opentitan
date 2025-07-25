@@ -68,6 +68,7 @@ targets:
           - '--trace-params'
           - '--trace-max-array 1024'
           - 'bnmulv_ver1 ? (-DBNMULV_VER1)'
+          - 'bnmulv_ver2 ? (-DBNMULV_VER2)'
           - '-CFLAGS "-std=c++11 -Wall -DVM_TRACE_FMT_FST -DTOPLEVEL_NAME=otbn_top_sim"'
           - '-LDFLAGS "-pthread -lutil -lelf"'
           - "-Wall"

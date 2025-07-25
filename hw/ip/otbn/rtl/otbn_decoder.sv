@@ -5,6 +5,11 @@
 // Copyright "Towards ML-KEM & ML-DSA on OpenTitan" Authors
 
 `include "prim_assert.sv"
+`ifdef BNMULV_VER1
+  `define BNMULV_VER1_OR_VER2
+`elsif BNMULV_VER2
+  `define BNMULV_VER1_OR_VER2
+`endif
 
 /**
  * OTBN instruction Decoder
@@ -86,7 +91,7 @@ module otbn_decoder
   logic       mac_shift_out_bignum;
   logic       mac_en_bignum;
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
   logic [4:0] mac_insn_rs2;
   logic       mac_mulv;
   logic       mac_data_type;
@@ -170,7 +175,7 @@ module otbn_decoder
   assign loop_bodysize_base  = insn[31:20];
   assign loop_immediate_base = insn[12];
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
   assign mac_op_a_qw_sel_bignum     = insn[26:25];
   assign mac_wr_hw_sel_upper_bignum = insn[29];
   assign mac_pre_acc_shift_bignum   = insn[14:13];
@@ -253,7 +258,7 @@ module otbn_decoder
 
   assign insn_dec_bignum_o = '{
     a:                   insn_rs1,
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
     b:                   mac_insn_rs2,
 `else
     b:                   insn_rs2,
@@ -284,7 +289,7 @@ module otbn_decoder
     mac_pre_acc_shift:   mac_pre_acc_shift_bignum,
     mac_zero_acc:        mac_zero_acc_bignum,
     mac_shift_out:       mac_shift_out_bignum,
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
     mac_mulv:            mac_mulv,
     mac_data_type:       mac_data_type,
     mac_sel:             mac_sel,
@@ -334,7 +339,7 @@ module otbn_decoder
     rf_ren_b_bignum        = 1'b0;
     mac_en_bignum          = 1'b0;
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
     mac_op_b_qw_sel_bignum = 2'b00;
     mac_zero_acc_bignum    = 1'b0;
     mac_mulv               = 1'b0;
@@ -724,7 +729,7 @@ module otbn_decoder
         rf_wdata_sel_bignum = RfWdSelMac;
         mac_en_bignum       = 1'b1;
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
         mac_op_b_qw_sel_bignum = insn[28:27];
         mac_zero_acc_bignum    = insn[12];
 `endif
@@ -733,7 +738,7 @@ module otbn_decoder
         end
       end
 
-`ifdef BNMULV_VER1
+`ifdef BNMULV_VER1_OR_VER2
       ///////////////////////////////////////////
       //            BN.MULV/BN.MULV.L          //
       ///////////////////////////////////////////

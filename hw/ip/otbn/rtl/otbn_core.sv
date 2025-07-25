@@ -231,6 +231,11 @@ module otbn_core
   logic [ExtWLEN-1:0]          ispr_acc_intg;
   logic [ExtWLEN-1:0]          ispr_acc_wr_data_intg;
   logic                        ispr_acc_wr_en;
+`ifdef BNMULV_VER2
+  logic [ExtWLEN-1:0]          ispr_acch_intg;
+  logic [ExtWLEN-1:0]          ispr_acch_wr_data_intg;
+  logic                        ispr_acch_wr_en;
+`endif
   logic                        ispr_init;
 
   logic            rnd_req;
@@ -862,6 +867,11 @@ module otbn_core
     .ispr_acc_wr_data_intg_o(ispr_acc_wr_data_intg),
     .ispr_acc_wr_en_o       (ispr_acc_wr_en),
 
+`ifdef BNMULV_VER2
+    .ispr_acch_intg_i        (ispr_acch_intg),
+    .ispr_acch_wr_data_intg_o(ispr_acch_wr_data_intg),
+    .ispr_acch_wr_en_o       (ispr_acch_wr_en),
+`endif
     .reg_intg_violation_err_o(alu_bignum_reg_intg_violation_err),
 
     .sec_wipe_mod_urnd_i(sec_wipe_mod_urnd),
@@ -908,6 +918,11 @@ module otbn_core
     .mac_en_i    (mac_bignum_en),
     .mac_commit_i(mac_bignum_commit),
 
+`ifdef BNMULV_VER2
+    .ispr_acch_intg_o        (ispr_acch_intg),
+    .ispr_acch_wr_data_intg_i(ispr_acch_wr_data_intg),
+    .ispr_acch_wr_en_i       (ispr_acch_wr_en),
+`endif
     .ispr_acc_intg_o        (ispr_acc_intg),
     .ispr_acc_wr_data_intg_i(ispr_acc_wr_data_intg),
     .ispr_acc_wr_en_i       (ispr_acc_wr_en)
