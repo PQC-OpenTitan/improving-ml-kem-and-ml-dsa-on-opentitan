@@ -315,8 +315,19 @@ ISSWrapper::ISSWrapper() : tmpdir(new TmpDir()) {
       abort();
     }
     // Finally, exec the ISS
+#if BNMULV_VER == 1
+    execl("/usr/bin/env", "/usr/bin/env", "BNMULV_VER=1", "python3", "-u", model_path.c_str(),
+          NULL);
+#elif BNMULV_VER == 2
+    execl("/usr/bin/env", "/usr/bin/env", "BNMULV_VER=2", "python3", "-u", model_path.c_str(),
+          NULL);
+#elif BNMULV_VER == 3
+    execl("/usr/bin/env", "/usr/bin/env", "BNMULV_VER=3", "python3", "-u", model_path.c_str(),
+          NULL);
+#else
     execl("/usr/bin/env", "/usr/bin/env", "python3", "-u", model_path.c_str(),
           NULL);
+#endif
   }
 
   // We are the parent process and pid is the PID of the child. Close the pipe
