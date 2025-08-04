@@ -3,7 +3,7 @@
 # Modified by Authors of "Towards ML-KEM & ML-DSA on OpenTitan" (https://eprint.iacr.org/2024/1192).
 # Copyright "Towards ML-KEM & ML-DSA on OpenTitan" Authors.
 
-load("//rules:otbn.bzl", "otbn_binary", "otbn_consttime_test", "otbn_library", "otbn_sim_test")
+load("//rules:otbn.bzl", "otbn_binary", "otbn_consttime_test", "otbn_library", "otbn_sim_test", "otbn_sim_py_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -1723,3 +1723,253 @@ otbn_binary(
     ],
 )
 
+# otbn_sim_py_test VER 0
+
+otbn_sim_py_test(
+    name = "mlkem512_keypair_bench",
+    deps = [":kyber512_mlkem_keypair_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_encap_bench",
+    deps = [":kyber512_mlkem_enc_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_decap_bench",
+    deps = [":kyber512_mlkem_dec_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_keypair_bench",
+    deps = [":kyber768_mlkem_keypair_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_encap_bench",
+    deps = [":kyber768_mlkem_enc_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_decap_bench",
+    deps = [":kyber768_mlkem_dec_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_keypair_bench",
+    deps = [":kyber1024_mlkem_keypair_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_encap_bench",
+    deps = [":kyber1024_mlkem_enc_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_decap_bench",
+    deps = [":kyber1024_mlkem_dec_test"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+# otbn_sim_py_test VER 1
+
+otbn_sim_py_test(
+    name = "mlkem512_keypair_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem512_keypair_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_encap_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem512_encap_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_decap_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem512_decap_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_keypair_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem768_keypair_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_encap_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem768_encap_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_decap_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem768_decap_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_keypair_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem1024_keypair_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_encap_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem1024_encap_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_decap_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mlkem1024_decap_test_ver1"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+# otbn_sim_py_test VER 2
+
+otbn_sim_py_test(
+    name = "mlkem512_keypair_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem512_keypair_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_encap_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem512_encap_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_decap_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem512_decap_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_keypair_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem768_keypair_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_encap_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem768_encap_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_decap_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem768_decap_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_keypair_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem1024_keypair_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_encap_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem1024_encap_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_decap_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mlkem1024_decap_test_ver2"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+# otbn_sim_py_test VER 3
+
+otbn_sim_py_test(
+    name = "mlkem512_keypair_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem512_keypair_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_encap_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem512_encap_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem512_decap_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem512_decap_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_keypair_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem768_keypair_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_encap_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem768_encap_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem768_decap_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem768_decap_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_keypair_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem1024_keypair_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_encap_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem1024_encap_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)
+
+otbn_sim_py_test(
+    name = "mlkem1024_decap_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mlkem1024_decap_test_ver3"],
+    sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
+)

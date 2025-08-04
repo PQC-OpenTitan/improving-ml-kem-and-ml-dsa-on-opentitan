@@ -4,7 +4,7 @@
 # Modified by Authors of "Towards ML-KEM & ML-DSA on OpenTitan" (https://eprint.iacr.org/2024/1192).
 # Copyright "Towards ML-KEM & ML-DSA on OpenTitan" Authors.
 
-load("//rules:otbn.bzl", "otbn_binary", "otbn_consttime_test", "otbn_library", "otbn_sim_test")
+load("//rules:otbn.bzl", "otbn_binary", "otbn_consttime_test", "otbn_library", "otbn_sim_test", "otbn_sim_py_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -1396,3 +1396,253 @@ otbn_binary(
     ],
 )
 
+# otbn_sim_py_test VER 0
+
+otbn_sim_py_test(
+    name = "mldsa44_keypair_bench",
+    deps = [":dilithium2_keypair_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_sign_bench",
+    deps = [":dilithium2_sign_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_verify_bench",
+    deps = [":dilithium2_verify_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_keypair_bench",
+    deps = [":dilithium3_keypair_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_sign_bench",
+    deps = [":dilithium3_sign_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_verify_bench",
+    deps = [":dilithium3_verify_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_keypair_bench",
+    deps = [":dilithium5_keypair_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_sign_bench",
+    deps = [":dilithium5_sign_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_verify_bench",
+    deps = [":dilithium5_verify_test"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+# otbn_sim_py_test VER 1
+
+otbn_sim_py_test(
+    name = "mldsa44_keypair_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa44_keypair_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_sign_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa44_sign_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_verify_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa44_verify_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_keypair_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa65_keypair_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_sign_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa65_sign_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_verify_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa65_verify_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_keypair_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa87_keypair_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_sign_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa87_sign_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_verify_bench_ver1",
+    copts = ["--bnmulv_version_id=1"],
+    deps = [":mldsa87_verify_test_ver1"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+# otbn_sim_py_test VER 2
+
+otbn_sim_py_test(
+    name = "mldsa44_keypair_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa44_keypair_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_sign_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa44_sign_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_verify_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa44_verify_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_keypair_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa65_keypair_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_sign_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa65_sign_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_verify_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa65_verify_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_keypair_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa87_keypair_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_sign_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa87_sign_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_verify_bench_ver2",
+    copts = ["--bnmulv_version_id=2"],
+    deps = [":mldsa87_verify_test_ver2"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+# otbn_sim_py_test VER 3
+
+otbn_sim_py_test(
+    name = "mldsa44_keypair_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa44_keypair_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_sign_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa44_sign_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa44_verify_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa44_verify_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_keypair_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa65_keypair_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_sign_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa65_sign_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa65_verify_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa65_verify_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_keypair_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa87_keypair_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_sign_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa87_sign_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
+
+otbn_sim_py_test(
+    name = "mldsa87_verify_bench_ver3",
+    copts = ["--bnmulv_version_id=3"],
+    deps = [":mldsa87_verify_test_ver3"],
+    sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
+)
