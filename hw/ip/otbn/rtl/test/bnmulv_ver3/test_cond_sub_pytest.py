@@ -53,28 +53,29 @@ async def run_cond_sub_test(dut):
     cout_out = dut.cout.value.integer
 
     print(f"\nsum out:  {bin(sum_out)}\nexpected: {bin(sum_expected)}")
-    print(f"\nsum out:  {hex(sum_out)}\nexpected: {hex(sum_expected)}")
+    print(f"\nsum out:  {format(sum_out, '064x')}\nexpected: {format(sum_expected, '064x')}")
 
-    assert sum_out == sum_expected, f"sum mismatch: word_mode={word_mode} A={hex(A)} B={hex(B)} cin={cin}"
+    assert sum_out == sum_expected, f"sum mismatch: word_mode={word_mode} A={format(A, '064x')} B={format(B, '064x')} cin={cin}"
 
 # === Pytest hook ===
 
 @pytest.mark.parametrize(
-    "word_mode", [MODE_16, MODE_32]
+    "variant, word_mode",
+    [("cond_sub", i) for i in [MODE_16, MODE_32]] +
+    [("cond_sub_buffer_bit", i) for i in [MODE_16, MODE_32]]
 )
-def test_cond_sub_sim(word_mode):
+def test_cond_sub_sim(variant, word_mode):
     run(
         toplevel="cond_sub",
         module="test_cond_sub_pytest",
         toplevel_lang="verilog",
         testcase="run_cond_sub_test",
         simulator="verilator",
-        sim_build=f"sim_build/cond_sub",
-        verilog_sources=[f"bn_vec_core/cond_sub.sv"],
+        sim_build=f"sim_build/{variant}",
+        verilog_sources=[f"bn_vec_core/{variant}.sv"],
         extra_env={
             "WORD_MODE": str(word_mode)
         },
         #waves=True,
         #plus_args=["--trace"]  # enable trace all in verilator simulation
     )
-
