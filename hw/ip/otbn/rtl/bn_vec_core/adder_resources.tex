@@ -1,0 +1,20 @@
+\documentclass{standalone}
+\usepackage{booktabs}
+
+\begin{document}
+
+\begin{tabular}{lrrrrr}
+ top\_module           &   LUT &   DSP &   FF &   BRAM &   Fmax \\
+\toprule
+ ref\_vec\_add           &   601 &     0 &  772 &    0.0 &     90 \\
+ csa\_adder\_256         &   443 &     0 &  772 &    0.0 &    165 \\
+\midrule
+ buffer\_bit            &   471 &     0 &  772 &    0.0 &    180 \\
+\midrule
+ brent\_kung\_adder\_256  &   803 &     0 &  773 &    0.0 &    185 \\
+ sklansky\_adder\_256    &   864 &     0 &  772 &    0.0 &    195 \\
+ kogge\_stone\_adder\_256 &  3258 &     0 &  776 &    0.0 &    180 \\
+\bottomrule
+\end{tabular}
+\end{document}
+
