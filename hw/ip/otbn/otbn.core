@@ -149,3 +149,6 @@ targets:
       - bnmulv_ver2 ? (BNMULV_VER2=true)
       - bnmulv_ver3 ? (BNMULV_VER2=true)
       - bnmulv_ver3 ? (COND_SUB=true)
+    tools:
+      vivado:
+        part: "xc7k410tfbg676-1" # CW310 with K410T
