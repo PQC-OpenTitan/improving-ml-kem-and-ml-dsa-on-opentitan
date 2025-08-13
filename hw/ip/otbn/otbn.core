@@ -152,3 +152,39 @@ targets:
     tools:
       vivado:
         part: "xc7k410tfbg676-1" # CW310 with K410T
+
+  syn_bn_alu:
+    filesets:
+      - tool_verilator ? (files_verilator_waiver)
+      - tool_ascentlint ? (files_ascentlint_waiver)
+      - files_rtl_core
+      - files_rtl_top
+    toplevel: otbn_alu_bignum
+    default_tool: icarus
+    parameters:
+      - SYNTHESIS=true
+      - bnmulv_ver1 ? (BNMULV_VER1=true)
+      - bnmulv_ver2 ? (BNMULV_VER2=true)
+      - bnmulv_ver3 ? (BNMULV_VER2=true)
+      - bnmulv_ver3 ? (COND_SUB=true)
+    tools:
+      vivado:
+        part: "xc7k160tfbg676-1" # CW310 with K410T
+
+  syn_bn_mac:
+    filesets:
+      - tool_verilator ? (files_verilator_waiver)
+      - tool_ascentlint ? (files_ascentlint_waiver)
+      - files_rtl_core
+      - files_rtl_top
+    toplevel: otbn_mac_bignum
+    default_tool: icarus
+    parameters:
+      - SYNTHESIS=true
+      - bnmulv_ver1 ? (BNMULV_VER1=true)
+      - bnmulv_ver2 ? (BNMULV_VER2=true)
+      - bnmulv_ver3 ? (BNMULV_VER2=true)
+      - bnmulv_ver3 ? (COND_SUB=true)
+    tools:
+      vivado:
+        part: "xc7k160tfbg676-1" # CW310 with K410T
