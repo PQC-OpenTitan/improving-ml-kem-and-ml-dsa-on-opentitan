@@ -359,7 +359,6 @@ module otbn_mac_bignum
   // result.
   assign operation_flags_o.Z    = operation_i.shift_acc ? adder_result_hw_is_zero[0] :
                                                           &adder_result_hw_is_zero;
-`endif
 
   // Z is updated for .WO. For .SO updates are based upon result and half-word:
   // - When writing to lower half-word always update Z.
@@ -367,6 +366,7 @@ module otbn_mac_bignum
   assign operation_flags_en_o.Z =
       operation_i.shift_acc & operation_i.wr_hw_sel_upper ? ~adder_result_hw_is_zero[0] :
                                                             1'b1;
+`endif
 
   // MAC never sets the carry flag
   assign operation_flags_o.C    = 1'b0;
