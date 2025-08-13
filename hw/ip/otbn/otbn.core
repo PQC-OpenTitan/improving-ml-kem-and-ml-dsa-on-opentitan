@@ -40,12 +40,13 @@ filesets:
       - rtl/otbn_alu_base.sv
       - rtl/otbn_alu_bignum.sv
       - rtl/otbn_mac_bignum.sv
+      - "!bnmulv_ver1 ? (!bnmulv_ver2 ? (!bnmulv_ver3 ? (rtl/bn_vec_core/otbn_bignum_mul.sv)))"
       - bnmulv_ver1 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver2 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver3 ? (rtl/bn_vec_core/unified_mul.sv)
-      - bnmulv_ver1 ? (rtl/bn_vec_core/buffer_bit_double.sv)
-      - bnmulv_ver2 ? (rtl/bn_vec_core/buffer_bit_double.sv)
-      - bnmulv_ver3 ? (rtl/bn_vec_core/buffer_bit_double.sv)
+      - bnmulv_ver1 ? (rtl/bn_vec_core/brent_kung_adder_256_double.sv)
+      - bnmulv_ver2 ? (rtl/bn_vec_core/brent_kung_adder_256_double.sv)
+      - bnmulv_ver3 ? (rtl/bn_vec_core/brent_kung_adder_256_double.sv)
       - bnmulv_ver3 ? (rtl/bn_vec_core/cond_sub.sv)
       - rtl/otbn_loop_controller.sv
       - rtl/otbn_stack.sv
