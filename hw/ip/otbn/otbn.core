@@ -40,8 +40,12 @@ filesets:
       - rtl/otbn_alu_base.sv
       - rtl/otbn_alu_bignum.sv
       - rtl/otbn_mac_bignum.sv
-      - rtl/bn_vec_core/unified_mul.sv
-      - rtl/bn_vec_core/buffer_bit_double.sv
+      - bnmulv_ver1 ? (rtl/bn_vec_core/unified_mul.sv)
+      - bnmulv_ver2 ? (rtl/bn_vec_core/unified_mul.sv)
+      - bnmulv_ver3 ? (rtl/bn_vec_core/unified_mul.sv)
+      - bnmulv_ver1 ? (rtl/bn_vec_core/buffer_bit_double.sv)
+      - bnmulv_ver2 ? (rtl/bn_vec_core/buffer_bit_double.sv)
+      - bnmulv_ver3 ? (rtl/bn_vec_core/buffer_bit_double.sv)
       - bnmulv_ver3 ? (rtl/bn_vec_core/cond_sub.sv)
       - rtl/otbn_loop_controller.sv
       - rtl/otbn_stack.sv
@@ -90,6 +94,15 @@ parameters:
   SYNTHESIS:
     datatype: bool
     paramtype: vlogdefine
+  BNMULV_VER1:
+    datatype: bool
+    paramtype: vlogdefine
+  BNMULV_VER2:
+    datatype: bool
+    paramtype: vlogdefine
+  COND_SUB:
+    datatype: bool
+    paramtype: vlogdefine
 
 targets:
   default: &default_target
@@ -132,3 +145,7 @@ targets:
     default_tool: icarus
     parameters:
       - SYNTHESIS=true
+      - bnmulv_ver1 ? (BNMULV_VER1=true)
+      - bnmulv_ver2 ? (BNMULV_VER2=true)
+      - bnmulv_ver3 ? (BNMULV_VER2=true)
+      - bnmulv_ver3 ? (COND_SUB=true)
