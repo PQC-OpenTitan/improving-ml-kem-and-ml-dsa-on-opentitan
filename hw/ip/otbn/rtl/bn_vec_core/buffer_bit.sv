@@ -1,50 +1,57 @@
-module buffer_bit (
-    input  logic [255:0] A,
-    input  logic [255:0] B,
-    input  logic [1:0]   word_mode,   // 00: scalar, 01: vec32, 10: vec16
-    input  logic         cin,
-    output logic [255:0] sum,
-    output logic         cout
+// This module implements a buffered-bit adder which performs a 256-bit addition
+// (original BN-ALU addition) for base bignum instructions (such as BN.ADD/SUB,
+// BN.ADDM/SUBM, etc.), 8 32-bit additions for BN.{ADDV,SUBV}(.m).8S and 16 16-bit
+// additions for BN.{ADDV,SUBV}(.m).16H.
+// The adder is meant to replace Adder X and Adder Y in BN-ALU. So it can either
+// compute in_A + in_B (A + B) or in_A + ~in_B + 1 (A + B + cin).
+
+module buffer_bit #(
+  parameter int WLEN = 256
+) (
+  input logic [WLEN-1:0]  A,
+  input logic [WLEN-1:0]  B,
+  input logic             vector_en,
+  input logic             word_mode, // 1: vec16, 0: vec32
+  input logic             b_invert,
+  input logic             cin,
+  output logic [WLEN+1:0] sum,
+  output logic [15:0]     cout
 );
 
-  localparam MODE_64 = 2'b00;
-  localparam MODE_32 = 2'b11;
-  localparam MODE_16 = 2'b10;
+  logic [WLEN+14:0] A_buffed;
+  logic [WLEN+14:0] B_buffed;
+  logic [WLEN+15:0] R_buffed;
 
   genvar i;
 
-  logic [270:0] A_buffed;
-  logic [270:0] B_buffed;
-
-  logic [271:0] res_buffed;
-
   generate
-    for (i = 0; i < 16; i++) begin : pick_out_bits0
+    for (i = 0; i < 16; i++) begin
       assign A_buffed[i*17 +: 16] = A[i*16 +: 16];
       assign B_buffed[i*17 +: 16] = B[i*16 +: 16];
     end
 
-    for (i = 0; i < 15; i = i+2) begin : pick_out_bits1
-      assign A_buffed[i*17+16] = 1'b0;
-      assign B_buffed[i*17+16] = (word_mode == MODE_64) ? 1'b1 : 
-                                 (word_mode == MODE_32) ? 1'b1 : 1'b0;
+    for (i = 0; i < 15; i += 2) begin
+      assign A_buffed[i*17 + 16] =
+          (vector_en == 1'b0) ? 1'b0 : (word_mode & b_invert);
+      assign B_buffed[i*17 + 16] =
+          (vector_en == 1'b0) ? 1'b1 : ((word_mode & b_invert) ^ (~word_mode));
     end
 
-    for (i = 1; i < 15; i = i+2) begin : pick_out_bits2
-      assign A_buffed[i*17+16] = 1'b0;
-      assign B_buffed[i*17+16] = (word_mode == MODE_64) ? 1'b1 : 1'b0;
+    for (i = 1; i < 15; i += 2) begin
+      assign A_buffed[i*17 + 16] = (vector_en == 1'b0) ? 1'b0 : b_invert;
+      assign B_buffed[i*17 + 16] = (vector_en == 1'b0) ? 1'b1 : b_invert;
     end
   endgenerate
 
-  assign res_buffed = A_buffed + B_buffed + ((word_mode == MODE_64) ? {271'b0, cin} : 272'b0);
+  assign R_buffed = A_buffed + B_buffed + {271'b0, cin};
 
   generate
-    for (i = 0; i < 16; i++) begin : pick_out_bits
-      assign sum[i*16 +: 16] = res_buffed[i*17 +: 16];
+    for(i = 0; i < 16; i++) begin
+      assign sum[(i*16 + 1) +: 16] = R_buffed[i*17 +: 16];
+      assign cout[i] = R_buffed[i*17 + 16];
     end
   endgenerate
 
-  assign cout = (word_mode == MODE_64) ? res_buffed[271] : 1'b0;
+  assign sum[WLEN + 1] = cout[15];
 
 endmodule
-

@@ -41,6 +41,7 @@ filesets:
       - rtl/otbn_alu_bignum.sv
       - rtl/otbn_mac_bignum.sv
       - "!bnmulv_ver1 ? (!bnmulv_ver2 ? (!bnmulv_ver3 ? (rtl/bn_vec_core/otbn_bignum_mul.sv)))"
+      - '!old_adder ? (rtl/bn_vec_core/buffer_bit.sv)'
       - bnmulv_ver1 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver2 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver3 ? (rtl/bn_vec_core/unified_mul.sv)
@@ -113,6 +114,12 @@ parameters:
   BNMULV_COND_SUB:
     datatype: bool
     paramtype: vlogdefine
+  TOWARDS_ADDER:
+    datatype: bool
+    paramtype: vlogdefine
+  BUFFER_BIT:
+    datatype: bool
+    paramtype: vlogdefine
 
 targets:
   default: &default_target
@@ -151,6 +158,8 @@ targets:
     default_tool: vivado
     parameters:
       - SYNTHESIS=true
+      - old_adder ? (TOWARDS_ADDER=true)
+      - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV_ACCH=true)
@@ -174,6 +183,8 @@ targets:
     default_tool: icarus
     parameters:
       - SYNTHESIS=true
+      - old_adder ? (TOWARDS_ADDER=true)
+      - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV_ACCH=true)
@@ -194,6 +205,8 @@ targets:
     default_tool: icarus
     parameters:
       - SYNTHESIS=true
+      - old_adder ? (TOWARDS_ADDER=true)
+      - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV_ACCH=true)
@@ -214,6 +227,8 @@ targets:
     default_tool: icarus
     parameters:
       - SYNTHESIS=true
+      - old_adder ? (TOWARDS_ADDER=true)
+      - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV_ACCH=true)

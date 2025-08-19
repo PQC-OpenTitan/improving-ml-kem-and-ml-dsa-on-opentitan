@@ -67,6 +67,8 @@ targets:
           - '--trace-structs'
           - '--trace-params'
           - '--trace-max-array 1024'
+          - 'old_adder ? (-DTOWARDS_ADDER)'
+          - '!old_adder ? (-DBUFFER_BIT)'
           - 'bnmulv_ver1 ? (-DBNMULV)'
           - 'bnmulv_ver2 ? (-DBNMULV -DBNMULV_ACCH)'
           - 'bnmulv_ver3 ? (-DBNMULV -DBNMULV_ACCH -DBNMULV_COND_SUB)'

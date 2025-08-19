@@ -151,6 +151,24 @@ def reference_cond_sub(A, B, data_type, cin, wsize=[(8, 32), (16, 16)]):
         raise ValueError("Invalid mode")
 
 
+def reference_vector_addition(A, B, addition, data_type, wsize=[(8, 32), (16, 16), (1, 256)]):
+    """Reference model for vector addition: A + B and subtraction: A + ~in_B + 1 where B = ~in_B"""
+    num_words = wsize[data_type][0]
+    word_size = wsize[data_type][1]
+    res = [0] * num_words
+    for i in range(num_words):
+        a = mask(A >> (word_size * i), word_size)
+        b = mask(B >> (word_size * i), word_size)
+        if addition:
+            res[i] = a + b
+        else:
+            res[i] = a + b + 1
+
+    result = sum(mask(res[i], word_size) << (i * word_size) for i in range(num_words))
+    result = mask(result)
+    return result
+
+
 acc = 0
 
 def mac_acc():
