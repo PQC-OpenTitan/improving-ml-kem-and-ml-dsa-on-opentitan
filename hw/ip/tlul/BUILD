@@ -25,3 +25,20 @@ filegroup(
         "**/*.svg",
     ]) + ["//hw/ip/tlul/data:tlul_testplan.hjson"],
 )
+
+filegroup(
+    name = "sta_files",
+    srcs = [
+      "rtl/tlul_adapter_reg.sv",
+      "rtl/tlul_err.sv",
+      "rtl/tlul_cmd_intg_chk.sv",
+      "rtl/tlul_rsp_intg_gen.sv",
+      "rtl/tlul_data_integ_dec.sv",
+      "rtl/tlul_data_integ_enc.sv",
+      "rtl/tlul_adapter_sram.sv",
+      "rtl/tlul_sram_byte.sv",
+      "rtl/tlul_socket_1n.sv",
+      "rtl/tlul_err_resp.sv",
+      "rtl/tlul_fifo_sync.sv"
+    ]
+)

@@ -1,0 +1,8 @@
+name: otbn_alu_bignum
+in2reg_arrival: 18.306822
+reg2out_arrival: 9.391744000000001
+reg2reg_arrival: 9.914731000000002
+in2out_arrival: 18.475761
+slowest_path: 18.475761
+instances: 65131
+area: 554823

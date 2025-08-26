@@ -1,0 +1,8 @@
+name: otbn_mac_bignum
+in2reg_arrival: 37.053577
+reg2out_arrival: 10.779703
+reg2reg_arrival: 8.516066
+in2out_arrival: 39.3172
+slowest_path: 39.3172
+instances: 48132
+area: 400614

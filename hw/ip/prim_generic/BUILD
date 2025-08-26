@@ -16,3 +16,11 @@ filegroup(
     ) + [
     ],
 )
+
+filegroup(
+    name = "sta_files",
+    srcs = [
+       "rtl/prim_flop_2sync.sv",
+       "rtl/prim_ram_1p.sv"
+    ]
+)

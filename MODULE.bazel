@@ -172,3 +172,50 @@ local_path_override(
 register_toolchains("//rules/opentitan:localtools")
 
 register_toolchains("//toolchain:cc_toolchain_opentitan")
+
+
+# # MODULE.bazel at the repo root
+# bazel_dep(name = "bazel-orfs-sta", version = "0.0.1")
+# 
+# # While developing locally, override to your subdir
+# local_path_override(
+#     module_name = "bazel-orfs-sta",
+#     path = "third_party/bazel-orfs-sta",
+# )
+
+#bazel_dep(
+#    name = "rules_python",
+#    version = "1.2.0",
+#    repo_name = "dut_rules_python",
+#)
+
+#python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+#python.toolchain(
+#    ignore_root_user_error = True,
+#    python_version = "3.10",
+#)
+
+#pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+#pip.parse(
+#    hub_name = "dut-pip",
+#    python_version = "3.10",
+#    requirements_lock = "//:third_party/bazel-orfs-sta/requirements_lock.txt",
+#)
+#use_repo(pip, "dut-pip")
+
+bazel_dep(name = "bazel-orfs", version = "0.0.1")
+git_override(
+    module_name = "bazel-orfs",
+    commit = "f8e4ced47dc2c9d15aea97d734eba55a50f35666",
+    remote = "https://github.com/The-OpenROAD-Project/bazel-orfs.git",
+)
+
+orfs = use_extension("@bazel-orfs//:extension.bzl", "orfs_repositories")
+orfs.default(
+    # To update, find latest at https://hub.docker.com/r/openroad/orfs/tags
+    image = "docker.io/openroad/orfs:v3.0-3442-g51a09c48",
+    sha256 = "4b7dc2a5842ccb773f073cd54fba65e3b045b459781c8659f8e9997270a0c42f",
+)
+use_repo(orfs, "com_github_nixos_patchelf_download")
+use_repo(orfs, "docker_orfs")
+
