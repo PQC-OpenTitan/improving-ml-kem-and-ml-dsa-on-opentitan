@@ -62,7 +62,7 @@ MODE_64 = 0b00
 MODE_16 = 0b10
 MODE_32 = 0b11
 
-def reference_prod(A, B, data_type, word_sel_A, word_sel_B, half_sel, lane_mode=0, lane_index=0):
+def reference_prod(A, B, data_type, word_sel_A, word_sel_B, half_sel, lane_mode=0, lane_word_32=0, lane_word_16=0):
     if data_type == MODE_64:
         # 64x64 data_type
         a = (A >> (word_sel_A * DLEN)) & ((1 << DLEN) - 1)
@@ -75,11 +75,13 @@ def reference_prod(A, B, data_type, word_sel_A, word_sel_B, half_sel, lane_mode=
         # 4x 32x32 data_type
         expected = 0
 
+        lane_index = (word_sel_B << 1) | lane_word_32
+
         for i in range(4):
             idx = 2 * i + int(half_sel)
             a = (A >> (idx * SLEN)) & ((1 << SLEN) - 1)
             b = (B >> (idx * SLEN)) & ((1 << SLEN) - 1) if lane_mode == 0 else (B >> (lane_index * SLEN)) & ((1 << SLEN) - 1)
-            expected |= (a * b) << ((i*2 + int(half_sel))*64)
+            expected |= (a * b) << (i*64)
 
         return expected
 
@@ -87,13 +89,17 @@ def reference_prod(A, B, data_type, word_sel_A, word_sel_B, half_sel, lane_mode=
         # 16x 16x16 data_type
         expected = 0
 
-        for i in range(16):
-            a = (A >> (i * HLEN)) & ((1 << HLEN) - 1)
-            b = (B >> (i * HLEN)) & ((1 << HLEN) - 1) if lane_mode == 0 else (B >> (lane_index * HLEN)) & ((1 << HLEN) - 1)
-            if half_sel != None:
-              expected |= (a * b * (1 if i & 1 == half_sel else 0)) << (i*32)
-            else:
-              expected |= (a * b) << (i*32)
+        lane_index = (word_sel_B << 2) | (lane_word_32 << 1) | lane_word_16
+
+        for i in range(8):
+            idx = 2 * i + int(half_sel)
+            a = (A >> (idx * HLEN)) & ((1 << HLEN) - 1)
+            b = (B >> (idx * HLEN)) & ((1 << HLEN) - 1) if lane_mode == 0 else (B >> (lane_index * HLEN)) & ((1 << HLEN) - 1)
+            expected |= (a * b) << (i*32)
+            # if half_sel != None:
+            #   expected |= (a * b * (1 if i & 1 == half_sel else 0)) << (i*32)
+            # else:
+            #   expected |= (a * b) << (i*32)
 
 #            print(expected)
 

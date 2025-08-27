@@ -41,6 +41,7 @@ async def run_adder_test(dut):
 
     print(f"\nsum out:  {bin(sum_out)}\nexpected: {bin(sum_expected)}")
     print(f"\nsum out:  {hex(sum_out)}\nexpected: {hex(sum_expected)}")
+    print(f"\ndiff:     {sum_out ^ sum_expected:256b}")
 
     assert sum_out == sum_expected, f"sum mismatch: word_mode={word_mode} A={hex(A)} B={hex(B)} cin={cin}"
     if word_mode == 0:
@@ -58,7 +59,9 @@ async def run_adder_test(dut):
     [("brent_kung_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]] +
     [("sklansky_adder_256_mode0_only", MODE_64, "yes")] +
     [("sklansky_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]] +
-    [("csa_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]]
+    [("kogge_stone_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]] +
+    [("csa_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]] #+
+    #[("buffer_bit", i, "yes") for i in [MODE_16, MODE_32, MODE_64]]
 )
 def test_adder_sim(variant, word_mode, test_cin):
     run(
