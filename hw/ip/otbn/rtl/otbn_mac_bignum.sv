@@ -220,7 +220,7 @@ module otbn_mac_bignum
   assign mode = operation_i.mulv ? (operation_i.data_type == 1'b0 ? VecType_s32 : VecType_d64) :
                                    VecType_v256;
 
-  buffer_bit adder (
+  sklansky adder (
     .A        (adder_op_a[WLEN-1:0]),
     .B        (adder_op_b[WLEN-1:0]),
     .word_mode(mode),
@@ -231,7 +231,7 @@ module otbn_mac_bignum
   );
 
   `ifdef BNMULV_ACCH
-  buffer_bit adder16 (
+  sklansky adder16 (
     .A        (operation_i.mulv ? adder_op_a[WLEN+:WLEN] : 256'b0),
     .B        (operation_i.mulv ? adder_op_b[WLEN+:WLEN] : 256'b0),
     .word_mode(operation_i.data_type == 1'b0 ? VecType_s32 : VecType_d64),

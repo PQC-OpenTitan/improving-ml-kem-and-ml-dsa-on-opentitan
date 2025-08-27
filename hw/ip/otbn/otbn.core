@@ -43,6 +43,7 @@ filesets:
       - "!bnmulv_ver1 ? (!bnmulv_ver2 ? (!bnmulv_ver3 ? (rtl/bn_vec_core/otbn_bignum_mul.sv)))"
       - '!old_adder ? (rtl/bn_vec_core/buffer_bit.sv)'
       - '!old_adder ? (rtl/bn_vec_core/brent_kung.sv)'
+      - '!old_adder ? (rtl/bn_vec_core/sklansky.sv)'
       - bnmulv_ver1 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver2 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver3 ? (rtl/bn_vec_core/unified_mul.sv)
