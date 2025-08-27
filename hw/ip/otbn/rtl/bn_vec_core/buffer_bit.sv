@@ -30,13 +30,13 @@ module buffer_bit
     end
 
     for (i = 1; i < 16; i += 1) begin
-      assign A_buffed[i*17 - 1] = (word_mode == VecType16) ? (((i*16) % 16) == 0 ? b_invert : 1'b0) :
-                                  (word_mode == VecType32) ? (((i*16) % 32) == 0 ? b_invert : 1'b0) :
-                                  (word_mode == VecType64) ? (((i*16) % 64) == 0 ? b_invert : 1'b0) :
+      assign A_buffed[i*17 - 1] = (word_mode == VecType_h16) ? (((i*16) % 16) == 0 ? b_invert : 1'b0) :
+                                  (word_mode == VecType_s32) ? (((i*16) % 32) == 0 ? b_invert : 1'b0) :
+                                  (word_mode == VecType_d64) ? (((i*16) % 64) == 0 ? b_invert : 1'b0) :
                                   1'b0;
-      assign B_buffed[i*17 - 1] = (word_mode == VecType16) ? (((i*16) % 16) == 0 ? b_invert : 1'b1) :
-                                  (word_mode == VecType32) ? (((i*16) % 32) == 0 ? b_invert : 1'b1) :
-                                  (word_mode == VecType64) ? (((i*16) % 64) == 0 ? b_invert : 1'b1) :
+      assign B_buffed[i*17 - 1] = (word_mode == VecType_h16) ? (((i*16) % 16) == 0 ? b_invert : 1'b1) :
+                                  (word_mode == VecType_s32) ? (((i*16) % 32) == 0 ? b_invert : 1'b1) :
+                                  (word_mode == VecType_d64) ? (((i*16) % 64) == 0 ? b_invert : 1'b1) :
                                   1'b1;
     end
   endgenerate

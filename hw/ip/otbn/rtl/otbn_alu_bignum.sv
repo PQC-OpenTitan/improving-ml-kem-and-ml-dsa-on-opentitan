@@ -1315,8 +1315,8 @@ module otbn_alu_bignum
   logic [WLEN-1:0]  x_res_operand_a_mux_out;
 
   vec_type_e mode;
-  assign mode = operation_i.vector_sel ? (operation_i.vector_type[0] == 1'b0 ? VecType32 : VecType16) :
-                                         VecType256;
+  assign mode = operation_i.vector_sel ? (operation_i.vector_type[0] == 1'b0 ? VecType_s32 : VecType_h16) :
+                                         VecType_v256;
 
   // SEC_CM: DATA_REG_SW.SCA
   prim_blanker #(.Width(WLEN)) u_adder_x_op_a_blanked (
@@ -1363,8 +1363,8 @@ module otbn_alu_bignum
 
   assign shift_mod_mux_out =
       alu_predec_bignum_i.shift_mod_sel ? adder_y_op_shifter_res_blanked :
-      (mode == VecType16) ? {16 {mod_no_intg_q[15:0]}} :
-      (mode == VecType32) ? { 8 {mod_no_intg_q[31:0]}} :
+      (mode == VecType_h16) ? {16 {mod_no_intg_q[15:0]}} :
+      (mode == VecType_s32) ? { 8 {mod_no_intg_q[31:0]}} :
       mod_no_intg_q;
 
   assign adder_y_op_a = x_res_operand_a_mux_out;

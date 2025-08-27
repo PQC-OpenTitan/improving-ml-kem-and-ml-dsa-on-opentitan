@@ -220,8 +220,8 @@ module otbn_mac_bignum
   logic unused_msb;
 
   vec_type_e mode;
-  assign mode = operation_i.mulv ? (operation_i.data_type == 1'b0 ? VecType32 : VecType64) :
-                                   VecType256;
+  assign mode = operation_i.mulv ? (operation_i.data_type == 1'b0 ? VecType_s32 : VecType_d64) :
+                                   VecType_v256;
 
   buffer_bit adder (
     .A        (adder_op_a[WLEN-1:0]),
@@ -240,7 +240,7 @@ module otbn_mac_bignum
   buffer_bit adder16 (
     .A        (operation_i.mulv ? adder_op_a[WLEN+:WLEN] : 256'b0),
     .B        (operation_i.mulv ? adder_op_b[WLEN+:WLEN] : 256'b0),
-    .word_mode(operation_i.data_type == 1'b0 ? VecType32 : VecType64),
+    .word_mode(operation_i.data_type == 1'b0 ? VecType_s32 : VecType_d64),
     .b_invert (1'b0),
     .cin      (1'b0),
     .res      ({unused_msbh, adder_result[WLEN+:WLEN], unused_lsbh}),

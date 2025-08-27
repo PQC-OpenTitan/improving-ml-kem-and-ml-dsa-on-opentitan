@@ -1,6 +1,8 @@
 
 from dataclasses import dataclass
 
+from enum import IntEnum
+
 @dataclass
 class mac_bignum_operation_t:
     operand_a: int
@@ -156,6 +158,12 @@ def reference_cond_sub(A, B, data_type, cin, wsize=[(8, 32), (16, 16)]):
     else:
         raise ValueError("Invalid mode")
 
+
+class VecType(IntEnum):
+  h16  = 0b00
+  s32  = 0b01
+  d64  = 0b10
+  v256 = 0b11
 
 def reference_vector_addition(A, B, addition, data_type, wsize=[(16, 16), (8, 32), (4, 64), (1, 256)]):
     """Reference model for vector addition: A + B and subtraction: A + ~in_B + 1 where B = ~in_B"""

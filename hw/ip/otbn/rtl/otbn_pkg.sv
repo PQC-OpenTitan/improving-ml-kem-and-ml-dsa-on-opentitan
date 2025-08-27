@@ -420,10 +420,10 @@ package otbn_pkg;
 
 `ifdef BNMULV
   typedef enum logic [1:0] {
-    VecType16  = 2'b00,
-    VecType32  = 2'b01,
-    VecType64  = 2'b10,
-    VecType256 = 2'b11
+    VecType_h16  = 2'b00,
+    VecType_s32  = 2'b01,
+    VecType_d64  = 2'b10,
+    VecType_v256 = 2'b11
   } vec_type_e;
 `endif
 

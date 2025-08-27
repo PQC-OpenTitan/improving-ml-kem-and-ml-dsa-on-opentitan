@@ -6,12 +6,7 @@ from cocotb_test.simulator import run
 from cocotb.triggers import Timer
 
 from hw_model import reference_vector_addition
-
-MODE_16 = 0
-MODE_32 = 1
-MODE_64 = 2
-MODE_256 = 3
-
+from hw_model import VecType
 
 @cocotb.test()
 async def run_buffer_bit_test(dut):
@@ -19,7 +14,7 @@ async def run_buffer_bit_test(dut):
     and compare the results."""
     num_tests = int(os.environ.get("NUM_TESTS", 1024))
     for _ in range(num_tests):
-        word_mode = int(os.environ.get("WORD_MODE"))
+        word_mode = VecType(int(os.environ.get("WORD_MODE")))
         addition = int(os.environ.get("ADDITION"))
 
         random.seed(0)  # For reproducibility
@@ -58,15 +53,15 @@ async def run_buffer_bit_test(dut):
         num_words = 1
         mask = (1 << 256) - 1
         size = 256
-        if word_mode == MODE_16:
+        if word_mode == VecType.h16:
             num_words = 16
             mask = (1 << 16) - 1
             size = 16
-        elif word_mode == MODE_32:
+        elif word_mode == VecType.s32:
             num_words = 8
             mask = (1 << 32) - 1
             size = 32
-        elif word_mode == MODE_64:
+        elif word_mode == VecType.d64:
             num_words = 4
             mask = (1 << 64) - 1
             size = 64
@@ -83,8 +78,8 @@ async def run_buffer_bit_test(dut):
 
 @pytest.mark.parametrize(
     "variant, word_mode, addition",
-    [("buffer_bit", i, 1) for i in [MODE_16, MODE_32, MODE_64, MODE_256]] +
-    [("buffer_bit", i, 0) for i in [MODE_16, MODE_32, MODE_64, MODE_256]]
+    [("buffer_bit", i, 1) for i in [VecType.h16, VecType.s32, VecType.d64, VecType.v256]] +
+    [("buffer_bit", i, 0) for i in [VecType.h16, VecType.s32, VecType.d64, VecType.v256]]
 )
 def test_buffer_bit_sim(variant, word_mode, addition):
     """Run buffer_bit test with different testcases."""
@@ -112,8 +107,8 @@ def test_buffer_bit_sim(variant, word_mode, addition):
                     "-DBNMULV"],
         verilog_sources=verilog_pkgs + [f"bn_vec_core/{variant}.sv"],
         extra_env={
-            "WORD_MODE": str(word_mode),
-            "ADDITION": str(addition),
+            "WORD_MODE": str(int(word_mode)),
+            "ADDITION":  str(addition),
             "NUM_TESTS": str(num_tests)
         },
         #waves=True,
