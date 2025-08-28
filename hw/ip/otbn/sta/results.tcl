@@ -19,15 +19,16 @@ proc write_both {file_handle message} {
 
 write_both $f "name: $::env(DESIGN_NAME)"
 
+set shortest_slack 100000.0
 
-set slowest_path 0.0
-
-#foreach group {in2out} {
-foreach group {in2reg reg2out reg2reg in2out} {
+#foreach group {in2reg reg2out reg2reg in2out} {
+foreach group {in2out} {
     #set paths [find_timing_paths -path_group $group -sort_by_slack -group_path_count 1]
     set paths [find_timing_paths -path_group $group -path_delay max ]
     set path [lindex $paths 0]
-#    set slack [get_property $path slack]
+
+    set slack [get_property $path slack]
+    write_both $f "${group}_slack: $slack"
 
     # List of path points (start pin -> ... -> end pin)
     set points [get_property $path points]
@@ -40,17 +41,20 @@ foreach group {in2reg reg2out reg2reg in2out} {
     set start_point       [lindex $points 0]
     set start_arrival_time [get_property $start_point arrival]
 
-    set arrival [expr {$end_arrival_time - $start_arrival_time}]
+    set required [get_property $end_point required]
+#    set arrival [expr {$end_arrival_time - $start_arrival_time}]
+    set arrival [expr {$required - $start_arrival_time}]
 
-#    set required [get_property $end_point required]
+    write_both $f "${group}_required: $required"
 
 #    puts "start_arrival_time=$start_arrival_time  end_arrival=$end_arrival_time  slack=$slack  required=$required"
 
-    write_both $f "${group}_arrival: $arrival"
-    set slowest_path [expr { $arrival > $slowest_path ? $arrival : $slowest_path }]
+#    write_both $f "${group}_arrival: $arrival"
+#    set slowest_path [expr { $arrival > $slowest_path ? $arrival : $slowest_path }]
+    set shortest_slack [expr { $slack < $shortest_slack ? $slack : $shortest_slack }]
 }
 
-write_both $f "slowest_path: $slowest_path"
+write_both $f "shortest_slack: $shortest_slack"
 
 #set clock_period_ps [sta::find_clk_min_period $clock 1]
 #set fmax [expr round(1.0e-6 / $clock_period_ps)]
@@ -65,8 +69,14 @@ write_both $f "slowest_path: $slowest_path"
 set instance_count [llength [get_cells *]]
 write_both $f "instances: $instance_count"
 
-set area [sta::format_area [rsz::design_area] 0]
-write_both $f "area: $area"
+set design_area [sta::format_area [rsz::design_area] 0]
+write_both $f "design_area: $design_area"
+
+set util [format %.0f [expr [rsz::utilization] * 100]]
+write_both $f "utilization: $util"
+
+#set core_area [sta::format_area [rsz::core_area] 0]
+#write_both $f "core_area: $core_area"
 
 # set_power_activity -input -activity 0.5
 # 

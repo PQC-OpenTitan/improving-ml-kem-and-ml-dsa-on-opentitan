@@ -37,10 +37,14 @@ PDKS = [
     "asap7",
 ]
 
-TOP_MODULES = ["otbn_alu_bignum", "otbn_mac_bignum"]
+#TOP_MODULES = ["otbn_alu_bignum", "otbn_mac_bignum"]
+TOP_MODULES = ["otbn_mac_bignum"]
+
+ADDERS = ["buffer_bit", "brent_kung", "sklansky", "kogge_stone"]
 
 VERSION = [
-  ("TOWARDS", ["TOWARDS_ADDER"]),
+  ("TOWARDS", ["TOWARDS_ADDER"])] + [
+#  ("VER1_" + adder, ["BNMULV", "BUFFER_BIT", "MAC_ADDER=" + adder]) for adder in ADDERS] + [
   ("VER1", ["BNMULV", "BUFFER_BIT"]),
   ("VER2", ["BNMULV", "BNMULV_ACCH", "BUFFER_BIT"]),
   ("VER3", ["BNMULV", "BNMULV_ACCH", "BNMULV_COND_SUB", "BUFFER_BIT"])
@@ -132,6 +136,44 @@ FASTER = {
     },
     pdk = "@docker_orfs//:{}".format(pdk),
     sources = {
+        "SDC_FILE": [":sta/constraints_noclk_{}.sdc".format(pdk)],
+    },
+    variant="{pdk}".format(pdk=pdk),
+    verilog_files = [":VER1_files"],
+) for pdk in PDKS for base_name in ADDERS]
+
+
+[orfs_flow(
+    name = base_name,
+    arguments =  FASTER | {
+                    "SETUP_SLACK_MARGIN": "0.05",
+                    "SETUP_HOLD_MARGIN": "-0.05",
+                    "SYNTH_HIERARCHICAL": "1",
+                    "PLACE_DENSITY": "0.5",
+                    "CORE_MARGIN": "1",
+                    "SYNTH_MEMORY_MAX_BITS": "16384",
+#                    "PL_RESIZER_HOLD_MAX_BUFFER_PCT" : "50",
+#                    "GRT_RESIZER_HOLD_MAX_BUFFER_PCT": "50",
+#                    "PL_RESIZER_SETUP_MAX_BUFFER_PCT" : "50",
+#                    "GRT_RESIZER_SETUP_MAX_BUFFER_PCT": "50",
+                } 
+                | 
+                (
+                    {
+                        "IO_PLACER_H": "M2 M4",
+                        "IO_PLACER_V": "M3 M5",
+                    } if pdk == "asap7" else {
+                        "IO_PLACER_H": "met3 met5",
+                        "IO_PLACER_V": "met2 met4",
+                    }
+                ),
+    stage_arguments = {
+       "floorplan": {
+           "CORE_UTILIZATION": "40",    # decrease if not sufficient space for pins
+       },
+    },
+    pdk = "@docker_orfs//:{}".format(pdk),
+    sources = {
         "SDC_FILE": [":sta/constraints_{}.sdc".format(pdk)],
     },
     variant="{name}_{pdk}".format(name=name, pdk=pdk),
@@ -148,6 +190,17 @@ FASTER = {
     },
     script = ":sta/results.tcl",
 ) for pdk in PDKS for name, defines in VERSION for base_name in TOP_MODULES]
+
+
+[orfs_run(
+    name = "{base_name}_{pdk}_results".format(base_name=base_name,pdk=pdk),
+    src = "{base_name}_{pdk}_cts".format(base_name=base_name,pdk=pdk),
+    outs = ["{base_name}_{pdk}_stats".format(base_name=base_name,pdk=pdk),],
+    arguments = {
+        "OUTPUT": "$(location :{base_name}_{pdk}_stats)".format(base_name=base_name,pdk=pdk),
+    },
+    script = ":sta/results.tcl",
+) for pdk in PDKS for base_name in ADDERS]
 
 
 [ filegroup(
@@ -169,6 +222,16 @@ filegroup(
             name=name,
             pdk=pdk
         ) for pdk in PDKS for name, defines in VERSION for base_name in TOP_MODULES
+    ],
+)
+
+filegroup(
+    name = "all_adders",
+    srcs = [
+        ":{base_name}_{pdk}_results".format(
+            base_name=base_name,
+            pdk=pdk
+        ) for pdk in PDKS for base_name in ADDERS
     ],
 )
 
