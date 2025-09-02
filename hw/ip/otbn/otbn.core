@@ -45,6 +45,7 @@ filesets:
       - '!old_adder ? (rtl/bn_vec_core/brent_kung.sv)'
       - '!old_adder ? (rtl/bn_vec_core/sklansky.sv)'
       - '!old_adder ? (rtl/bn_vec_core/kogge_stone.sv)'
+      - 'old_mac ? (rtl/otbn_mul.sv)'
       - bnmulv_ver1 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver2 ? (rtl/bn_vec_core/unified_mul.sv)
       - bnmulv_ver3 ? (rtl/bn_vec_core/unified_mul.sv)
@@ -128,6 +129,9 @@ parameters:
   TOWARDS_ADDER:
     datatype: bool
     paramtype: vlogdefine
+  TOWARDS_MAC:
+    datatype: bool
+    paramtype: vlogdefine
   BUFFER_BIT:
     datatype: bool
     paramtype: vlogdefine
@@ -177,6 +181,7 @@ targets:
     parameters:
       - MAC_ADDER
       - SYNTHESIS=true
+      - old_mac ? (TOWARDS_MAC=true)
       - old_adder ? (TOWARDS_ADDER=true)
       - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)
@@ -209,6 +214,7 @@ targets:
     default_tool: icarus
     parameters:
       - SYNTHESIS=true
+      - old_mac ? (TOWARDS_MAC=true)
       - old_adder ? (TOWARDS_ADDER=true)
       - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)
@@ -232,6 +238,7 @@ targets:
     parameters:
       - SYNTHESIS=true
       - MAC_ADDER
+      - old_mac ? (TOWARDS_MAC=true)
       - old_adder ? (TOWARDS_ADDER=true)
       - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)
@@ -255,6 +262,7 @@ targets:
     parameters:
       - SYNTHESIS=true
       - MAC_ADDER
+      - old_mac ? (TOWARDS_MAC=true)
       - old_adder ? (TOWARDS_ADDER=true)
       - '!old_adder ? (BUFFER_BIT=true)'
       - bnmulv_ver1 ? (BNMULV=true)

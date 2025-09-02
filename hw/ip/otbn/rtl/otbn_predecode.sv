@@ -57,6 +57,7 @@ module otbn_predecode
   logic alu_bignum_shifter_b_en;
   logic alu_bignum_shift_right;
   logic [$clog2(WLEN)-1:0] alu_bignum_shift_amt;
+
   logic alu_bignum_shift_mod_sel;
   logic alu_bignum_logic_a_en;
   logic alu_bignum_logic_shifter_en;
@@ -78,6 +79,11 @@ module otbn_predecode
 
   logic mac_bignum_op_en;
   logic mac_bignum_acc_rd_en;
+
+`ifdef TOWARDS_MAC
+  logic mac_bignum_mulv_en;
+  mulv_type_t mac_bignum_vector_type;
+`endif
 
   logic ispr_rd_en;
   logic ispr_wr_en;
@@ -176,6 +182,11 @@ module otbn_predecode
 
     mac_bignum_op_en     = 1'b0;
     mac_bignum_acc_rd_en = 1'b0;
+
+`ifdef TOWARDS_MAC
+    mac_bignum_mulv_en      = 1'b0;
+    mac_bignum_vector_type  = mulv_type_t'('b0);
+`endif
 
     ispr_rd_en = 1'b0;
     ispr_wr_en = 1'b0;
@@ -534,6 +545,16 @@ module otbn_predecode
           alu_bignum_trn_type      = alu_trn_type_t'(imem_rdata_i[27:25]);
         end
 
+`ifdef TOWARDS_MAC
+        ////////////////////////////////////////////
+        //                 BN.MULV                //
+        ////////////////////////////////////////////
+        InsnOpcodeBignumMulv: begin
+            mac_bignum_mulv_en = 1'b1;
+            mac_bignum_vector_type = mulv_type_t'(imem_rdata_i[27:25]);;
+        end
+`endif
+
         default: ;
       endcase
     end
@@ -601,6 +622,11 @@ module otbn_predecode
 
   assign mac_predec_bignum_o.op_en     = mac_bignum_op_en;
   assign mac_predec_bignum_o.acc_rd_en = mac_bignum_acc_rd_en;
+
+`ifdef TOWARDS_MAC
+  assign mac_predec_bignum_o.mac_mulv_en = mac_bignum_mulv_en;
+  assign mac_predec_bignum_o.mulv_type   = mac_bignum_vector_type;
+`endif
 
   assign insn_rs1 = imem_rdata_i[19:15];
   assign insn_rd  = imem_rdata_i[11:7];

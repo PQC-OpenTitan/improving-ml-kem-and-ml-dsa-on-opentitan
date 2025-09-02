@@ -92,6 +92,13 @@ module otbn_controller
   output logic [NWdr-1:0] rf_bignum_wr_indirect_onehot_o,
   output logic            rf_bignum_indirect_en_o,
 
+`ifdef TOWARDS_MAC
+  output logic [NWdr-1:0] rf_bignum_rd_a_mulv_onehot_o,
+  output logic [NWdr-1:0] rf_bignum_rd_b_mulv_onehot_o,
+  output logic [NWdr-1:0] rf_bignum_wr_mulv_onehot_o,
+  output logic            rf_bignum_mulv_en_o,
+`endif
+
   // Execution units
 
   // Base ALU
@@ -112,6 +119,11 @@ module otbn_controller
   input  logic [WLEN-1:0]       mac_bignum_operation_result_i,
   output logic                  mac_bignum_en_o,
   output logic                  mac_bignum_commit_o,
+
+`ifdef TOWARDS_MAC
+  input logic [63:0]            mac_mulv_mod_i,
+  input logic                   mac_mulv_done_i,
+`endif
 
   // LSU
   output logic                     lsu_load_req_o,
@@ -211,6 +223,9 @@ module otbn_controller
   logic kmac_write_stall;
   logic mem_stall;
   logic rf_indirect_stall;
+`ifdef TOWARDS_MAC
+  logic mulv_stall;
+`endif
   logic jump_or_branch;
   logic branch_taken;
   logic insn_executing;
@@ -388,7 +403,12 @@ module otbn_controller
                               insn_dec_bignum_i.rf_b_indirect |
                               insn_dec_bignum_i.rf_d_indirect);
 
-  assign stall = mem_stall | ispr_stall | rf_indirect_stall | kmac_write_stall;
+`ifdef TOWARDS_MAC
+  assign mulv_stall = insn_valid_i & insn_dec_bignum_i.mac_mulv_en & ~mac_mulv_done_i;
+  assign stall = mem_stall | ispr_stall | rf_indirect_stall | mulv_stall | kmac_write_stall;
+`else
+ assign stall = mem_stall | ispr_stall | rf_indirect_stall | kmac_write_stall;
+`endif
 
   // OTBN is done when it was executing something (in state OtbnStateRun or OtbnStateStall)
   // and either it executes an ecall or an error occurs. A pulse on the done signal raises the
@@ -978,7 +998,12 @@ module otbn_controller
     .out_o(rf_bignum_rd_addr_a_o)
   );
 
-  assign rf_bignum_rd_en_a_unbuf = insn_dec_bignum_i.rf_ren_a & insn_valid_i & (~stall | kmac_write_stall);
+  assign rf_bignum_rd_en_a_unbuf = insn_dec_bignum_i.rf_ren_a & insn_valid_i &
+      (~stall |
+`ifdef TOWARDS_MAC
+       insn_dec_bignum_i.mac_mulv_en |
+`endif
+       kmac_write_stall);
 
   prim_buf #(
     .Width(1)
@@ -997,7 +1022,11 @@ module otbn_controller
     .out_o(rf_bignum_rd_addr_b_o)
   );
 
+`ifdef TOWARDS_MAC
+  assign rf_bignum_rd_en_b_unbuf = insn_dec_bignum_i.rf_ren_b & insn_valid_i & (~stall | insn_dec_bignum_i.mac_mulv_en);
+`else
   assign rf_bignum_rd_en_b_unbuf = insn_dec_bignum_i.rf_ren_b & insn_valid_i & ~stall;
+`endif
 
   prim_buf #(
     .Width(1)
@@ -1039,6 +1068,13 @@ module otbn_controller
   assign mac_bignum_operation_o.pre_acc_shift_imm = insn_dec_bignum_i.mac_pre_acc_shift;
   assign mac_bignum_operation_o.zero_acc          = insn_dec_bignum_i.mac_zero_acc;
   assign mac_bignum_operation_o.shift_acc         = insn_dec_bignum_i.mac_shift_out;
+
+`ifdef TOWARDS_MAC
+  assign mac_bignum_operation_o.vector_type = insn_dec_bignum_i.mac_mulv_type;
+  assign mac_bignum_operation_o.lane_idx    = insn_dec_bignum_i.mac_mulv_lane_idx;
+  assign mac_bignum_operation_o.mac_mulv_en = insn_dec_bignum_i.mac_mulv_en;
+  assign mac_bignum_operation_o.mod         = mac_mulv_mod_i;
+`endif
 
 `ifdef BNMULV
   assign mac_bignum_operation_o.mulv              = insn_dec_bignum_i.mac_mulv;
@@ -1092,7 +1128,11 @@ module otbn_controller
 
     // Only write if valid instruction wants a bignum rf write and it isn't stalled. If instruction
     // doesn't execute (e.g. due to an error) the write won't commit.
+`ifdef TOWARDS_MAC
+    if (insn_valid_i && insn_dec_bignum_i.rf_we && !rf_indirect_stall && !mulv_stall && !kmac_write_stall) begin
+`else
     if (insn_valid_i && insn_dec_bignum_i.rf_we && !rf_indirect_stall && !kmac_write_stall) begin
+`endif
       if (insn_dec_bignum_i.mac_en && insn_dec_bignum_i.mac_shift_out) begin
         // Special handling for BN.MULQACC.SO, only enable upper or lower half depending on
         // mac_wr_hw_sel_upper.
@@ -1122,6 +1162,41 @@ module otbn_controller
   assign rf_bignum_rd_a_indirect_en = insn_executing & insn_dec_bignum_i.rf_a_indirect;
   assign rf_bignum_rd_b_indirect_en = insn_executing & insn_dec_bignum_i.rf_b_indirect;
   assign rf_bignum_wr_indirect_en   = insn_executing & insn_dec_bignum_i.rf_d_indirect;
+
+`ifdef TOWARDS_MAC
+  logic rf_bignum_rd_a_mulv_en;
+  logic rf_bignum_rd_b_mulv_en;
+  logic rf_bignum_wr_mulv_en;
+
+  assign rf_bignum_mulv_en_o    = mulv_stall | mac_mulv_done_i;
+  assign rf_bignum_rd_a_mulv_en = mac_bignum_operation_o.mac_mulv_en;
+  assign rf_bignum_rd_b_mulv_en = mac_bignum_operation_o.mac_mulv_en;
+  assign rf_bignum_wr_mulv_en   = mac_mulv_done_i;
+
+  prim_onehot_enc #(
+    .OneHotWidth(NWdr)
+  ) rf_bignum_rd_a_mulv_onehot__enc (
+    .in_i  (insn_dec_bignum_i.a),
+    .en_i  (rf_bignum_rd_a_mulv_en),
+    .out_o (rf_bignum_rd_a_mulv_onehot_o)
+  );
+
+  prim_onehot_enc #(
+    .OneHotWidth(NWdr)
+  ) rf_bignum_rd_b_mulv_onehot_enc (
+    .in_i  (insn_dec_bignum_i.b),
+    .en_i  (rf_bignum_rd_b_mulv_en),
+    .out_o (rf_bignum_rd_b_mulv_onehot_o)
+  );
+
+  prim_onehot_enc #(
+    .OneHotWidth(NWdr)
+  ) rf_bignum_wr_mulv_onehot_enc (
+    .in_i  (insn_dec_bignum_i.d),
+    .en_i  (rf_bignum_wr_mulv_en),
+    .out_o (rf_bignum_wr_mulv_onehot_o)
+  );
+`endif
 
   prim_onehot_enc #(
     .OneHotWidth(NWdr)
@@ -1184,6 +1259,9 @@ module otbn_controller
   // (shift-out to bottom half and all other BN.MULQACC instructions) simply pass the MAC result
   // through unchanged as write data.
   assign mac_bignum_rf_wr_data[WLEN-1:WLEN/2] =
+`ifdef TOWARDS_MAC
+      !(insn_dec_bignum_i.mac_mulv_en) &&
+`endif
       insn_dec_bignum_i.mac_wr_hw_sel_upper &&
       insn_dec_bignum_i.mac_shift_out          ? mac_bignum_operation_result_i[WLEN/2-1:0] :
                                                  mac_bignum_operation_result_i[WLEN-1:WLEN/2];
@@ -1245,6 +1323,9 @@ module otbn_controller
   // register indices were illegal due to a stack pop error. In this case, ignore bignum RF read
   // integrity errors.
   assign ignore_rf_bignum_intg_errs = (insn_dec_bignum_i.rf_a_indirect |
+`ifdef TOWARDS_MAC
+                                       insn_dec_bignum_i.mac_mulv_en |
+`endif
                                        insn_dec_bignum_i.rf_b_indirect) &
                                       rf_base_call_stack_sw_err_i;
 

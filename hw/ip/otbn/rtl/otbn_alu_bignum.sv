@@ -82,6 +82,10 @@ module otbn_alu_bignum
   output logic [WLEN-1:0]       operation_result_o,
   output logic                  selection_flag_o,
 
+`ifdef TOWARDS_MAC
+  output logic [63:0]           mod_o,
+`endif
+
   input  alu_predec_bignum_t  alu_predec_bignum_i,
   input  ispr_predec_bignum_t ispr_predec_bignum_i,
 
@@ -424,6 +428,11 @@ module otbn_alu_bignum
                                mod_ispr_wr_en[i_word] |
                                sec_wipe_mod_urnd_i;
   end
+
+`ifdef TOWARDS_MAC
+  // Output mod register for use in MULV
+  assign mod_o = mod_no_intg_q[63:0];
+`endif
 
   //////////
   // KMAC //
@@ -1330,7 +1339,7 @@ module otbn_alu_bignum
     .out_o(adder_x_op_b_blanked)
   );
 
-  kogge_stone adder_x (
+  buffer_bit adder_x (
     .A        (adder_x_op_a_blanked),
     .B        (adder_x_op_b_blanked),
     .word_mode(mode),
@@ -1366,7 +1375,7 @@ module otbn_alu_bignum
   assign adder_y_op_a = x_res_operand_a_mux_out;
   assign adder_y_op_b = adder_y_op_b_invert ? ~shift_mod_mux_out : shift_mod_mux_out;
 
-  kogge_stone adder_y (
+  buffer_bit adder_y (
     .A        (adder_y_op_a),
     .B        (adder_y_op_b),
     .word_mode(mode),

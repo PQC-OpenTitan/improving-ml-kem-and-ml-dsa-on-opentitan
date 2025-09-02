@@ -221,6 +221,9 @@ package otbn_pkg;
 `ifdef BNMULV
     InsnOpcodeBignumMulv     = 7'h4B,
 `endif
+`ifdef TOWARDS_MAC
+    InsnOpcodeBignumMulv     = 7'h4B,
+`endif
     InsnOpcodeBignumTrn      = 7'h5F,
     InsnOpcodeBignumBaseMisc = 7'h7B,
     InsnOpcodeBignumShiftv   = 7'h7F
@@ -499,6 +502,19 @@ package otbn_pkg;
     trn2_2q
   } alu_trn_type_t;
 
+`ifdef TOWARDS_MAC
+  typedef enum logic[2:0] {
+    mulv_8s,   // b000
+    mulv_16h,  // b001
+    mulv_l8s,  // b010
+    mulv_l16h, // b011
+    mulv_m8s,  // b100
+    mulv_m16h, // b101
+    mulv_ml8s, // b110
+    mulv_ml16h // b111
+  } mulv_type_t;
+`endif
+
   typedef struct packed {
     logic [WdrAw-1:0]        d;           // Destination register
     logic [WdrAw-1:0]        a;           // First source register
@@ -554,6 +570,12 @@ package otbn_pkg;
 `endif
     logic                    mac_en;
 
+`ifdef TOWARDS_MAC
+    logic                    mac_mulv_en;
+    logic [3:0]              mac_mulv_lane_idx;
+    mulv_type_t              mac_mulv_type;
+`endif
+
     logic                    rf_we;
     rf_wd_sel_e              rf_wdata_sel;
     logic                    rf_ren_a;
@@ -601,6 +623,10 @@ package otbn_pkg;
   typedef struct packed {
     logic op_en;
     logic acc_rd_en;
+`ifdef TOWARDS_MAC
+    logic mac_mulv_en;
+    mulv_type_t mulv_type;
+`endif
   } mac_predec_bignum_t;
 
   typedef struct packed {
@@ -648,6 +674,12 @@ package otbn_pkg;
     logic [1:0]      pre_acc_shift_imm;
     logic            zero_acc;
     logic            shift_acc;
+`ifdef TOWARDS_MAC
+    logic [63:0]     mod;
+    mulv_type_t      vector_type;
+    logic [3:0]      lane_idx;
+    logic            mac_mulv_en;
+`endif
 `ifdef BNMULV
     logic            mulv;
     logic            data_type;

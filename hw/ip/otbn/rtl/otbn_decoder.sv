@@ -86,6 +86,14 @@ module otbn_decoder
   logic       mac_shift_out_bignum;
   logic       mac_en_bignum;
 
+`ifdef TOWARDS_MAC
+  logic       mac_mulv_en_bignum;
+  logic [3:0] mac_mulv_lane_idx_bignum;
+  mulv_type_t mac_mulv_type_bignum;
+
+  assign mac_mulv_lane_idx_bignum = insn[31:28];
+`endif
+
 `ifdef BNMULV
   logic       mac_mulv;
   logic       mac_data_type;
@@ -281,6 +289,11 @@ module otbn_decoder
     mac_exec_mode:       mac_exec_mode,
 `endif
     mac_en:              mac_en_bignum,
+`ifdef TOWARDS_MAC
+    mac_mulv_en:         mac_mulv_en_bignum,
+    mac_mulv_lane_idx:   mac_mulv_lane_idx_bignum,
+    mac_mulv_type:       mac_mulv_type_bignum,
+`endif
     rf_we:               rf_we_bignum,
     rf_wdata_sel:        rf_wdata_sel_bignum,
     rf_ren_a:            rf_ren_a_bignum,
@@ -321,6 +334,11 @@ module otbn_decoder
     rf_ren_b_bignum        = 1'b0;
     mac_en_bignum          = 1'b0;
 
+`ifdef TOWARDS_MAC
+    mac_mulv_en_bignum     = 1'b0;
+    mac_mulv_type_bignum   = mulv_type_t'('b0);
+`endif
+
     mac_op_b_qw_sel_bignum = 2'b00;
     mac_zero_acc_bignum    = 1'b0;
     mac_shift_out_bignum   = 1'b0;
@@ -360,6 +378,10 @@ module otbn_decoder
     opcode                 = insn_opcode_e'(insn[6:0]);
 
     alu_vector_type_bignum = alu_vector_type_t'(insn[27:26]);
+
+    mac_op_b_qw_sel_bignum = insn[28:27];
+    mac_zero_acc_bignum    = insn[12];
+    mac_shift_out_bignum   = insn[30];
 
     unique case (opcode)
       //////////////
@@ -714,10 +736,6 @@ module otbn_decoder
         rf_wdata_sel_bignum = RfWdSelMac;
         mac_en_bignum       = 1'b1;
 
-        mac_op_b_qw_sel_bignum = insn[28:27];
-        mac_zero_acc_bignum    = insn[12];
-        mac_shift_out_bignum   = insn[30];
-
         if (insn[30] == 1'b1 || insn[29] == 1'b1) begin  // BN.MULQACC.WO/BN.MULQACC.SO
           rf_we_bignum = 1'b1;
         end
@@ -785,6 +803,23 @@ module otbn_decoder
         rf_wdata_sel_bignum = RfWdSelEx;
         rf_we_bignum        = 1'b1;
       end
+
+`ifdef TOWARDS_MAC
+      ////////////////////////////////////////////
+      //                 BN.MULV                //
+      ////////////////////////////////////////////
+
+      InsnOpcodeBignumMulv: begin
+        insn_subset          = InsnSubsetBignum;
+        rf_ren_a_bignum      = 1'b1;
+        rf_ren_b_bignum      = 1'b1;
+        rf_wdata_sel_bignum  = RfWdSelMac;
+        mac_mulv_en_bignum   = 1'b1;
+        mac_mulv_type_bignum = mulv_type_t'(insn[27:25]);
+        rf_we_bignum = 1'b1;
+      end
+
+`endif
 
       default: illegal_insn = 1'b1;
     endcase
