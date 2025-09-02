@@ -22,7 +22,7 @@ while getopts 'st:' OPTION; do
       echo "You selected $MANUAL_TESTS for testing"
       ;;
     ?)
-      echo "script usage: ./run_smoke_pq.sh [-t <assembly test>] [-s]" >&2
+      echo "script usage: hw/ip/otbn/dv/smoke/run_smoke_pq.sh [-t <assembly test>] [-s]" >&2
       exit 1
       ;;
   esac
@@ -65,6 +65,8 @@ if [[ -z "$SKIP_VERILATOR_BUILD" ]]; then
   echo "Building verilator model ..."
   (cd $REPO_TOP;
   fusesoc --cores-root=. run --target=sim --setup --build \
+      --flag +old_adder \
+      --flag +old_mac \
       --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn_top_sim \
       --make_options="-j$(nproc)" || fail "HW Sim build failed")
 else

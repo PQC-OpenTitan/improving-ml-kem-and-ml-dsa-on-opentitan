@@ -24,6 +24,33 @@ otbn_binary(
     ],
 )
 
+otbn_binary(
+    name = "bnmulv_test",
+    srcs = [
+        "bnmulv_test.s",
+    ],
+)
+
+otbn_binary(
+    name = "bnmulvl_test",
+    srcs = [
+        "bnmulvl_test.s",
+    ],
+)
+
+otbn_binary(
+    name = "bnmulvm_test",
+    srcs = [
+        "bnmulvm_test.s",
+    ],
+)
+
+otbn_binary(
+    name = "bnmulvml_test",
+    srcs = [
+        "bnmulvml_test.s",
+    ],
+)
 
 otbn_binary(
     name = "bnshv_test",
