@@ -1105,6 +1105,197 @@ otbn_sim_test(
     ],
 )
 
+# Binaries for Verilator tests VER0
+
+otbn_binary(
+    name = "otbn_mlkem512_keypair_test_ver0",
+    srcs = [
+        "kyber512_mlkem_keypair_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=2",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber512_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber512_packing",
+        "//sw/otbn/crypto/mlkem:kyber512_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem512_encap_test_ver0",
+    srcs = [
+        "kyber512_mlkem_enc_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=2",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber512_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber512_packing",
+        "//sw/otbn/crypto/mlkem:kyber512_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem512_decap_test_ver0",
+    srcs = [
+        "kyber512_mlkem_dec_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=2",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber512_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber512_packing",
+        "//sw/otbn/crypto/mlkem:kyber512_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem768_keypair_test_ver0",
+    srcs = [
+        "kyber768_mlkem_keypair_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=3",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber768_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber768_packing",
+        "//sw/otbn/crypto/mlkem:kyber768_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem768_encap_test_ver0",
+    srcs = [
+        "kyber768_mlkem_enc_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=3",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber768_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber768_packing",
+        "//sw/otbn/crypto/mlkem:kyber768_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem768_decap_test_ver0",
+    srcs = [
+        "kyber768_mlkem_dec_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=3",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber768_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber768_packing",
+        "//sw/otbn/crypto/mlkem:kyber768_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem1024_keypair_test_ver0",
+    srcs = [
+        "kyber1024_mlkem_keypair_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=4",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber1024_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber1024_packing",
+        "//sw/otbn/crypto/mlkem:kyber1024_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem1024_encap_test_ver0",
+    srcs = [
+        "kyber1024_mlkem_enc_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=4",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber1024_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber1024_packing",
+        "//sw/otbn/crypto/mlkem:kyber1024_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "otbn_mlkem1024_decap_test_ver0",
+    srcs = [
+        "kyber1024_mlkem_dec_test.s",
+    ],
+    copts = [
+        "-DKYBER_K=4",
+        "--bnmulv_version_id=0",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber1024_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber1024_packing",
+        "//sw/otbn/crypto/mlkem:kyber1024_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
 # Binaries for Verilator tests VER1
 
 otbn_binary(

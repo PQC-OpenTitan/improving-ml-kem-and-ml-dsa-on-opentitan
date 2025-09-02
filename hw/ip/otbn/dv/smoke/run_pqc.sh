@@ -9,7 +9,7 @@
 while getopts 'hst:v:l' OPTION; do
   case "$OPTION" in
     h)
-      echo "This script is for running ML-{KEM,DSA} tests with the new BNMULV instruction."
+      echo "This script is for running ML-{KEM,DSA} tests with the old or new BNMULV instruction."
       echo "usage: hw/ip/otbn/dv/smoke/run_pqc.sh [-h] [-t TEST_TARGET] [-s] [-v BNMULV_VER]"
       echo ""
       echo "options:"
@@ -21,6 +21,7 @@ while getopts 'hst:v:l' OPTION; do
       echo "  -v BNMULV_VER    Specify the version of BNMULV for simulation with Verilator and tests"
       echo "                   This is required for ML-KEM and ML-DSA tests."
       echo "                   Supported versions are:"
+      echo "                   - 0: Baseline design from paper: Towards ML-KEM & ML-DSA on OpenTitan"
       echo "                   - 1: BNMULV without ACCH"
       echo "                   - 2: BNMULV with ACCH"
       echo "                   - 3: BNMULV with ACCH and conditional subtraction"
@@ -95,15 +96,26 @@ else
 fi
 
 if [[ -z "$SKIP_VERILATOR_BUILD" ]]; then
-  # OTBN's BN-ALU adders are set to buffer-bit adders by default.
-  # To use old adder by Towards paper, please add "--flag +old_adder" to the command below.
-  echo "Building Verilator model of otbn_top_sim with BNMULV_VER = $BNMULV_VER..."
-  (cd $REPO_TOP;
-  fusesoc --cores-root=. run --target=sim --setup --build \
-      --flag +bnmulv_ver$BNMULV_VER \
-      --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn_top_sim \
-      --make_options="-j$(nproc)" || fail "HW Sim build failed")
-  echo ""
+  if [[ "$BNMULV_VER" -eq 0 ]]; then
+    # For BNMULV_VER == 0 means old design in Towards paper.
+    echo "Building Verilator model of otbn_top_sim with BNMULV_VER = $BNMULV_VER..."
+    (cd $REPO_TOP;
+    fusesoc --cores-root=. run --target=sim --setup --build \
+        --flag +old_adder \
+        --flag +old_mac \
+        --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn_top_sim \
+        --make_options="-j$(nproc)" || fail "HW Sim build failed")
+  else
+    # OTBN's BN-ALU adders are set to buffer-bit adders by default.
+    # To use old adder by Towards paper, please add "--flag +old_adder" to the command below.
+    echo "Building Verilator model of otbn_top_sim with BNMULV_VER = $BNMULV_VER..."
+    (cd $REPO_TOP;
+    fusesoc --cores-root=. run --target=sim --setup --build \
+        --flag +bnmulv_ver$BNMULV_VER \
+        --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn_top_sim \
+        --make_options="-j$(nproc)" || fail "HW Sim build failed")
+    echo ""
+  fi
 else
   echo -e "\e[1;33mWARNING: skipping verilator build, because you set -s\e[0m"
   echo ""
