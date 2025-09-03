@@ -1049,9 +1049,11 @@ module otbn_controller
   assign alu_bignum_operation_o.op          = insn_dec_bignum_i.alu_op;
   assign alu_bignum_operation_o.shift_right = insn_dec_bignum_i.alu_shift_right;
   assign alu_bignum_operation_o.shift_amt   = insn_dec_bignum_i.alu_shift_amt;
+`ifdef TOWARDS_BASE
   assign alu_bignum_operation_o.vector_type = insn_dec_bignum_i.vector_type;
   assign alu_bignum_operation_o.vector_sel  = insn_dec_bignum_i.vector_sel;
   assign alu_bignum_operation_o.trn_type    = insn_dec_bignum_i.alu_trn_type;
+`endif
 `ifdef BNMULV_COND_SUB
   assign alu_bignum_operation_o.cond_sub    = insn_dec_bignum_i.cond_sub;
 `endif

@@ -133,21 +133,27 @@ module otbn_decoder
   logic [$clog2(WLEN)-1:0] shift_amt_a_type_bignum;
   // Shift amount for BN.RSHI
   logic [$clog2(WLEN)-1:0] shift_amt_s_type_bignum;
+`ifdef TOWARDS_BASE
   // Shift amount for BN.SHV
   logic [$clog2(WLEN)-1:0] shift_amt_v_type_bignum;
+`endif
 
   assign shift_amt_a_type_bignum = {insn[29:25], 3'b0};
   assign shift_amt_s_type_bignum = {insn[31:25], insn[14]};
+`ifdef TOWARDS_BASE
   assign shift_amt_v_type_bignum = {3'b0, insn[29:25]};
+`endif
 
   logic alu_shift_right_bignum;
 
   assign alu_shift_right_bignum = insn[30];
 
+`ifdef TOWARDS_BASE
   alu_vector_type_t alu_vector_type_bignum;
   logic             alu_vector_sel_bignum;
   alu_trn_type_t    alu_trn_type_bignum;
   assign            alu_trn_type_bignum = alu_trn_type_t'(insn[27:25]);
+`endif
 
 `ifdef BNMULV_COND_SUB
   logic  alu_cond_sub_bignum;
@@ -229,7 +235,9 @@ module otbn_decoder
     unique case (shift_amt_mux_sel_bignum)
       ShamtSelBignumA:    alu_shift_amt_bignum = shift_amt_a_type_bignum;
       ShamtSelBignumS:    alu_shift_amt_bignum = shift_amt_s_type_bignum;
+`ifdef TOWARDS_BASE
       ShamtSelBignumV:    alu_shift_amt_bignum = shift_amt_v_type_bignum;
+`endif
       ShamtSelBignumZero: alu_shift_amt_bignum = '0;
       default:            alu_shift_amt_bignum = shift_amt_a_type_bignum;
     endcase
@@ -274,9 +282,11 @@ module otbn_decoder
     alu_flag_en:         alu_flag_en_bignum,
     mac_flag_en:         mac_flag_en_bignum,
     alu_op:              alu_operator_bignum,
+`ifdef TOWARDS_BASE
     vector_type:         alu_vector_type_bignum,
     vector_sel:          alu_vector_sel_bignum,
     alu_trn_type:        alu_trn_type_bignum,
+`endif
 `ifdef BNMULV_COND_SUB
     cond_sub:            alu_cond_sub_bignum,             
 `endif
@@ -385,7 +395,9 @@ module otbn_decoder
 
     opcode                 = insn_opcode_e'(insn[6:0]);
 
+`ifdef TOWARDS_BASE
     alu_vector_type_bignum = alu_vector_type_t'(insn[27:26]);
+`endif
 
     mac_op_b_qw_sel_bignum = insn[28:27];
     mac_zero_acc_bignum    = insn[12];
@@ -788,6 +800,7 @@ module otbn_decoder
       end
 `endif
 
+`ifdef TOWARDS_BASE
       ////////////////////////////////////////////
       //                 BN.SHV                 //
       ////////////////////////////////////////////
@@ -811,6 +824,7 @@ module otbn_decoder
         rf_wdata_sel_bignum = RfWdSelEx;
         rf_we_bignum        = 1'b1;
       end
+`endif
 
 `ifdef TOWARDS_MAC
       ////////////////////////////////////////////
@@ -864,7 +878,9 @@ module otbn_decoder
 
     alu_flag_en_bignum       = 1'b0;
     mac_flag_en_bignum       = 1'b0;
+`ifdef TOWARDS_BASE
     alu_vector_sel_bignum    = 1'b0;
+`endif
 
     unique case (opcode_alu)
       //////////////
@@ -1000,6 +1016,9 @@ module otbn_decoder
           end
           3'b101: begin
             if (insn_alu[30]) begin
+`ifndef TOWARDS_BASE
+              alu_operator_bignum = AluOpBignumSubm;
+`else
               if (insn_alu[25]) begin
                 if (insn[27]) begin
                 `ifndef BNMULV_COND_SUB
@@ -1018,7 +1037,11 @@ module otbn_decoder
               end else begin
                 alu_operator_bignum = AluOpBignumSubm;
               end
+`endif // TOWARDS_BASE
             end else begin
+`ifndef TOWARDS_BASE
+              alu_operator_bignum = AluOpBignumAddm;
+`else
               if (insn_alu[25]) begin
                 if (insn[27]) begin
                 `ifndef BNMULV_COND_SUB
@@ -1037,6 +1060,7 @@ module otbn_decoder
               end else begin
                 alu_operator_bignum = AluOpBignumAddm;
               end
+`endif
             end
           end
           default: ;
@@ -1130,6 +1154,7 @@ module otbn_decoder
         end
       end
 
+`ifdef TOWARDS_BASE
       ////////////////////////////////////////////
       //                 BN.SHV                 //
       ////////////////////////////////////////////
@@ -1150,6 +1175,7 @@ module otbn_decoder
         alu_op_b_mux_sel_bignum  = OpBSelRegister;
         alu_operator_bignum      = AluOpBignumTrn;
       end
+`endif
 
       default: ;
     endcase

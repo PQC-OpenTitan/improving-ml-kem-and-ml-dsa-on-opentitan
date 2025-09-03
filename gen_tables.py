@@ -70,8 +70,12 @@ def report(data):
   print()
 
 
-def synthesize(top_module, outdir):
-  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag bnmulv_ver1 --no-export --tool=vivado --setup lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
+def synthesize(top_module, outdir, flags = []):
+#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +old_adder --flag +old_mac --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
+#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +bnmulv_ver1 --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
+#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +bnmulv_ver2 --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
+#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +bnmulv_ver3 --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
+  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta {' '.join(['--flag +' + flag for flag in flags])} --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
 
   print(f"Command: {command})")
 
@@ -117,6 +121,13 @@ if __name__ == "__main__":
   )
 
   parser.add_argument(
+      "--flags",
+      type=str,
+      default=None,
+      help="Comma-separated list of flags for module variants."
+  )
+
+  parser.add_argument(
       "--top_module",
       type=str,
       default=None,
@@ -128,6 +139,9 @@ if __name__ == "__main__":
   print(f"run_synthesis: {args.run_synthesis}")
   print(f"top_module: {args.top_module}")
 
+  flags = {"": []}
+  modules = [args.top_module]
+
   if args.mul:
     modules = ["unified_mul", "otbn_bignum_mul"]
   elif args.adders:
@@ -136,14 +150,22 @@ if __name__ == "__main__":
     modules = ["cond_sub", "cond_sub_buffer_bit"]
   elif args.otbn_sub:
     modules = ["otbn_mac_bignum", "otbn_alu_bignum"]
-  else:
-    modules = [args.top_module]
+    flags = {"KMAC": ["kmac"],
+             "TOWARDS": ["old_adder", "old_mac"],
+             "VER1": ["bnmulv_ver1"],
+             "VER2": ["bnmulv_ver2"],
+             "VER3": ["bnmulv_ver3"]}
+
+  if args.flags:
+    flags = args.flags.split(",")
+    flags = {"_".join(flags): flags}
 
   if args.run_synthesis:
     for top_module in modules:
-      synthesize(top_module, "reports/FPGA/" + top_module)
+      for flag_group, flag in flags.items():
+        synthesize(top_module, "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else ""), flag)
    
-  data = [extract(top_module, "reports/FPGA/" + top_module) for top_module in modules]
+  data = [extract(f"{top_module} {flag_group}", "reports/FPGA/" + top_module + "_".join(flag_group)) for top_module in modules for flag_group in flags.keys()]
 
   report(data)
 

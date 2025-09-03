@@ -224,9 +224,13 @@ package otbn_pkg;
 `ifdef TOWARDS_MAC
     InsnOpcodeBignumMulv     = 7'h4B,
 `endif
+`ifdef TOWARDS_BASE
     InsnOpcodeBignumTrn      = 7'h5F,
     InsnOpcodeBignumBaseMisc = 7'h7B,
     InsnOpcodeBignumShiftv   = 7'h7F
+`else
+    InsnOpcodeBignumBaseMisc = 7'h7B
+`endif
   } insn_opcode_e;
 
   typedef enum logic [3:0] {
@@ -243,21 +247,29 @@ package otbn_pkg;
     AluOpBaseSll
   } alu_op_base_e;
 
+`ifndef TOWARDS_BASE
+  typedef enum logic [3:0] {
+`else
   typedef enum logic [4:0] {
+`endif
     AluOpBignumAdd,
     AluOpBignumAddc,
     AluOpBignumAddm,
+`ifdef TOWARDS_BASE
     AluOpBignumAddv,
     AluOpBignumAddvm,
+`endif
+
 `ifdef BNMULV_COND_SUB
     AluOpBignumAddvmcond,
 `endif
-
     AluOpBignumSub,
     AluOpBignumSubb,
     AluOpBignumSubm,
+`ifdef TOWARDS_BASE
     AluOpBignumSubv,
     AluOpBignumSubvm,
+`endif
 `ifdef BNMULV_COND_SUB
     AluOpBignumSubvmcond,
 `endif
@@ -269,8 +281,10 @@ package otbn_pkg;
     AluOpBignumAnd,
     AluOpBignumNot,
 
+`ifdef TOWARDS_BASE
     AluOpBignumShv,
     AluOpBignumTrn,
+`endif
 
     AluOpBignumNone
   } alu_op_bignum_e;
@@ -315,7 +329,9 @@ package otbn_pkg;
   typedef enum logic [1:0] {
     ShamtSelBignumA,
     ShamtSelBignumS,
+`ifdef TOWARDS_BASE
     ShamtSelBignumV,
+`endif
     ShamtSelBignumZero
   } shamt_sel_bignum_e;
 
@@ -490,6 +506,7 @@ package otbn_pkg;
     logic                loop_immediate;
   } insn_dec_base_t;
 
+`ifdef TOWARDS_BASE
   typedef enum logic[1:0] {
     alu_8s,     // b000
     alu_16h,    // b001
@@ -507,6 +524,7 @@ package otbn_pkg;
     trn2_4d,
     trn2_2q
   } alu_trn_type_t;
+`endif
 
 `ifdef TOWARDS_MAC
   typedef enum logic[2:0] {
@@ -547,10 +565,12 @@ package otbn_pkg;
     logic [$clog2(WLEN)-1:0] alu_shift_amt;   // Shift amount
     logic                    alu_shift_right; // Shift right if set otherwise left
 
+`ifdef TOWARDS_BASE
     alu_vector_type_t        vector_type;
     logic                    vector_sel;
 
     alu_trn_type_t           alu_trn_type;
+`endif
 
 `ifdef BNMULV_COND_SUB
     logic                    cond_sub;
@@ -609,9 +629,11 @@ package otbn_pkg;
     logic                    shifter_a_en;
     logic                    shifter_b_en;
     logic                    shift_right;
+`ifdef TOWARDS_BASE
     alu_vector_type_t        vector_type;
     logic                    vector_sel;
     alu_trn_type_t           trn_type; 
+`endif
 `ifdef BNMULV_COND_SUB
     logic                    cond_sub;
 `endif
@@ -667,9 +689,11 @@ package otbn_pkg;
     alu_op_bignum_e op;
     logic [WLEN-1:0]         operand_a;
     logic [WLEN-1:0]         operand_b;
+`ifdef TOWARDS_BASE
     alu_vector_type_t        vector_type;
     logic                    vector_sel;
     alu_trn_type_t           trn_type;
+`endif
 `ifdef BNMULV_COND_SUB
     logic                    cond_sub;
 `endif

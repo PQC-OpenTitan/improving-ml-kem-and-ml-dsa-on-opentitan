@@ -126,6 +126,9 @@ parameters:
   BNMULV_COND_SUB:
     datatype: bool
     paramtype: vlogdefine
+  TOWARDS_BASE:
+    datatype: bool
+    paramtype: vlogdefine
   TOWARDS_ADDER:
     datatype: bool
     paramtype: vlogdefine
@@ -185,8 +188,14 @@ targets:
       - MAC_ADDER
       - ALU_ADDER
       - SYNTHESIS=true
+      - old_mac ? (TOWARDS_BASE=true)
       - old_mac ? (TOWARDS_MAC=true)
       - old_adder ? (TOWARDS_ADDER=true)
+      - old_adder ? (TOWARDS_BASE=true)
+      - bnmulv_ver1 ? (TOWARDS_BASE=true)
+      - bnmulv_ver2 ? (TOWARDS_BASE=true)
+      - bnmulv_ver3 ? (TOWARDS_BASE=true)
+      - bnmulv_ver1 ? (TOWARDS_BASE=true)
       - bnmulv_ver1 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV_ACCH=true)

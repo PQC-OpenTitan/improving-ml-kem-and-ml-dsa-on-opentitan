@@ -63,9 +63,11 @@ module otbn_predecode
   logic alu_bignum_logic_shifter_en;
   logic [3:0] alu_bignum_logic_res_sel;
 
+`ifdef TOWARDS_BASE
   alu_vector_type_t alu_bignum_vector_type;
   logic             alu_bignum_vector_sel;
   alu_trn_type_t    alu_bignum_trn_type;
+`endif
 `ifdef BNMULV_COND_SUB
   logic             alu_bignum_cond_sub;
 `endif
@@ -135,12 +137,16 @@ module otbn_predecode
   logic [$clog2(WLEN)-1:0] shift_amt_a_type_bignum;
   // Shift amount for BN.RSHI
   logic [$clog2(WLEN)-1:0] shift_amt_s_type_bignum;
+`ifdef TOWARDS_BASE
   // Shift amount for BN.SHV
   logic [$clog2(WLEN)-1:0] shift_amt_v_type_bignum;
+`endif
 
   assign shift_amt_a_type_bignum = {imem_rdata_i[29:25], 3'b0};
   assign shift_amt_s_type_bignum = {imem_rdata_i[31:25], imem_rdata_i[14]};
+`ifdef TOWARDS_BASE
   assign shift_amt_v_type_bignum = {3'b0, imem_rdata_i[29:25]};
+`endif
 
   assign flag_group     = imem_rdata_i[31];
   assign flag_group_sel = {(flag_group == 1'b1), (flag_group == 1'b0)};
@@ -174,9 +180,11 @@ module otbn_predecode
     alu_bignum_logic_a_en            = 1'b0;
     alu_bignum_logic_shifter_en      = 1'b0;
     alu_bignum_logic_res_sel         = '0;
+`ifdef TOWARDS_BASE
     alu_bignum_vector_type           = alu_vector_type_t'('0);
     alu_bignum_vector_sel            = 1'b0;
     alu_bignum_trn_type              = alu_trn_type_t'('0);
+`endif
 `ifdef BNMULV_COND_SUB
     alu_bignum_cond_sub              = 1'b0;
 `endif
@@ -355,8 +363,10 @@ module otbn_predecode
               alu_bignum_adder_x_en          = 1'b1;
               alu_bignum_x_res_operand_a_sel = 1'b1;
               alu_bignum_shift_mod_sel       = 1'b0;
+`ifdef TOWARDS_BASE
               alu_bignum_vector_type         = alu_vector_type_t'(imem_rdata_i[27:26]);
               alu_bignum_vector_sel          = imem_rdata_i[25];
+`endif
               `ifdef BNMULV_COND_SUB
               alu_bignum_cond_sub            = imem_rdata_i[28];
               `endif // BNMULV_COND_SUB
@@ -528,6 +538,8 @@ module otbn_predecode
           endcase
         end
 `endif
+
+`ifdef TOWARDS_BASE
         ////////////////////////////////////////////
         //                 BN.SHV                 //
         ////////////////////////////////////////////
@@ -553,6 +565,7 @@ module otbn_predecode
           rf_we_bignum             = 1'b1;
           alu_bignum_trn_type      = alu_trn_type_t'(imem_rdata_i[27:25]);
         end
+`endif
 
 `ifdef TOWARDS_MAC
         ////////////////////////////////////////////
@@ -613,9 +626,11 @@ module otbn_predecode
   assign alu_predec_bignum_o.shifter_a_en          = alu_bignum_shifter_a_en;
   assign alu_predec_bignum_o.shifter_b_en          = alu_bignum_shifter_b_en;
   assign alu_predec_bignum_o.shift_right           = alu_bignum_shift_right;
+`ifdef TOWARDS_BASE
   assign alu_predec_bignum_o.vector_type           = alu_bignum_vector_type;
   assign alu_predec_bignum_o.vector_sel            = alu_bignum_vector_sel;
   assign alu_predec_bignum_o.trn_type              = alu_bignum_trn_type;
+`endif
   assign alu_predec_bignum_o.shift_amt             = alu_bignum_shift_amt;
   assign alu_predec_bignum_o.shift_mod_sel         = alu_bignum_shift_mod_sel;
   assign alu_predec_bignum_o.logic_a_en            = alu_bignum_logic_a_en;
