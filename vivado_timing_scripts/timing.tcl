@@ -129,8 +129,6 @@ while {1} {
     place_design
     set ACTIVE_STEP place_design
     
-    place_design
-    
     phys_opt_design
     set ACTIVE_STEP phys_opt_design
     
@@ -187,8 +185,6 @@ set ACTIVE_STEP opt_design
 
 place_design
 set ACTIVE_STEP place_design
-
-place_design
 
 phys_opt_design
 set ACTIVE_STEP phys_opt_design

@@ -164,8 +164,8 @@ if __name__ == "__main__":
     for top_module in modules:
       for flag_group, flag in flags.items():
         synthesize(top_module, "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else ""), flag)
-   
-  data = [extract(f"{top_module} {flag_group}", "reports/FPGA/" + top_module + "_".join(flag_group)) for top_module in modules for flag_group in flags.keys()]
+
+  data = [extract(f"{top_module} {flag_group}", "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else "")) for top_module in modules for flag_group in flags.keys()]
 
   report(data)
 

@@ -1,0 +1,33 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
+| Date         : Thu Sep  4 15:14:56 2025
+| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA/otbn_mac_bignum_TOWARDS/utilization_hierarchical.txt
+| Design       : otbn_mac_bignum
+| Device       : xc7a200tfbg676-3
+| Speed File   : -3
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------+------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+|        Instance       |            Module            | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP Blocks |
++-----------------------+------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+| otbn_mac_bignum       |                        (top) |       4337 |       4337 |       0 |    0 | 508 |      0 |      0 |         16 |
+|   (otbn_mac_bignum)   |                        (top) |       1585 |       1585 |       0 |    0 | 508 |      0 |      0 |          0 |
+|   U_MUL               |                     otbn_mul |       2193 |       2193 |       0 |    0 |   0 |      0 |      0 |         16 |
+|   u_operand_b_blanker | prim_blanker__parameterized1 |        560 |        560 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     u_blank_and       |    prim_and2__parameterized1 |        560 |        560 |       0 |    0 |   0 |      0 |      0 |          0 |
++-----------------------+------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+
