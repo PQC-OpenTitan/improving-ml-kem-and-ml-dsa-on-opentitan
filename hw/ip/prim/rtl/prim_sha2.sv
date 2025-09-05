@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 // SHA-256/384/512 configurable mode engine (64-bit word datapath)
+//
+`include "prim_assert.sv"
 
 module prim_sha2 import prim_sha2_pkg::*;
 #(

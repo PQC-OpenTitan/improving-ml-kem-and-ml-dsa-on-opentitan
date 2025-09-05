@@ -119,6 +119,10 @@ parameters:
   SYNTHESIS:
     datatype: bool
     paramtype: vlogdefine
+  SYNTHESIS_MEMORY_BLACK_BOXING:
+    datatype: bool
+    default: false
+    paramtype: vlogdefine
   BNMULV:
     datatype: bool
     paramtype: vlogdefine
@@ -230,6 +234,7 @@ targets:
       - SYNTHESIS=true
       - old_mac ? (TOWARDS_MAC=true)
       - old_adder ? (TOWARDS_ADDER=true)
+      - bnmulv_ver1 ? (TOWARDS_BASE=true)
       - bnmulv_ver1 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV_ACCH=true)
@@ -239,6 +244,32 @@ targets:
     tools:
       vivado:
         part: "xc7k410tfbg676-1" # CW310 with K410T
+
+  syn_asic:
+    <<: *default_target
+    parameters:
+      - SYNTHESIS_MEMORY_BLACK_BOXING=true
+      - old_mac ? (TOWARDS_MAC=true)
+      - old_adder ? (TOWARDS_ADDER=true)
+      - towards ? (TOWARDS_BASE=true)
+      - towards ? (TOWARDS_MAC=true)
+      - towards ? (TOWARDS_ADDER=true)
+      - bnmulv_ver1 ? (TOWARDS_BASE=true)
+      - bnmulv_ver1 ? (BNMULV=true)
+      - bnmulv_ver2 ? (TOWARDS_BASE=true)
+      - bnmulv_ver2 ? (BNMULV=true)
+      - bnmulv_ver2 ? (BNMULV_ACCH=true)
+      - bnmulv_ver3 ? (TOWARDS_BASE=true)
+      - bnmulv_ver3 ? (BNMULV=true)
+      - bnmulv_ver3 ? (BNMULV_ACCH=true)
+      - bnmulv_ver3 ? (BNMULV_COND_SUB=true)
+    tools:
+      genus:
+        script_dir: "../../../hw/ip/otbn/sta-genus"
+        genus_script: "synth_genus_otbn.tcl"
+        report_dir: "reports"
+#        common_config: ../../../hw/ip/otbn/sta-genus/config_genus.tcl
+        jobs: "all"
 
   syn_bn_alu:
     filesets:
@@ -254,6 +285,7 @@ targets:
       - ALU_ADDER
       - old_mac ? (TOWARDS_MAC=true)
       - old_adder ? (TOWARDS_ADDER=true)
+      - bnmulv_ver1 ? (TOWARDS_BASE=true)
       - bnmulv_ver1 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV=true)
       - bnmulv_ver2 ? (BNMULV_ACCH=true)
