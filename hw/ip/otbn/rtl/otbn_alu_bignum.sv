@@ -1354,6 +1354,10 @@ module otbn_alu_bignum
   end
 //endif TOWARDS_ADDER
 `elsif BNMULV
+  `ifndef ALU_ADDER
+    `define ALU_ADDER buffer_bit
+  `endif
+
   // ADDER X logic
   logic [WLEN-1:0] adder_x_op_a_blanked, adder_x_op_b, adder_x_op_b_blanked;
   logic            adder_x_carry_in;
@@ -1400,10 +1404,6 @@ module otbn_alu_bignum
     .en_i (operation_i.cond_sub), // If cond_sub is not enabled, we always blank operand b to Adder W
     .out_o(adder_w_op_b_blanked)
   );
-
-  `ifndef ALU_ADDER
-    `define ALU_ADDER buffer_bit
-  `endif
 
   `ALU_ADDER adder_w (
     .A        (adder_w_op_a_blanked),

@@ -4,6 +4,7 @@
 
 load("@bazel-orfs//:openroad.bzl", "orfs_flow", "orfs_run")
 load("@bazel-orfs//:ppa.bzl", "orfs_ppa")
+load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//rules:sv2v.bzl", "sv2v_build")
 
 package(default_visibility = ["//visibility:public"])
@@ -64,16 +65,46 @@ TOP_MODULES = [
 # List of adders used in the design.
 ADDERS = ["buffer_bit", "brent_kung", "sklansky", "kogge_stone"]
 
-# List of different versions for our design.
-# MAC_ADDER and ALU_ADDER is default to "buffer_bit".
-# TODO: Specify VER*_ADDER targets.
-VERSION = {
-    "TOWARDS": ["TOWARDS_ADDER", "TOWARDS_MAC"],
-    # "VER1_" + adder: ["BNMULV", "BUFFER_BIT", "MAC_ADDER=" + adder] for adder in ADDERS,
-    "VER1": ["BNMULV"],
-    "VER2": ["BNMULV", "BNMULV_ACCH"],
-    "VER3": ["BNMULV", "BNMULV_ACCH", "BNMULV_COND_SUB"],
+# Manually established minimum clock period on sky130hd per adder.
+ADDERS_CLOCK_PERIOD = {
+  "buffer_bit":  "4.3",
+  "brent_kung":  "4.1",
+  "sklansky":    "4.0",
+  "kogge_stone": "5.1"
 }
+
+# List of different versions for our design.
+VERSION = {
+    "TOWARDS": ["TOWARDS_BASE", "TOWARDS_ADDER", "TOWARDS_MAC"],
+    "VER1": ["TOWARDS_BASE", "BNMULV", "BUFFER_BIT"],
+    "VER2": ["TOWARDS_BASE", "BNMULV", "BNMULV_ACCH", "BUFFER_BIT"],
+    "VER3": ["TOWARDS_BASE", "BNMULV", "BNMULV_ACCH", "BNMULV_COND_SUB", "BUFFER_BIT"],
+}
+
+#VERSION = dicts.add({
+#    "TOWARDS": ["TOWARDS_ADDER"],
+#    "VER1": ["BNMULV", "BUFFER_BIT"],
+#    "VER2": ["BNMULV", "BNMULV_ACCH", "BUFFER_BIT"],
+#    "VER3": ["BNMULV", "BNMULV_ACCH", "BNMULV_COND_SUB", "BUFFER_BIT"],
+#}, {
+#    "VER1_" + adder: [
+#        "BNMULV",
+#        "BUFFER_BIT",
+#        "MAC_ADDER=" + adder,
+#    ]
+#    for adder in ADDERS
+#})
+
+
+filegroup(
+  name = "compare_adders",
+  srcs = [
+    "//hw/ip/otbn:buffer_bit_sky130hd_results",
+    "//hw/ip/otbn:brent_kung_sky130hd_results",
+    "//hw/ip/otbn:sklansky_sky130hd_results",
+    "//hw/ip/otbn:kogge_stone_sky130hd_results",
+  ]
+)
 
 [
     sv2v_build(
@@ -128,8 +159,8 @@ FASTER = {
 }
 
 OTHER_ARGS = {
-    "SETUP_SLACK_MARGIN": "0.05",
-    "SETUP_HOLD_MARGIN": "-0.05",
+    "SETUP_SLACK_MARGIN": "0",
+    "SETUP_HOLD_MARGIN":  "0",
     "SYNTH_HIERARCHICAL": "1",
     "PLACE_DENSITY": "0.5",
     "CORE_MARGIN": "1",
@@ -163,7 +194,10 @@ STAGE_ARGS = {
         arguments =  FASTER | OTHER_ARGS |
         (
             IO_PLACER_ASAP7 if pdk == "asap7" else IO_PLACER_SKY130HD
-        ),
+        ) |
+        {
+            "CLOCK_PERIOD": ADDERS_CLOCK_PERIOD[base_name],
+        },
         stage_arguments = STAGE_ARGS,
         pdk = "@docker_orfs//:{}".format(pdk),
         sources = {

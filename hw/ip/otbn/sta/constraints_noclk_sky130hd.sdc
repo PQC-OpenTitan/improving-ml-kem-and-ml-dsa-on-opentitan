@@ -3,13 +3,20 @@ report_units
 #set clk_name clk_i
 #set clk_port_name clk_i
 
+if {[info exists ::env(CLOCK_PERIOD)]} {
+  set clk_period $::env(CLOCK_PERIOD)
+
+  puts "\[INFO\]: Setting clock period to: $clk_period"
+}
+
+
 # clk unit: ns
-set clk_period 4.0
-# 25.4 ok  25.2 fail
-# 27.1 otbn_mac_bignum_VER1_buffer_bit_sky130hd
-# 27.2 otbn_mac_bignum_VER1_brent_kung_sky130hd
-# 27.4 otbn_mac_bignum_VER1_sklansky_sky130hd
-# 25.4 otbn_mac_bignum_VER1_kogge_stone_sky130hd
+# set clk_period 4.0
+## 25.4 ok  25.2 fail
+## 27.1 otbn_mac_bignum_VER1_buffer_bit_sky130hd
+## 27.2 otbn_mac_bignum_VER1_brent_kung_sky130hd
+## 27.4 otbn_mac_bignum_VER1_sklansky_sky130hd
+## 25.4 otbn_mac_bignum_VER1_kogge_stone_sky130hd
 
 set in2reg_max  $clk_period
 set reg2out_max $clk_period

@@ -5,6 +5,7 @@
 // The adder is meant to replace Adder X and Adder Y in BN-ALU. So it can either
 // compute in_A + in_B (A + B) or in_A + ~in_B + 1 (A + B + cin).
 
+`ifdef BNMULV
 module adder_carry4
     import otbn_pkg::*;
 (
@@ -75,3 +76,4 @@ module adder_carry4
     end
   endgenerate
 endmodule
+`endif
