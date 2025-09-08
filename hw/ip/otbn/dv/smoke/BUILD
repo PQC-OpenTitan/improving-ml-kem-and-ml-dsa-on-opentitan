@@ -16,3 +16,35 @@ otbn_binary(
         "deterministic=1",
     ],
 )
+
+otbn_binary(
+    name = "smoke_test_ver0",
+    srcs = [
+        "smoke_test.s",
+    ],
+    copts = ["--bnmulv_version_id=0"],
+)
+
+otbn_binary(
+    name = "smoke_test_ver1",
+    srcs = [
+        "smoke_test.s",
+    ],
+    copts = ["--bnmulv_version_id=1"],
+)
+
+otbn_binary(
+    name = "smoke_test_ver2",
+    srcs = [
+        "smoke_test.s",
+    ],
+    copts = ["--bnmulv_version_id=2"],
+)
+
+otbn_binary(
+    name = "smoke_test_ver3",
+    srcs = [
+        "smoke_test.s",
+    ],
+    copts = ["--bnmulv_version_id=3"],
+)
