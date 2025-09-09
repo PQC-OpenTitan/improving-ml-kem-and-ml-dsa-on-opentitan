@@ -7,6 +7,7 @@
 
 from typing import Dict, Iterator, Optional
 import sys
+import os
 
 from .constants import ErrBits
 from .flags import FlagReg
@@ -25,6 +26,11 @@ DEBUG_FLOW = False
 STACK_BENCH = False
 STACK_SIZE = 20000
 
+# For stack benchmarking, STACK_BENCH, STACK_SIZE and REPO_TOP is passed from --action_env.
+if os.environ.get('STACK_BENCH', '0') == '1':
+    STACK_BENCH = True
+STACK_SIZE = int(os.environ.get('STACK_SIZE', '20000'))
+REPO_TOP = os.environ.get('REPO_TOP', '/home/dev/src')
 
 def eprint(text):
     print(text, file=sys.stderr)
@@ -59,7 +65,7 @@ class ADD(RV32RegReg):
             eprint(f"add {val1} + {val2} = {result}")
 
         if STACK_BENCH and self.grd == 2:
-            with open("/home/dev/src/stack_bench.txt", "r") as f:
+            with open(f"{REPO_TOP}/stack_benchmark.txt", "r") as f:
                 try:
                     prev_min = int(f.readline(), 10)
                 except ValueError:
@@ -68,7 +74,7 @@ class ADD(RV32RegReg):
             print(f"prev_min: {prev_min} ")
             print(f"STACK_SIZE - result: {STACK_SIZE - result}")
             if (STACK_SIZE - result) > prev_min:
-                with open("/home/dev/src/stack_bench.txt", "w") as f:
+                with open(f"{REPO_TOP}/stack_benchmark.txt", "w") as f:
                     f.write(str(STACK_SIZE - result))
 
         state.gprs.get_reg(self.grd).write_unsigned(result)
@@ -88,7 +94,7 @@ class ADDI(RV32RegImm):
             eprint(f"addi {val1} + {self.imm} = {result}")
 
         if STACK_BENCH and self.grd == 2 and self.imm != 0:
-            with open("/home/dev/src/stack_bench.txt", "r") as f:
+            with open(f"{REPO_TOP}/stack_benchmark.txt", "r") as f:
                 try:
                     prev_min = int(f.readline(), 10)
                 except ValueError:
@@ -97,7 +103,7 @@ class ADDI(RV32RegImm):
             print(f"prev_min: {prev_min} ")
             print(f"STACK_SIZE - result: {STACK_SIZE - result}")
             if (STACK_SIZE - result) > prev_min:
-                with open("/home/dev/src/stack_bench.txt", "w") as f:
+                with open(f"{REPO_TOP}/stack_benchmark.txt", "w") as f:
                     f.write(str(STACK_SIZE - result))
 
         state.gprs.get_reg(self.grd).write_unsigned(result)
