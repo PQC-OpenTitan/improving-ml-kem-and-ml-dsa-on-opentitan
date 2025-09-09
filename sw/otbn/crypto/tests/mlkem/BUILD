@@ -8,7 +8,7 @@ load("//rules:otbn.bzl", "otbn_binary", "otbn_consttime_test", "otbn_library", "
 package(default_visibility = ["//visibility:public"])
 
 otbn_sim_test(
-    name = "kyber512_mlkem_keypair_test",
+    name = "mlkem512_keypair_test_ver0",
     srcs = [
         "kyber512_mlkem_keypair_test.s",
     ],
@@ -27,7 +27,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber512_mlkem_enc_test",
+    name = "mlkem512_encap_test_ver0",
     srcs = [
         "kyber512_mlkem_enc_test.s",
     ],
@@ -46,7 +46,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber512_mlkem_dec_test",
+    name = "mlkem512_decap_test_ver0",
     srcs = [
         "kyber512_mlkem_dec_test.s",
     ],
@@ -65,7 +65,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber512_mlkem_false_dec_test",
+    name = "mlkem512_false_decap_test_ver0",
     srcs = [
         "kyber512_mlkem_false_dec_test.s",
     ],
@@ -84,7 +84,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber768_mlkem_keypair_test",
+    name = "mlkem768_keypair_test_ver0",
     srcs = [
         "kyber768_mlkem_keypair_test.s",
     ],
@@ -103,7 +103,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber768_mlkem_enc_test",
+    name = "mlkem768_encap_test_ver0",
     srcs = [
         "kyber768_mlkem_enc_test.s",
     ],
@@ -122,7 +122,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber768_mlkem_dec_test",
+    name = "mlkem768_decap_test_ver0",
     srcs = [
         "kyber768_mlkem_dec_test.s",
     ],
@@ -141,7 +141,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber768_mlkem_false_dec_test",
+    name = "mlkem768_false_decap_test_ver0",
     srcs = [
         "kyber768_mlkem_false_dec_test.s",
     ],
@@ -160,7 +160,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber1024_mlkem_keypair_test",
+    name = "mlkem1024_keypair_test_ver0",
     srcs = [
         "kyber1024_mlkem_keypair_test.s",
     ],
@@ -179,7 +179,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber1024_mlkem_enc_test",
+    name = "mlkem1024_encap_test_ver0",
     srcs = [
         "kyber1024_mlkem_enc_test.s",
     ],
@@ -198,7 +198,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber1024_mlkem_dec_test",
+    name = "mlkem1024_decap_test_ver0",
     srcs = [
         "kyber1024_mlkem_dec_test.s",
     ],
@@ -217,7 +217,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "kyber1024_mlkem_false_dec_test",
+    name = "mlkem1024_false_decap_test_ver0",
     srcs = [
         "kyber1024_mlkem_false_dec_test.s",
     ],

@@ -20,7 +20,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium2_keypair_test",
+    name = "mldsa44_keypair_test_ver0",
     srcs = [
         "dilithium_keypair_test.s",
     ],
@@ -38,7 +38,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium2_sign_test",
+    name = "mldsa44_sign_test_ver0",
     srcs = [
         "dilithium_sign_test.s",
     ],
@@ -57,7 +57,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium2_verify_test",
+    name = "mldsa44_verify_test_ver0",
     srcs = [
         "dilithium_verify_test.s",
     ],
@@ -76,7 +76,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium3_keypair_test",
+    name = "mldsa65_keypair_test_ver0",
     srcs = [
         "dilithium_keypair_test.s",
     ],
@@ -94,7 +94,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium3_sign_test",
+    name = "mldsa65_sign_test_ver0",
     srcs = [
         "dilithium_sign_test.s",
     ],
@@ -113,7 +113,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium3_verify_test",
+    name = "mldsa65_verify_test_ver0",
     srcs = [
         "dilithium_verify_test.s",
     ],
@@ -132,7 +132,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium5_keypair_test",
+    name = "mldsa87_keypair_test_ver0",
     srcs = [
         "dilithium_keypair_test.s",
     ],
@@ -150,7 +150,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium5_sign_test",
+    name = "mldsa87_sign_test_ver0",
     srcs = [
         "dilithium_sign_test.s",
     ],
@@ -169,7 +169,7 @@ otbn_sim_test(
 )
 
 otbn_sim_test(
-    name = "dilithium5_verify_test",
+    name = "mldsa87_verify_test_ver0",
     srcs = [
         "dilithium_verify_test.s",
     ],
