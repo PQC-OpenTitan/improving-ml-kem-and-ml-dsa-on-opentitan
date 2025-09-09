@@ -1057,7 +1057,7 @@ module otbn_alu_bignum
   logic [WLEN-1:0]   shifter_operand_b_blanked;
 `ifdef TOWARDS_BASE
   logic [WLEN-1:0]   shifter_bignum_res;
-  logic [15:0]       shifter_vec_in [15:0];
+  logic [15:0]       shifter_vec_in [16:0];
   logic [15:0]       shifter_vec_in_orig [15:0];
   logic [15:0]       shifter_vec_in_reverse [15:0];
   logic [15:0]       shifter_vec_out [15:0];
@@ -1130,6 +1130,7 @@ module otbn_alu_bignum
 `ifdef TOWARDS_BASE
   // VECTOR SHIFTER
   assign shifter_selvector_i = operation_i.vector_type[0];
+  assign shifter_vec_in[16] = '0;
   // split into 16-bit chunks for vectorized shift
   for (genvar i=0; i<16; ++i) begin : g_shifter_vec
     assign shifter_vec_in_orig[i] = shifter_operand_b_blanked[i*16+:16];

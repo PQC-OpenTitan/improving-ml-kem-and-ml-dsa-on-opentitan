@@ -101,7 +101,7 @@ def report(data):
   print()
 
 
-def synthesize_ASIC(top_module, outdir, flags = []):
+def synthesize_ORFS(top_module, outdir, flags = []):
   command = f"bazel build //hw/ip/otbn:{top_module}{'_' + flags if flags != '' else ''}_asap7{'_all' if flags != '' else ''}_results; mkdir -p {outdir}; cp bazel-bin/hw/ip/otbn/{top_module}{'_' + flags if flags != '' else ''}_asap7_stats {outdir}/"
 
   # //hw/ip/otbn:otbn_mac_bignum_TOWARDS_asap7_all_results
@@ -115,6 +115,15 @@ def synthesize_ASIC(top_module, outdir, flags = []):
   print(f"Command: {command}")
 
   result = subprocess.run(command, shell=True) #, capture_output=True, text=True)
+
+def synthesize_Genus(top_module, outdir, flags = []):
+  print("flags:" + str(flags))
+
+  command = f"fusesoc --cores-root . run --flag=fileset_top --target=syn_asic {' '.join(['--flag +' + flag for flag in flags])} --no-export --tool=genus --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; mkdir -p {outdir}; cd build/lowrisc_ip_otbn_0.1/syn_asic-genus/; source /opt/cadence/CIC/genus.cshrc ; setenv TOP_MODULE {top_module} ; setenv START_F 400 ; setenv OUTDIR ../../../{outdir}; make "
+
+  print(f"Command: {command}")
+
+  result = subprocess.run(command, shell=True, executable='csh') #, capture_output=True, text=True)
 
 
 def synthesize(top_module, outdir, flags = []):
@@ -134,9 +143,8 @@ if __name__ == "__main__":
 
   parser.add_argument(
       "--run_synthesis",
-      action="store_true",
-      default=False,
-      help="Run synthesis. (default: False)"
+      choices=['Vivado', 'ORFS', 'Genus'],
+      help="Run synthesis with specified tool."
   )
 
   parser.add_argument(
@@ -194,40 +202,47 @@ if __name__ == "__main__":
   print(f"top_module: {args.top_module}")
 
   flags = {"": []}
-  modules = [args.top_module]
+  modules = [(args.top_module, flags)]
 
   if args.mul:
-    modules = ["otbn_bignum_mul", "unified_mul"]
-  elif args.adders:
-    modules = ["ref_add", "buffer_bit", "csa_carry4", "brent_kung", "kogge_stone", "sklansky"]
-  elif args.cond_sub:
-    modules = ["cond_sub", "cond_sub_buffer_bit"]
+    modules = [("otbn_bignum_mul", {None: []}),
+               ("unified_mul",     {None: ["bnmulv_ver1"]})]
+  #elif args.adders:
+  #  modules = ["ref_add", "buffer_bit", "csa_carry4", "brent_kung"] #, "kogge_stone", "sklansky"]
+  #elif args.cond_sub:
+  #  modules = ["cond_sub", "cond_sub_buffer_bit"]
   elif args.otbn:
-    modules = ["otbn"]
     flags = {"KMAC": ["kmac"],
-             "TOWARDS": ["old_adder", "old_mac"],
+             "TOWARDS": ["towards"],
              "VER1": ["bnmulv_ver1"],
              "VER2": ["bnmulv_ver2"],
              "VER3": ["bnmulv_ver3"]}
+    modules = [("otbn", flags)]
   elif args.otbn_sub:
-    modules = ["otbn_mac_bignum", "otbn_alu_bignum"]
     flags = {"KMAC": ["kmac"],
-             "TOWARDS": ["old_adder", "old_mac"],
+             "TOWARDS": ["towards"],
              "VER1": ["bnmulv_ver1"],
              "VER2": ["bnmulv_ver2"],
              "VER3": ["bnmulv_ver3"]}
+    modules = [(top_module, flags) for top_module in ["otbn_mac_bignum", "otbn_alu_bignum"]]
 
   if args.flags:
     flags = args.flags.split(",")
     flags = {"_".join(flags): flags}
 
-  if args.run_synthesis:
-    for top_module in modules:
-      for flag_group, flag in flags.items():
-        synthesize_ASIC(top_module, "reports/ASIC/", flag_group)
-#        synthesize(top_module, "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else ""), flag)
+    modules = [(args.top_module, flags)]
 
-  data = [extract(top_module, flag_group) for top_module in modules for flag_group in flags.keys()]
+  if args.run_synthesis:
+    for top_module, flags in modules:
+      for flag_group, flag in flags.items():
+        if args.run_synthesis == "Genus":
+          synthesize_Genus(top_module, "reports/ASIC-Genus/"+ top_module + ("_" + flag_group if flag_group else ""), flag)
+        if args.run_synthesis == "ORFS":
+          synthesize_ORFS(top_module, "reports/ASIC/", flag_group)
+        if args.run_synthesis == "Vivado":
+          synthesize(top_module, "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else ""), flag)
+
+  data = [extract(top_module, flag_group) for flag_group in flags.keys() for top_module, flags in modules]
 
   report(data)
 

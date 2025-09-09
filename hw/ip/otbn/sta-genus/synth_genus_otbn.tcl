@@ -2,6 +2,13 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
+set TOP_MODULE $env(TOP_MODULE)
+set start_f $env(START_F)
+set REPORT_DIR $env(OUTDIR)
+
+puts "top_module=$TOP_MODULE, start_freq=$start_f"
+
+
 ############################################
 #
 # TCL script for Synthesis with Genus
@@ -61,7 +68,7 @@ proc set_timing_paths {clk clk_period} {
 }
 
 
-set start_f 100
+#set start_f 100
 
 # Set clock port name
 set clk "clk_i"
@@ -70,13 +77,16 @@ set_timing_paths $clk [expr {1000.0/$start_f}]
 
 
 # Define search range
-set slow_f   10
+set slow_f $start_f
 set fast_f 4000
 
 set best_f $slow_f
 set max_freq $best_f
 
 set mid_f [expr {$start_f/2}]
+
+
+set temp_file /tmp/timing.rpt
 
 
 # Binary search for max frequency
@@ -117,8 +127,6 @@ while {1} {
     #SYN OPT - Optimize final results
     syn_opt
 
-
-    set temp_file "/tmp/temp_report.txt"
     report_timing -nworst 1 > $temp_file
 
     set file_handle [open $temp_file r]
@@ -195,9 +203,15 @@ syn_opt
 ############################################
 
 # REPORTS
-report timing > reports/timing.rpt
-report area >   reports/area.rpt
-report power >  reports/power.rpt
+report timing > ${REPORT_DIR}/timing.rpt
+report area >   ${REPORT_DIR}/area.rpt
+report power >  ${REPORT_DIR}/power.rpt
 
+set f [open ${REPORT_DIR}/summary.txt w]
+
+puts "Fmax: $max_freq MHz"
+puts $f "Fmax: $max_freq MHz"
+
+close $f
 
 quit
