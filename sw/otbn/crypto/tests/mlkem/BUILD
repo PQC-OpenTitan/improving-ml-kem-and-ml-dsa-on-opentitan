@@ -2164,3 +2164,290 @@ otbn_sim_py_test(
     deps = [":mlkem1024_decap_test_ver3"],
     sim_test_wrapper = "kyberpy_bench_otbn/run_kyber.py",
 )
+
+# ML-KEM code size targets for VER0
+
+otbn_binary(
+    name = "mlkem512_code_size_ver0",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = ["-DKYBER_K=2"],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber512_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber512_packing",
+        "//sw/otbn/crypto/mlkem:kyber512_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem768_code_size_ver0",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = ["-DKYBER_K=3"],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber768_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber768_packing",
+        "//sw/otbn/crypto/mlkem:kyber768_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem1024_code_size_ver0",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = ["-DKYBER_K=4"],
+    deps = [
+        "//sw/otbn/crypto/mlkem:kyber1024_mlkem",
+        "//sw/otbn/crypto/mlkem:kyber1024_packing",
+        "//sw/otbn/crypto/mlkem:kyber1024_poly",
+        "//sw/otbn/crypto/mlkem:kyber_basemul",
+        "//sw/otbn/crypto/mlkem:kyber_cbd_isaext",
+        "//sw/otbn/crypto/mlkem:kyber_intt",
+        "//sw/otbn/crypto/mlkem:kyber_ntt",
+        "//sw/otbn/crypto/mlkem:kyber_poly_gen_matrix",
+    ],
+)
+
+# ML-KEM code size targets for VER1
+
+otbn_binary(
+    name = "mlkem512_code_size_ver1",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=2",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver1:mlkem512_keypair",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem512_encap",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem512_decap",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem512_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem512_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem512_poly",
+        "//sw/otbn/crypto/mlkem_ver1:basemul",
+        "//sw/otbn/crypto/mlkem_ver1:cbd",
+        "//sw/otbn/crypto/mlkem_ver1:intt",
+        "//sw/otbn/crypto/mlkem_ver1:ntt",
+        "//sw/otbn/crypto/mlkem_ver1:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver1:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem768_code_size_ver1",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=3",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver1:mlkem768_keypair",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem768_encap",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem768_decap",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem768_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem768_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem768_poly",
+        "//sw/otbn/crypto/mlkem_ver1:basemul",
+        "//sw/otbn/crypto/mlkem_ver1:cbd",
+        "//sw/otbn/crypto/mlkem_ver1:intt",
+        "//sw/otbn/crypto/mlkem_ver1:ntt",
+        "//sw/otbn/crypto/mlkem_ver1:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver1:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem1024_code_size_ver1",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=4",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver1:mlkem1024_keypair",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem1024_encap",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem1024_decap",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem1024_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem1024_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver1:mlkem1024_poly",
+        "//sw/otbn/crypto/mlkem_ver1:basemul",
+        "//sw/otbn/crypto/mlkem_ver1:cbd",
+        "//sw/otbn/crypto/mlkem_ver1:intt",
+        "//sw/otbn/crypto/mlkem_ver1:ntt",
+        "//sw/otbn/crypto/mlkem_ver1:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver1:kmac_send_msg",
+    ],
+)
+
+# ML-KEM code size targets for VER2
+
+otbn_binary(
+    name = "mlkem512_code_size_ver2",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=2",
+        "--bnmulv_version_id=2",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver2:mlkem512_keypair",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem512_encap",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem512_decap",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem512_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem512_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem512_poly",
+        "//sw/otbn/crypto/mlkem_ver2:basemul",
+        "//sw/otbn/crypto/mlkem_ver2:cbd",
+        "//sw/otbn/crypto/mlkem_ver2:intt",
+        "//sw/otbn/crypto/mlkem_ver2:ntt",
+        "//sw/otbn/crypto/mlkem_ver2:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver2:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem768_code_size_ver2",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=3",
+        "--bnmulv_version_id=2",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver2:mlkem768_keypair",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem768_encap",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem768_decap",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem768_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem768_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem768_poly",
+        "//sw/otbn/crypto/mlkem_ver2:basemul",
+        "//sw/otbn/crypto/mlkem_ver2:cbd",
+        "//sw/otbn/crypto/mlkem_ver2:intt",
+        "//sw/otbn/crypto/mlkem_ver2:ntt",
+        "//sw/otbn/crypto/mlkem_ver2:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver2:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem1024_code_size_ver2",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=4",
+        "--bnmulv_version_id=2",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver2:mlkem1024_keypair",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem1024_encap",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem1024_decap",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem1024_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem1024_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver2:mlkem1024_poly",
+        "//sw/otbn/crypto/mlkem_ver2:basemul",
+        "//sw/otbn/crypto/mlkem_ver2:cbd",
+        "//sw/otbn/crypto/mlkem_ver2:intt",
+        "//sw/otbn/crypto/mlkem_ver2:ntt",
+        "//sw/otbn/crypto/mlkem_ver2:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver2:kmac_send_msg",
+    ],
+)
+
+# ML-KEM code size targets for VER3
+
+otbn_binary(
+    name = "mlkem512_code_size_ver3",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=2",
+        "--bnmulv_version_id=3",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver3:mlkem512_keypair",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem512_encap",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem512_decap",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem512_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem512_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem512_poly",
+        "//sw/otbn/crypto/mlkem_ver3:basemul",
+        "//sw/otbn/crypto/mlkem_ver3:cbd",
+        "//sw/otbn/crypto/mlkem_ver3:intt",
+        "//sw/otbn/crypto/mlkem_ver3:ntt",
+        "//sw/otbn/crypto/mlkem_ver3:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver3:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem768_code_size_ver3",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=3",
+        "--bnmulv_version_id=3",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver3:mlkem768_keypair",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem768_encap",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem768_decap",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem768_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem768_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem768_poly",
+        "//sw/otbn/crypto/mlkem_ver3:basemul",
+        "//sw/otbn/crypto/mlkem_ver3:cbd",
+        "//sw/otbn/crypto/mlkem_ver3:intt",
+        "//sw/otbn/crypto/mlkem_ver3:ntt",
+        "//sw/otbn/crypto/mlkem_ver3:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver3:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mlkem1024_code_size_ver3",
+    srcs = [
+        "mlkem_codesize.s",
+    ],
+    copts = [
+        "-DKYBER_K=4",
+        "--bnmulv_version_id=3",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mlkem_ver3:mlkem1024_keypair",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem1024_encap",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem1024_decap",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem1024_pack_keys",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem1024_pack_ciphertext",
+        "//sw/otbn/crypto/mlkem_ver3:mlkem1024_poly",
+        "//sw/otbn/crypto/mlkem_ver3:basemul",
+        "//sw/otbn/crypto/mlkem_ver3:cbd",
+        "//sw/otbn/crypto/mlkem_ver3:intt",
+        "//sw/otbn/crypto/mlkem_ver3:ntt",
+        "//sw/otbn/crypto/mlkem_ver3:poly_gen_matrix",
+        "//sw/otbn/crypto/mlkem_ver3:kmac_send_msg",
+    ],
+)

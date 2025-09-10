@@ -1834,3 +1834,287 @@ otbn_sim_py_test(
     deps = [":mldsa87_verify_test_ver3"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
+
+# ML-DSA code size targets for VER0
+
+otbn_binary(
+    name = "mldsa44_code_size_ver0",
+    srcs = [
+        "mldsa_codesize_ver0.s",
+    ],
+    copts = ["-DDILITHIUM_MODE=2"],
+    deps = [
+        "//sw/otbn/crypto/mldsa:key_pair_dilithium2",
+        "//sw/otbn/crypto/mldsa:sign_dilithium2",
+        "//sw/otbn/crypto/mldsa:verify_dilithium2",
+        "//sw/otbn/crypto/mldsa:intt_dilithium",
+        "//sw/otbn/crypto/mldsa:ntt_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_add_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_dilithium2",
+        "//sw/otbn/crypto/mldsa:poly_pointwise_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_sub_dilithium",
+        "//sw/otbn/crypto/mldsa:rounding_dilithium2",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa65_code_size_ver0",
+    srcs = [
+        "mldsa_codesize_ver0.s",
+    ],
+    copts = ["-DDILITHIUM_MODE=3"],
+    deps = [
+        "//sw/otbn/crypto/mldsa:key_pair_dilithium3",
+        "//sw/otbn/crypto/mldsa:sign_dilithium3",
+        "//sw/otbn/crypto/mldsa:verify_dilithium3",
+        "//sw/otbn/crypto/mldsa:intt_dilithium",
+        "//sw/otbn/crypto/mldsa:ntt_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_add_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_dilithium3",
+        "//sw/otbn/crypto/mldsa:poly_pointwise_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_sub_dilithium",
+        "//sw/otbn/crypto/mldsa:rounding_dilithium3",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa87_code_size_ver0",
+    srcs = [
+        "mldsa_codesize_ver0.s",
+    ],
+    copts = ["-DDILITHIUM_MODE=5"],
+    deps = [
+        "//sw/otbn/crypto/mldsa:key_pair_dilithium5",
+        "//sw/otbn/crypto/mldsa:sign_dilithium5",
+        "//sw/otbn/crypto/mldsa:verify_dilithium5",
+        "//sw/otbn/crypto/mldsa:intt_dilithium",
+        "//sw/otbn/crypto/mldsa:ntt_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_add_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_dilithium5",
+        "//sw/otbn/crypto/mldsa:poly_pointwise_dilithium",
+        "//sw/otbn/crypto/mldsa:poly_sub_dilithium",
+        "//sw/otbn/crypto/mldsa:rounding_dilithium5",
+    ],
+)
+
+# ML-DSA code size targets for VER1
+
+otbn_binary(
+    name = "mldsa44_code_size_ver1",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=2",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver1:mldsa44_keypair",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa44_sign",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa44_verify",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa44_poly",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa44_rounding",
+        "//sw/otbn/crypto/mldsa_ver1:intt",
+        "//sw/otbn/crypto/mldsa_ver1:ntt",
+        "//sw/otbn/crypto/mldsa_ver1:poly_add",
+        "//sw/otbn/crypto/mldsa_ver1:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver1:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver1:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa65_code_size_ver1",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=3",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver1:mldsa65_keypair",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa65_sign",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa65_verify",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa65_poly",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa65_rounding",
+        "//sw/otbn/crypto/mldsa_ver1:intt",
+        "//sw/otbn/crypto/mldsa_ver1:ntt",
+        "//sw/otbn/crypto/mldsa_ver1:poly_add",
+        "//sw/otbn/crypto/mldsa_ver1:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver1:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver1:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa87_code_size_ver1",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=5",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver1:mldsa87_keypair",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa87_sign",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa87_verify",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa87_poly",
+        "//sw/otbn/crypto/mldsa_ver1:mldsa87_rounding",
+        "//sw/otbn/crypto/mldsa_ver1:intt",
+        "//sw/otbn/crypto/mldsa_ver1:ntt",
+        "//sw/otbn/crypto/mldsa_ver1:poly_add",
+        "//sw/otbn/crypto/mldsa_ver1:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver1:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver1:kmac_send_msg",
+    ],
+)
+
+# ML-DSA code size targets for VER2
+
+otbn_binary(
+    name = "mldsa44_code_size_ver2",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=2",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver2:mldsa44_keypair",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa44_sign",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa44_verify",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa44_poly",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa44_rounding",
+        "//sw/otbn/crypto/mldsa_ver2:intt",
+        "//sw/otbn/crypto/mldsa_ver2:ntt",
+        "//sw/otbn/crypto/mldsa_ver2:poly_add",
+        "//sw/otbn/crypto/mldsa_ver2:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver2:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver2:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa65_code_size_ver2",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=3",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver2:mldsa65_keypair",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa65_sign",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa65_verify",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa65_poly",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa65_rounding",
+        "//sw/otbn/crypto/mldsa_ver2:intt",
+        "//sw/otbn/crypto/mldsa_ver2:ntt",
+        "//sw/otbn/crypto/mldsa_ver2:poly_add",
+        "//sw/otbn/crypto/mldsa_ver2:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver2:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver2:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa87_code_size_ver2",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=5",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver2:mldsa87_keypair",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa87_sign",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa87_verify",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa87_poly",
+        "//sw/otbn/crypto/mldsa_ver2:mldsa87_rounding",
+        "//sw/otbn/crypto/mldsa_ver2:intt",
+        "//sw/otbn/crypto/mldsa_ver2:ntt",
+        "//sw/otbn/crypto/mldsa_ver2:poly_add",
+        "//sw/otbn/crypto/mldsa_ver2:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver2:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver2:kmac_send_msg",
+    ],
+)
+
+# ML-DSA code size targets for VER3
+
+otbn_binary(
+    name = "mldsa44_code_size_ver3",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=2",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver3:mldsa44_keypair",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa44_sign",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa44_verify",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa44_poly",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa44_rounding",
+        "//sw/otbn/crypto/mldsa_ver3:intt",
+        "//sw/otbn/crypto/mldsa_ver3:ntt",
+        "//sw/otbn/crypto/mldsa_ver3:poly_add",
+        "//sw/otbn/crypto/mldsa_ver3:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver3:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver3:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa65_code_size_ver3",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=3",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver3:mldsa65_keypair",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa65_sign",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa65_verify",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa65_poly",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa65_rounding",
+        "//sw/otbn/crypto/mldsa_ver3:intt",
+        "//sw/otbn/crypto/mldsa_ver3:ntt",
+        "//sw/otbn/crypto/mldsa_ver3:poly_add",
+        "//sw/otbn/crypto/mldsa_ver3:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver3:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver3:kmac_send_msg",
+    ],
+)
+
+otbn_binary(
+    name = "mldsa87_code_size_ver3",
+    srcs = [
+        "mldsa_codesize.s",
+    ],
+    copts = [
+        "-DDILITHIUM_MODE=5",
+        "--bnmulv_version_id=1",
+    ],
+    deps = [
+        "//sw/otbn/crypto/mldsa_ver3:mldsa87_keypair",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa87_sign",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa87_verify",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa87_poly",
+        "//sw/otbn/crypto/mldsa_ver3:mldsa87_rounding",
+        "//sw/otbn/crypto/mldsa_ver3:intt",
+        "//sw/otbn/crypto/mldsa_ver3:ntt",
+        "//sw/otbn/crypto/mldsa_ver3:poly_add",
+        "//sw/otbn/crypto/mldsa_ver3:poly_pointwise",
+        "//sw/otbn/crypto/mldsa_ver3:poly_sub",
+        "//sw/otbn/crypto/mldsa_ver3:kmac_send_msg",
+    ],
+)
