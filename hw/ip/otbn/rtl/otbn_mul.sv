@@ -95,7 +95,7 @@ module otbn_mul
   logic [WLEN/2-1:0] sum [NOF_CSASTAGES-1:0];
 
   // Build CSA tree for addition of (NOF_DSP_W x NOF_DSP_H) operands
-  generate;
+  generate
     for (genvar i=0; i<NOF_CSASTAGES; ++i) begin
       if (i == 0) begin : g_inital_stage
         assign {carry[i],sum[i]} = csa (.op0_i(mul2csa[0]), .op1_i(mul2csa[1]), .op2_i(mul2csa[2]));

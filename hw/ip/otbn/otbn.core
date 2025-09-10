@@ -47,7 +47,7 @@ filesets:
       - rtl/bn_vec_core/kogge_stone.sv
       - carry4 ? (rtl/bn_vec_core/csa_carry4.sv)
       - carry4 ? (rtl/bn_vec_core/CARRY4.v)
-      - rtl/bn_vec_core/ref_adder.sv
+      - rtl/bn_vec_core/ref_add.sv
       - rtl/otbn_mul.sv
       - rtl/bn_vec_core/unified_mul.sv
       - rtl/bn_vec_core/cond_sub_buffer_bit.sv
@@ -96,22 +96,27 @@ filesets:
 
   files_sta:
     files:
-      - sta-vivado/timing.tcl:
+      - sta/rounding.tcl:
+          copyto: rounding.tcl
+          is_include_file: true
+      - sta/timing.tcl:
           copyto: timing.tcl
+          is_include_file: true
 
-  files_sv_sta:
+  files_sta_vivado:
     files:
-      - rtl/bn_vec_core/brent_kung_adder_256.sv
-      - rtl/bn_vec_core/kogge_stone_adder_256.sv
-      - rtl/bn_vec_core/sklansky_adder_256.sv
-      - rtl/bn_vec_core/buffer_bit.sv
-      - rtl/bn_vec_core/cond_sub.sv
-      - rtl/bn_vec_core/cond_sub_buffer_bit.sv
-      - rtl/bn_vec_core/csa_carry4.sv
-      - rtl/bn_vec_core/unified_mul.sv
-      - rtl/bn_vec_core/otbn_bignum_mul.sv
-      - rtl/bn_vec_core/ref_adder.sv
-    file_type: systemVerilogSource
+      - sta/vivado.tcl:
+          copyto: vivado.tcl
+          is_include_file: true
+
+  files_sta_genus:
+    files:
+      - sta/genus.tcl:
+          copyto: genus.tcl
+          is_include_file: true
+      - sta/config_genus.tcl:
+          copyto: config_genus.tcl
+          is_include_file: true
 
 parameters:
   SYNTHESIS:
@@ -190,6 +195,7 @@ targets:
           - "-Wall"
 
   sta:
+    <<: *default_target
     default_tool: vivado
     parameters:
       - MAC_ADDER
@@ -212,15 +218,17 @@ targets:
       - bnmulv_ver3 ? (BNMULV=true)
       - bnmulv_ver3 ? (BNMULV_ACCH=true)
       - bnmulv_ver3 ? (BNMULV_COND_SUB=true)
-    filesets:
-      - files_rtl_core
-      - files_rtl_top
+    filesets_append:
       - files_sta
-      - files_sv_sta
+      - tool_vivado ? (files_sta_vivado)
+      - tool_genus  ? (files_sta_genus)
     toplevel: otbn
     tools:
       vivado:
         part: "xc7a200tfbg676-3"
+      genus:
+        genus_script: "genus.tcl"
+        jobs: "8"
 
   sky130:
      default_tool : openlane
@@ -257,32 +265,32 @@ targets:
       vivado:
         part: "xc7k410tfbg676-1" # CW310 with K410T
 
-  syn_asic:
-    <<: *default_target
-    parameters:
-      - SYNTHESIS_MEMORY_BLACK_BOXING=true
-      - kmac        ? (TOWARDS_KMAC=true)
-      - towards     ? (TOWARDS_KMAC=true)
-      - towards     ? (TOWARDS_BASE=true)
-      - towards     ? (TOWARDS_MAC=true)
-      - towards     ? (TOWARDS_ADDER=true)
-      - bnmulv_ver1 ? (TOWARDS_KMAC=true)
-      - bnmulv_ver1 ? (TOWARDS_BASE=true)
-      - bnmulv_ver1 ? (BNMULV=true)
-      - bnmulv_ver2 ? (TOWARDS_KMAC=true)
-      - bnmulv_ver2 ? (TOWARDS_BASE=true)
-      - bnmulv_ver2 ? (BNMULV=true)
-      - bnmulv_ver2 ? (BNMULV_ACCH=true)
-      - bnmulv_ver3 ? (TOWARDS_KMAC=true)
-      - bnmulv_ver3 ? (TOWARDS_BASE=true)
-      - bnmulv_ver3 ? (BNMULV=true)
-      - bnmulv_ver3 ? (BNMULV_ACCH=true)
-      - bnmulv_ver3 ? (BNMULV_COND_SUB=true)
-    tools:
-      genus:
-        script_dir: "../../../hw/ip/otbn/sta-genus"
-        genus_script: "synth_genus_otbn.tcl"
-        jobs: "8"
+#  syn_asic:
+#    <<: *default_target
+#    parameters:
+#      - SYNTHESIS_MEMORY_BLACK_BOXING=true
+#      - kmac        ? (TOWARDS_KMAC=true)
+#      - towards     ? (TOWARDS_KMAC=true)
+#      - towards     ? (TOWARDS_BASE=true)
+#      - towards     ? (TOWARDS_MAC=true)
+#      - towards     ? (TOWARDS_ADDER=true)
+#      - bnmulv_ver1 ? (TOWARDS_KMAC=true)
+#      - bnmulv_ver1 ? (TOWARDS_BASE=true)
+#      - bnmulv_ver1 ? (BNMULV=true)
+#      - bnmulv_ver2 ? (TOWARDS_KMAC=true)
+#      - bnmulv_ver2 ? (TOWARDS_BASE=true)
+#      - bnmulv_ver2 ? (BNMULV=true)
+#      - bnmulv_ver2 ? (BNMULV_ACCH=true)
+#      - bnmulv_ver3 ? (TOWARDS_KMAC=true)
+#      - bnmulv_ver3 ? (TOWARDS_BASE=true)
+#      - bnmulv_ver3 ? (BNMULV=true)
+#      - bnmulv_ver3 ? (BNMULV_ACCH=true)
+#      - bnmulv_ver3 ? (BNMULV_COND_SUB=true)
+#    tools:
+#      genus:
+#        script_dir: "../../../hw/ip/otbn/sta"
+#        genus_script: "genus.tcl"
+#        jobs: "8"
 
   syn_bn_alu:
     filesets:

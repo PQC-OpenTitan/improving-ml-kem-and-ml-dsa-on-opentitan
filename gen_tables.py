@@ -119,7 +119,7 @@ def synthesize_ORFS(top_module, outdir, flags = []):
 def synthesize_Genus(top_module, outdir, flags = []):
   print("flags:" + str(flags))
 
-  command = f"fusesoc --cores-root . run --flag=fileset_top --target=syn_asic {' '.join(['--flag +' + flag for flag in flags])} --no-export --tool=genus --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; mkdir -p {outdir}; cd build/lowrisc_ip_otbn_0.1/syn_asic-genus/; source /opt/cadence/CIC/genus.cshrc ; setenv TOP_MODULE {top_module} ; setenv START_F 400 ; setenv OUTDIR ../../../{outdir}; make "
+  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta {' '.join(['--flag +' + flag for flag in flags])} --no-export --tool=genus --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; mkdir -p {outdir}; cd build/lowrisc_ip_otbn_0.1/sta-genus/; source /opt/cadence/CIC/genus.cshrc ; setenv TOP_MODULE {top_module} ; setenv START_F 400 ; setenv OUTDIR ../../../{outdir}; make "
 
   print(f"Command: {command}")
 
@@ -127,11 +127,8 @@ def synthesize_Genus(top_module, outdir, flags = []):
 
 
 def synthesize(top_module, outdir, flags = []):
-#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +old_adder --flag +old_mac --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
-#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +bnmulv_ver1 --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
-#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +bnmulv_ver2 --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
-#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta --flag +bnmulv_ver3 --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
-  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta {' '.join(['--flag +' + flag for flag in flags])} --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; mkdir -p {outdir}; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source timing.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
+  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta {' '.join(['--flag +' + flag for flag in flags])} --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1; mkdir -p {outdir}; cd build/lowrisc_ip_otbn_0.1/sta-vivado; vivado -mode batch -source vivado.tcl -notrace -tclargs --top_module {top_module} --start_freq 10 --outdir ../../../{outdir}"
+#  command = f"fusesoc --cores-root . run --flag=fileset_top --target=sta {' '.join(['--flag +' + flag for flag in flags])} --no-export --tool=vivado --setup --mapping=lowrisc:prim_generic:all:0.1 lowrisc:ip:otbn:0.1"
 
   print(f"Command: {command})")
 
