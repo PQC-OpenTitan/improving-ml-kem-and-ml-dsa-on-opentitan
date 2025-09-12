@@ -266,14 +266,16 @@ if __name__ == "__main__":
   #elif args.cond_sub:
   #  modules = ["cond_sub", "cond_sub_buffer_bit"]
   elif args.otbn:
-    flags = {"KMAC": ["kmac"],
+    flags = {"": [],
+             "KMAC": ["kmac"],
              "TOWARDS": ["towards"],
              "VER1": ["bnmulv_ver1"],
              "VER2": ["bnmulv_ver2"],
              "VER3": ["bnmulv_ver3"]}
     modules = [("otbn", flags)]
   elif args.otbn_sub:
-    flags = {"KMAC": ["kmac"],
+    flags = {"": [],
+             "KMAC": ["kmac"],
              "TOWARDS": ["towards"],
              "VER1": ["bnmulv_ver1"],
              "VER2": ["bnmulv_ver2"],

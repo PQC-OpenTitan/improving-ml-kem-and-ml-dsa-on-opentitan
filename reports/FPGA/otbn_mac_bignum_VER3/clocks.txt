@@ -1,12 +1,12 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
-| Date         : Thu Sep  4 15:39:05 2025
-| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 08:57:29 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
 | Command      : report_clocks -file ../../../reports/FPGA/otbn_mac_bignum_VER3/clocks.txt
 | Design       : otbn_mac_bignum
-| Device       : 7a200t-fbg676
-| Speed File   : -3  PRODUCTION 1.23 2018-06-13
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
 -------------------------------------------------------------------------------------------
 
 Clock Report
@@ -21,8 +21,8 @@ Attributes
   I: Inverted
   S: Pin phase-shifted with Latency mode
 
-Clock  Period(ns)  Waveform(ns)    Attributes  Sources
-clk_i  20.000      {0.000 10.000}  P           {clk_i}
+Clock  Period(ns)  Waveform(ns)   Attributes  Sources
+clk_i  18.868      {0.000 9.434}  P           {clk_i}
 
 
 ====================================================

@@ -1,12 +1,11 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
-| Date         : Thu Sep  4 15:06:51 2025
-| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 07:51:20 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
 | Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA/otbn_mac_bignum_KMAC/utilization_hierarchical.txt
 | Design       : otbn_mac_bignum
-| Device       : xc7a200tfbg676-3
-| Speed File   : -3
+| Device       : 7k160tfbg676-1
 | Design State : Routed
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -22,9 +21,9 @@ Table of Contents
 +---------------------+-----------------+------------+------------+---------+------+-----+--------+--------+------------+
 |       Instance      |      Module     | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP Blocks |
 +---------------------+-----------------+------------+------------+---------+------+-----+--------+--------+------------+
-| otbn_mac_bignum     |           (top) |       2072 |       2072 |       0 |    0 | 312 |      0 |      0 |         16 |
-|   (otbn_mac_bignum) |           (top) |       1359 |       1359 |       0 |    0 | 312 |      0 |      0 |          0 |
-|   mul               | otbn_bignum_mul |        774 |        774 |       0 |    0 |   0 |      0 |      0 |         16 |
+| otbn_mac_bignum     |           (top) |       2166 |       2166 |       0 |    0 | 312 |      0 |      0 |         16 |
+|   (otbn_mac_bignum) |           (top) |       1375 |       1375 |       0 |    0 | 312 |      0 |      0 |          0 |
+|   mul               | otbn_bignum_mul |        822 |        822 |       0 |    0 |   0 |      0 |      0 |         16 |
 +---------------------+-----------------+------------+------------+---------+------+-----+--------+--------+------------+
 * Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
 

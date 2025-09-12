@@ -1,0 +1,44 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Fri Sep 12 04:19:11 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_clocks -file ../../../reports/FPGA/otbn_mac_bignum/clocks.txt
+| Design       : otbn_mac_bignum
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+--------------------------------------------------------------------------------------
+
+Clock Report
+
+
+Attributes
+  P: Propagated
+  G: Generated
+  A: Auto-derived
+  R: Renamed
+  V: Virtual
+  I: Inverted
+  S: Pin phase-shifted with Latency mode
+
+Clock  Period(ns)  Waveform(ns)   Attributes  Sources
+clk_i  17.241      {0.000 8.620}  P           {clk_i}
+
+
+====================================================
+Generated Clocks
+====================================================
+
+
+
+====================================================
+User Uncertainty
+====================================================
+
+
+
+====================================================
+User Jitter
+====================================================
+
+

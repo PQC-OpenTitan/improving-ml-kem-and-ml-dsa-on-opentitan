@@ -1,0 +1,686 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 11:30:21 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_timing_summary -file ../../../reports/FPGA/otbn_KMAC/timing_summary.txt
+| Design       : otbn
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+------------------------------------------------------------------------------------------------
+
+Timing Summary Report
+
+------------------------------------------------------------------------------------------------
+| Timer Settings
+| --------------
+------------------------------------------------------------------------------------------------
+
+  Enable Multi Corner Analysis               :  Yes
+  Enable Pessimism Removal                   :  Yes
+  Pessimism Removal Resolution               :  Nearest Common Node
+  Enable Input Delay Default Clock           :  No
+  Enable Preset / Clear Arcs                 :  No
+  Disable Flight Delays                      :  No
+  Ignore I/O Paths                           :  No
+  Timing Early Launch at Borrowing Latches   :  No
+  Borrow Time for Max Delay Exceptions       :  Yes
+  Merge Timing Exceptions                    :  Yes
+
+  Corner  Analyze    Analyze    
+  Name    Max Paths  Min Paths  
+  ------  ---------  ---------  
+  Slow    Yes        Yes        
+  Fast    Yes        Yes        
+
+
+
+check_timing report
+
+Table of Contents
+-----------------
+1. checking no_clock (12)
+2. checking constant_clock (0)
+3. checking pulse_width_clock (0)
+4. checking unconstrained_internal_endpoints (24)
+5. checking no_input_delay (0)
+6. checking no_output_delay (0)
+7. checking multiple_clock (0)
+8. checking generated_clocks (0)
+9. checking loops (0)
+10. checking partial_input_delay (1961)
+11. checking partial_output_delay (0)
+12. checking latch_loops (0)
+
+1. checking no_clock (12)
+-------------------------
+ There are 8 register/latch pins with no clock driven by root clock pin: clk_edn_i (HIGH)
+
+ There are 4 register/latch pins with no clock driven by root clock pin: clk_otp_i (HIGH)
+
+
+2. checking constant_clock (0)
+------------------------------
+ There are 0 register/latch pins with constant_clock.
+
+
+3. checking pulse_width_clock (0)
+---------------------------------
+ There are 0 register/latch pins which need pulse_width check
+
+
+4. checking unconstrained_internal_endpoints (24)
+-------------------------------------------------
+ There are 24 pins that are not constrained for maximum delay. (HIGH)
+
+ There are 0 pins that are not constrained for maximum delay due to constant clock.
+
+
+5. checking no_input_delay (0)
+------------------------------
+ There are 0 input ports with no input delay specified.
+
+ There are 0 input ports with no input delay but user has a false path constraint.
+
+
+6. checking no_output_delay (0)
+-------------------------------
+ There are 0 ports with no output delay specified.
+
+ There are 0 ports with no output delay but user has a false path constraint
+
+ There are 0 ports with no output delay but with a timing clock defined on it or propagating through it
+
+
+7. checking multiple_clock (0)
+------------------------------
+ There are 0 register/latch pins with multiple clocks.
+
+
+8. checking generated_clocks (0)
+--------------------------------
+ There are 0 generated clocks that are not connected to a clock source.
+
+
+9. checking loops (0)
+---------------------
+ There are 0 combinational loops in the design.
+
+
+10. checking partial_input_delay (1961)
+---------------------------------------
+ There are 1961 input ports with partial input delay specified. (HIGH)
+
+
+11. checking partial_output_delay (0)
+-------------------------------------
+ There are 0 ports with partial output delay specified.
+
+
+12. checking latch_loops (0)
+----------------------------
+ There are 0 combinational latch loops in the design through latch input
+
+
+
+------------------------------------------------------------------------------------------------
+| Design Timing Summary
+| ---------------------
+------------------------------------------------------------------------------------------------
+
+    WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+    -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+      0.027        0.000                      0                38498        0.117        0.000                      0                34445       12.248        0.000                       0                 16883  
+
+
+All user specified timing constraints are met.
+
+
+------------------------------------------------------------------------------------------------
+| Clock Summary
+| -------------
+------------------------------------------------------------------------------------------------
+
+Clock  Waveform(ns)       Period(ns)      Frequency(MHz)
+-----  ------------       ----------      --------------
+clk_i  {0.000 13.158}     26.316          38.000          
+
+
+------------------------------------------------------------------------------------------------
+| Intra Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+clk_i               0.027        0.000                      0                34445        0.117        0.000                      0                34445       12.248        0.000                       0                 16883  
+
+
+------------------------------------------------------------------------------------------------
+| Inter Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+From Clock        To Clock              WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------        --------              -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+input port clock  clk_i                   8.603        0.000                      0                34873                                                                        
+
+
+------------------------------------------------------------------------------------------------
+| Other Path Groups Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group        From Clock        To Clock              WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------        ----------        --------              -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+**default**       clk_i                                    11.227        0.000                      0                  147                                                                        
+**default**       input port clock                         17.244        0.000                      0                    1                                                                        
+
+
+------------------------------------------------------------------------------------------------
+| Timing Details
+| --------------
+------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clk_i
+  To Clock:  clk_i
+
+Setup :            0  Failing Endpoints,  Worst Slack        0.027ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.117ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack       12.248ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.027ns  (required time - arrival time)
+  Source:                 u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/q_o_reg[88]/C
+                            (rising edge-triggered cell FDCE clocked by clk_i  {rise@0.000ns fall@13.158ns period=26.316ns})
+  Destination:            u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[26].rf_reg[26][305]/D
+                            (rising edge-triggered cell FDRE clocked by clk_i  {rise@0.000ns fall@13.158ns period=26.316ns})
+  Path Group:             clk_i
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            26.316ns  (clk_i rise@26.316ns - clk_i rise@0.000ns)
+  Data Path Delay:        25.739ns  (logic 11.136ns (43.265%)  route 14.603ns (56.735%))
+  Logic Levels:           48  (CARRY4=28 DSP48E1=4 LUT2=1 LUT3=2 LUT4=2 LUT5=1 LUT6=10)
+  Clock Path Skew:        -0.483ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.281ns = ( 27.597 - 26.316 ) 
+    Source Clock Delay      (SCD):    1.774ns
+    Clock Pessimism Removal (CPR):    0.010ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_i rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clk_i (IN)
+                         net (fo=16882, unset)        1.774     1.774    u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/clk_i
+    SLICE_X57Y32         FDCE                                         r  u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/q_o_reg[88]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X57Y32         FDCE (Prop_fdce_C_Q)         0.269     2.043 r  u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/q_o_reg[88]/Q
+                         net (fo=315, routed)         2.915     4.958    u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/Q[88]
+    SLICE_X7Y100         LUT4 (Prop_lut4_I0_O)        0.053     5.011 r  u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_399/O
+                         net (fo=1, routed)           0.295     5.306    u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_399_n_0
+    SLICE_X5Y100         LUT5 (Prop_lut5_I4_O)        0.053     5.359 r  u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_255/O
+                         net (fo=1, routed)           0.306     5.665    u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_255_n_0
+    SLICE_X5Y100         LUT6 (Prop_lut6_I4_O)        0.053     5.718 r  u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_149/O
+                         net (fo=1, routed)           0.463     6.180    u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_149_n_0
+    SLICE_X3Y100         LUT6 (Prop_lut6_I4_O)        0.053     6.233 r  u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_77/O
+                         net (fo=1, routed)           1.221     7.454    u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_77_n_0
+    SLICE_X14Y71         LUT6 (Prop_lut6_I0_O)        0.053     7.507 r  u_otbn_core/u_otbn_instruction_fetch/u_rf_predec_bignum_flop/u_rd_mux_a/out_o0_inferred__91/mul_res__9_i_24/O
+                         net (fo=14, routed)          0.797     8.304    u_otbn_core/u_otbn_mac_bignum/mul/mul_res__4_3[78]
+    SLICE_X17Y58         LUT6 (Prop_lut6_I1_O)        0.053     8.357 r  u_otbn_core/u_otbn_mac_bignum/mul/mul_res__9_i_3/O
+                         net (fo=4, routed)           0.958     9.315    u_otbn_core/u_otbn_mac_bignum/mul/mul_op_a[14]
+    DSP48_X1Y15          DSP48E1 (Prop_dsp48e1_A[14]_PCOUT[47])
+                                                      3.421    12.736 r  u_otbn_core/u_otbn_mac_bignum/mul/mul_res__11/PCOUT[47]
+                         net (fo=1, routed)           0.000    12.736    u_otbn_core/u_otbn_mac_bignum/mul/mul_res__11_n_106
+    DSP48_X1Y16          DSP48E1 (Prop_dsp48e1_PCIN[47]_PCOUT[47])
+                                                      1.452    14.188 r  u_otbn_core/u_otbn_mac_bignum/mul/mul_res__12/PCOUT[47]
+                         net (fo=1, routed)           0.000    14.188    u_otbn_core/u_otbn_mac_bignum/mul/mul_res__12_n_106
+    DSP48_X1Y17          DSP48E1 (Prop_dsp48e1_PCIN[47]_PCOUT[47])
+                                                      1.452    15.640 r  u_otbn_core/u_otbn_mac_bignum/mul/mul_res__13/PCOUT[47]
+                         net (fo=1, routed)           0.000    15.640    u_otbn_core/u_otbn_mac_bignum/mul/mul_res__13_n_106
+    DSP48_X1Y18          DSP48E1 (Prop_dsp48e1_PCIN[47]_P[47])
+                                                      1.286    16.926 f  u_otbn_core/u_otbn_mac_bignum/mul/mul_res__14/P[47]
+                         net (fo=4, routed)           1.173    18.098    u_otbn_core/u_otbn_mac_bignum/mul/p_3_in[81]
+    SLICE_X34Y63         LUT2 (Prop_lut2_I1_O)        0.053    18.151 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf[0][101]_i_49/O
+                         net (fo=2, routed)           0.348    18.500    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf[0][101]_i_49_n_0
+    SLICE_X37Y62         LUT6 (Prop_lut6_I3_O)        0.053    18.553 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf[0][101]_i_44/O
+                         net (fo=2, routed)           0.306    18.859    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf[0][101]_i_44_n_0
+    SLICE_X37Y63         LUT6 (Prop_lut6_I0_O)        0.053    18.912 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf[0][101]_i_34/O
+                         net (fo=2, routed)           0.371    19.283    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf[0][101]_i_34_n_0
+    SLICE_X35Y63         CARRY4 (Prop_carry4_DI[3]_CO[3])
+                                                      0.230    19.513 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][101]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.513    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][101]_i_21_n_0
+    SLICE_X35Y64         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.571 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][105]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.571    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][105]_i_21_n_0
+    SLICE_X35Y65         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.629 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][109]_i_22/CO[3]
+                         net (fo=1, routed)           0.000    19.629    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][109]_i_22_n_0
+    SLICE_X35Y66         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.687 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][120]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.687    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][120]_i_21_n_0
+    SLICE_X35Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.745 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][124]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.745    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][124]_i_21_n_0
+    SLICE_X35Y68         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.803 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][128]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.803    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][128]_i_21_n_0
+    SLICE_X35Y69         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.861 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][132]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.861    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][132]_i_21_n_0
+    SLICE_X35Y70         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.919 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][136]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.919    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][136]_i_21_n_0
+    SLICE_X35Y71         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    19.977 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][140]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    19.977    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][140]_i_21_n_0
+    SLICE_X35Y72         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    20.035 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][144]_i_20/CO[3]
+                         net (fo=1, routed)           0.000    20.035    u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][144]_i_20_n_0
+    SLICE_X35Y73         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.213    20.248 r  u_otbn_core/u_otbn_mac_bignum/mul/g_rf[0].rf_reg[0][148]_i_28/O[1]
+                         net (fo=8, routed)           0.540    20.788    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/mul_res__15[89]
+    SLICE_X33Y67         LUT4 (Prop_lut4_I0_O)        0.152    20.940 r  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/acc_intg_q[222]_i_7/O
+                         net (fo=2, routed)           0.639    21.578    u_otbn_mac_bignum/adder_op_a[186]
+    SLICE_X39Y67         CARRY4 (Prop_carry4_DI[2]_CO[3])
+                                                      0.239    21.817 r  u_otbn_mac_bignum/acc_intg_q_reg[222]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    21.817    u_otbn_mac_bignum/acc_intg_q_reg[222]_i_5_n_0
+    SLICE_X39Y68         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    21.875 r  u_otbn_mac_bignum/acc_intg_q_reg[226]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    21.875    u_otbn_mac_bignum/acc_intg_q_reg[226]_i_5_n_0
+    SLICE_X39Y69         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    21.933 r  u_otbn_mac_bignum/acc_intg_q_reg[237]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    21.933    u_otbn_mac_bignum/acc_intg_q_reg[237]_i_5_n_0
+    SLICE_X39Y70         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    21.991 r  u_otbn_mac_bignum/acc_intg_q_reg[241]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    21.991    u_otbn_mac_bignum/acc_intg_q_reg[241]_i_5_n_0
+    SLICE_X39Y71         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.049 r  u_otbn_mac_bignum/acc_intg_q_reg[245]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.049    u_otbn_mac_bignum/acc_intg_q_reg[245]_i_5_n_0
+    SLICE_X39Y72         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.107 r  u_otbn_mac_bignum/acc_intg_q_reg[249]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.107    u_otbn_mac_bignum/acc_intg_q_reg[249]_i_5_n_0
+    SLICE_X39Y73         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.165 r  u_otbn_mac_bignum/acc_intg_q_reg[253]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.165    u_otbn_mac_bignum/acc_intg_q_reg[253]_i_5_n_0
+    SLICE_X39Y74         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.223 r  u_otbn_mac_bignum/acc_intg_q_reg[257]_i_5/CO[3]
+                         net (fo=1, routed)           0.008    22.231    u_otbn_mac_bignum/acc_intg_q_reg[257]_i_5_n_0
+    SLICE_X39Y75         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.289 r  u_otbn_mac_bignum/acc_intg_q_reg[261]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.289    u_otbn_mac_bignum/acc_intg_q_reg[261]_i_5_n_0
+    SLICE_X39Y76         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.347 r  u_otbn_mac_bignum/acc_intg_q_reg[265]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.347    u_otbn_mac_bignum/acc_intg_q_reg[265]_i_5_n_0
+    SLICE_X39Y77         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.405 r  u_otbn_mac_bignum/acc_intg_q_reg[276]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.405    u_otbn_mac_bignum/acc_intg_q_reg[276]_i_5_n_0
+    SLICE_X39Y78         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.463 r  u_otbn_mac_bignum/acc_intg_q_reg[280]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.463    u_otbn_mac_bignum/acc_intg_q_reg[280]_i_5_n_0
+    SLICE_X39Y79         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.521 r  u_otbn_mac_bignum/acc_intg_q_reg[284]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.521    u_otbn_mac_bignum/acc_intg_q_reg[284]_i_5_n_0
+    SLICE_X39Y80         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.579 r  u_otbn_mac_bignum/acc_intg_q_reg[288]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.579    u_otbn_mac_bignum/acc_intg_q_reg[288]_i_5_n_0
+    SLICE_X39Y81         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.637 r  u_otbn_mac_bignum/acc_intg_q_reg[292]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.637    u_otbn_mac_bignum/acc_intg_q_reg[292]_i_5_n_0
+    SLICE_X39Y82         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    22.695 r  u_otbn_mac_bignum/acc_intg_q_reg[296]_i_5/CO[3]
+                         net (fo=1, routed)           0.000    22.695    u_otbn_mac_bignum/acc_intg_q_reg[296]_i_5_n_0
+    SLICE_X39Y83         CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.136    22.831 r  u_otbn_mac_bignum/acc_intg_q_reg[300]_i_5/O[2]
+                         net (fo=2, routed)           0.625    23.456    u_otbn_core/u_otbn_mac_bignum/acc_intg_q_reg[300]_1[2]
+    SLICE_X41Y81         LUT3 (Prop_lut3_I2_O)        0.152    23.608 r  u_otbn_core/u_otbn_mac_bignum/acc_intg_q[299]_i_3/O
+                         net (fo=4, routed)           0.473    24.081    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/mac_bignum_operation_result[81]
+    SLICE_X43Y81         LUT6 (Prop_lut6_I5_O)        0.053    24.134 r  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/g_rf[0].rf[0][299]_i_7/O
+                         net (fo=1, routed)           0.471    24.605    u_otbn_core/u_otbn_rnd/u_xoshiro256pp/rf_bignum_wr_data_no_intg_ctrl[122]
+    SLICE_X47Y81         LUT3 (Prop_lut3_I2_O)        0.053    24.658 r  u_otbn_core/u_otbn_rnd/u_xoshiro256pp/g_rf[0].rf[0][299]_i_3/O
+                         net (fo=4, routed)           0.745    25.402    u_otbn_core/u_otbn_rnd/u_xoshiro256pp/sec_wipe_wdr_q_reg_rep__2[22]
+    SLICE_X48Y83         LUT6 (Prop_lut6_I0_O)        0.053    25.455 r  u_otbn_core/u_otbn_rnd/u_xoshiro256pp/g_rf[0].rf[0][305]_i_6/O
+                         net (fo=1, routed)           0.471    25.926    u_otbn_core/u_otbn_rnd/u_xoshiro256pp/g_rf[0].rf[0][305]_i_6_n_0
+    SLICE_X50Y84         LUT6 (Prop_lut6_I0_O)        0.053    25.979 r  u_otbn_core/u_otbn_rnd/u_xoshiro256pp/g_rf[0].rf[0][305]_i_3/O
+                         net (fo=1, routed)           0.450    26.429    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/g_rf[0].rf_reg[0][311][0]
+    SLICE_X56Y84         LUT6 (Prop_lut6_I5_O)        0.053    26.482 r  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/g_rf[0].rf[0][305]_i_1/O
+                         net (fo=32, routed)          1.031    27.513    u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/wr_data_intg_mux_out[305]
+    SLICE_X57Y102        FDRE                                         r  u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[26].rf_reg[26][305]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_i rise edge)     26.316    26.316 r  
+                                                      0.000    26.316 r  clk_i (IN)
+                         net (fo=16882, unset)        1.281    27.597    u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/clk_i
+    SLICE_X57Y102        FDRE                                         r  u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[26].rf_reg[26][305]/C
+                         clock pessimism              0.010    27.607    
+                         clock uncertainty           -0.035    27.572    
+    SLICE_X57Y102        FDRE (Setup_fdre_C_D)       -0.032    27.540    u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[26].rf_reg[26][305]
+  -------------------------------------------------------------------
+                         required time                         27.540    
+                         arrival time                         -27.513    
+  -------------------------------------------------------------------
+                         slack                                  0.027    
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.117ns  (arrival time - required time)
+  Source:                 u_dmem/wdata_scr_q_reg[189]/C
+                            (rising edge-triggered cell FDCE clocked by clk_i  {rise@0.000ns fall@13.158ns period=26.316ns})
+  Destination:            u_dmem/u_prim_ram_1p_adv/gen_ram_inst[0].u_mem/mem_reg_4_3/DIADI[6]
+                            (rising edge-triggered cell RAMB36E1 clocked by clk_i  {rise@0.000ns fall@13.158ns period=26.316ns})
+  Path Group:             clk_i
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk_i rise@0.000ns - clk_i rise@0.000ns)
+  Data Path Delay:        0.491ns  (logic 0.128ns (26.080%)  route 0.363ns (73.920%))
+  Logic Levels:           1  (LUT4=1)
+  Clock Path Skew:        0.219ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.906ns
+    Source Clock Delay      (SCD):    0.639ns
+    Clock Pessimism Removal (CPR):    0.048ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_i rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clk_i (IN)
+                         net (fo=16882, unset)        0.639     0.639    u_dmem/clk_i
+    SLICE_X51Y21         FDCE                                         r  u_dmem/wdata_scr_q_reg[189]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X51Y21         FDCE (Prop_fdce_C_Q)         0.100     0.739 r  u_dmem/wdata_scr_q_reg[189]/Q
+                         net (fo=1, routed)           0.105     0.844    u_dmem/u_write_pending_flop/Q[189]
+    SLICE_X51Y21         LUT4 (Prop_lut4_I0_O)        0.028     0.872 r  u_dmem/u_write_pending_flop/mem_reg_4_3_i_2/O
+                         net (fo=1, routed)           0.258     1.130    u_dmem/u_prim_ram_1p_adv/gen_ram_inst[0].u_mem/p_1_in0_in[189]
+    RAMB36_X3Y4          RAMB36E1                                     r  u_dmem/u_prim_ram_1p_adv/gen_ram_inst[0].u_mem/mem_reg_4_3/DIADI[6]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_i rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clk_i (IN)
+                         net (fo=16882, unset)        0.906     0.906    u_dmem/u_prim_ram_1p_adv/gen_ram_inst[0].u_mem/clk_i
+    RAMB36_X3Y4          RAMB36E1                                     r  u_dmem/u_prim_ram_1p_adv/gen_ram_inst[0].u_mem/mem_reg_4_3/CLKARDCLK
+                         clock pessimism             -0.048     0.858    
+    RAMB36_X3Y4          RAMB36E1 (Hold_ramb36e1_CLKARDCLK_DIADI[6])
+                                                      0.155     1.013    u_dmem/u_prim_ram_1p_adv/gen_ram_inst[0].u_mem/mem_reg_4_3
+  -------------------------------------------------------------------
+                         required time                         -1.013    
+                         arrival time                           1.130    
+  -------------------------------------------------------------------
+                         slack                                  0.117    
+
+
+
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         clk_i
+Waveform(ns):       { 0.000 13.158 }
+Period(ns):         26.316
+Sources:            { clk_i }
+
+Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location      Pin
+Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.495         26.316      23.821     RAMB36_X4Y1   u_imem/u_prim_ram_1p_adv/gen_ram_inst[0].u_mem/mem_reg_1/CLKARDCLK
+Low Pulse Width   Fast    RAMD32/CLK          n/a            0.910         13.158      12.248     SLICE_X94Y22  u_otbn_core/u_otbn_rf_base/u_call_stack/stack_storage_reg_0_7_24_29/RAMA/CLK
+High Pulse Width  Slow    RAMD32/CLK          n/a            0.910         13.158      12.248     SLICE_X98Y17  u_otbn_core/u_otbn_rf_base/u_call_stack/stack_storage_reg_0_7_0_5/RAMA/CLK
+
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  input port clock
+  To Clock:  clk_i
+
+Setup :            0  Failing Endpoints,  Worst Slack        8.603ns,  Total Violation        0.000ns
+Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             8.603ns  (required time - arrival time)
+  Source:                 keymgr_key_i[key][0][146]
+                            (input port)
+  Destination:            u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[1].rf_reg[1][191]/CE
+                            (rising edge-triggered cell FDRE clocked by clk_i  {rise@0.000ns fall@13.158ns period=26.316ns})
+  Path Group:             clk_i
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            26.316ns  (MaxDelay Path 26.316ns)
+  Data Path Delay:        19.196ns  (logic 1.533ns (7.986%)  route 17.663ns (92.014%))
+  Logic Levels:           24  (LUT2=1 LUT3=2 LUT5=8 LUT6=13)
+  Clock Path Skew:        1.727ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.727ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+  Timing Exception:       MaxDelay Path 26.316ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  keymgr_key_i[key][0][146] (IN)
+                         net (fo=0)                   0.672     0.672    u_otbn_core/u_otbn_alu_bignum/keymgr_key_i[key][0][146]
+    SLICE_X85Y59         LUT6 (Prop_lut6_I2_O)        0.053     0.725 r  u_otbn_core/u_otbn_alu_bignum/g_mod_words[4].mod_intg_q[174]_i_7/O
+                         net (fo=1, routed)           0.765     1.490    u_otbn_core/u_otbn_alu_bignum/g_mod_words[4].mod_intg_q[174]_i_7_n_0
+    SLICE_X88Y55         LUT3 (Prop_lut3_I2_O)        0.065     1.555 r  u_otbn_core/u_otbn_alu_bignum/g_mod_words[4].mod_intg_q[174]_i_6/O
+                         net (fo=4, routed)           0.689     2.244    u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/ispr_rdata_no_intg[146]
+    SLICE_X90Y53         LUT6 (Prop_lut6_I5_O)        0.168     2.412 r  u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/g_rf[0].rf[0][188]_i_26/O
+                         net (fo=1, routed)           0.601     3.013    u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/g_rf[0].rf[0][188]_i_26_n_0
+    SLICE_X91Y53         LUT6 (Prop_lut6_I0_O)        0.053     3.066 r  u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/g_rf[0].rf[0][188]_i_19/O
+                         net (fo=1, routed)           0.599     3.665    u_otbn_core/u_otbn_alu_bignum/ispr_rdata_intg_calc[28]
+    SLICE_X91Y47         LUT6 (Prop_lut6_I0_O)        0.053     3.718 r  u_otbn_core/u_otbn_alu_bignum/g_rf[0].rf[0][188]_i_14/O
+                         net (fo=1, routed)           1.004     4.721    u_otbn_core/u_otbn_alu_bignum/g_rf[0].rf[0][188]_i_14_n_0
+    SLICE_X62Y47         LUT5 (Prop_lut5_I0_O)        0.053     4.774 r  u_otbn_core/u_otbn_alu_bignum/g_rf[0].rf[0][188]_i_10/O
+                         net (fo=3, routed)           0.414     5.188    u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/ispr_rdata_intg[188]
+    SLICE_X62Y42         LUT6 (Prop_lut6_I0_O)        0.053     5.241 r  u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/err_bits_q[reg_intg_violation]_i_369/O
+                         net (fo=1, routed)           0.468     5.709    u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/err_bits_q[reg_intg_violation]_i_369_n_0
+    SLICE_X62Y42         LUT5 (Prop_lut5_I3_O)        0.053     5.762 r  u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/err_bits_q[reg_intg_violation]_i_160__0/O
+                         net (fo=1, routed)           0.397     6.159    u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/err_bits_q[reg_intg_violation]_i_160__0_n_0
+    SLICE_X63Y36         LUT5 (Prop_lut5_I0_O)        0.053     6.212 f  u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/err_bits_q[reg_intg_violation]_i_50/O
+                         net (fo=1, routed)           0.234     6.446    u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/u_otbn_controller/ispr_rdata_intg_err_wide_8[0]
+    SLICE_X64Y36         LUT5 (Prop_lut5_I4_O)        0.053     6.499 r  u_otbn_core/u_otbn_instruction_fetch/u_ispr_predec_bignum_flop/err_bits_q[reg_intg_violation]_i_17__0/O
+                         net (fo=2, routed)           0.846     7.345    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/err_bits_q[reg_intg_violation]_i_3__0_3
+    SLICE_X65Y47         LUT6 (Prop_lut6_I4_O)        0.053     7.398 f  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/err_bits_q[reg_intg_violation]_i_8__0/O
+                         net (fo=1, routed)           0.556     7.954    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/err_bits_q[reg_intg_violation]_i_8__0_n_0
+    SLICE_X66Y45         LUT6 (Prop_lut6_I4_O)        0.053     8.007 f  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/err_bits_q[reg_intg_violation]_i_3__0/O
+                         net (fo=2, routed)           0.723     8.730    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/q_o_reg[22]_1
+    SLICE_X75Y35         LUT6 (Prop_lut6_I5_O)        0.053     8.783 f  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/edn_rnd_req_start_i_6/O
+                         net (fo=4, routed)           0.452     9.235    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/edn_rnd_req_start_i_6_n_0
+    SLICE_X76Y33         LUT6 (Prop_lut6_I0_O)        0.053     9.288 f  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/rnd_valid_q_i_2/O
+                         net (fo=4, routed)           0.490     9.778    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/prefetch_ignore_errs
+    SLICE_X78Y33         LUT5 (Prop_lut5_I4_O)        0.053     9.831 r  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/i___10_i_21/O
+                         net (fo=2, routed)           0.357    10.188    u_otbn_core/u_otbn_start_stop_control/u_state_regs/u_state_flop/err_bits_q[bad_internal_state]_i_2
+    SLICE_X78Y31         LUT6 (Prop_lut6_I1_O)        0.053    10.241 r  u_otbn_core/u_otbn_start_stop_control/u_state_regs/u_state_flop/err_bits_q[bad_internal_state]_i_3__0/O
+                         net (fo=3, routed)           0.453    10.694    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/mubi_err_q_reg
+    SLICE_X75Y31         LUT5 (Prop_lut5_I1_O)        0.053    10.747 r  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/mubi_err_q_i_3/O
+                         net (fo=3, routed)           0.457    11.204    u_lc_rma_req_sync/gen_flops.u_prim_flop_2sync/u_sync_2/mubi4_or_hi_return[0]
+    SLICE_X75Y32         LUT6 (Prop_lut6_I5_O)        0.053    11.257 r  u_lc_rma_req_sync/gen_flops.u_prim_flop_2sync/u_sync_2/edn_rnd_req_start_i_9/O
+                         net (fo=6, routed)           0.432    11.688    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/rnd_valid_q_reg_2
+    SLICE_X74Y34         LUT5 (Prop_lut5_I0_O)        0.053    11.741 f  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/err_bits_q[rnd_rep_chk_fail]_i_2/O
+                         net (fo=4, routed)           0.557    12.298    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/rnd_rep_err
+    SLICE_X74Y30         LUT2 (Prop_lut2_I1_O)        0.068    12.366 f  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/mubi_err_q_i_4/O
+                         net (fo=4, routed)           0.483    12.849    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/mubi_err_q_i_4_n_0
+    SLICE_X75Y35         LUT6 (Prop_lut6_I1_O)        0.172    13.021 f  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/edn_rnd_req_start_i_2/O
+                         net (fo=54, routed)          0.530    13.551    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/q_o_reg[0]_0
+    SLICE_X73Y37         LUT5 (Prop_lut5_I2_O)        0.053    13.604 r  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/g_rf[0].rf[0][155]_i_9/O
+                         net (fo=2, routed)           0.337    13.941    u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/rf_bignum_wr_commit_ctrl
+    SLICE_X70Y38         LUT3 (Prop_lut3_I1_O)        0.053    13.994 r  u_otbn_core/u_otbn_instruction_fetch/u_insn_fetch_resp_data_intg_flop/g_rf[0].rf[0][311]_i_3/O
+                         net (fo=85, routed)          2.167    16.161    u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/wr_en_internal[1]
+    SLICE_X20Y78         LUT6 (Prop_lut6_I5_O)        0.053    16.214 r  u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[1].rf[1][311]_i_1/O
+                         net (fo=156, routed)         2.982    19.196    u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/p_120_out
+    SLICE_X78Y3          FDRE                                         r  u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[1].rf_reg[1][191]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   26.316    26.316    
+                                                      0.000    26.316 r  clk_i (IN)
+                         net (fo=16882, unset)        1.727    28.043    u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/clk_i
+    SLICE_X78Y3          FDRE                                         r  u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[1].rf_reg[1][191]/C
+                         clock pessimism              0.000    28.043    
+                         clock uncertainty           -0.025    28.018    
+    SLICE_X78Y3          FDRE (Setup_fdre_C_CE)      -0.219    27.799    u_otbn_core/u_otbn_rf_bignum/gen_rf_bignum_ff.u_otbn_rf_bignum_inner/g_rf[1].rf_reg[1][191]
+  -------------------------------------------------------------------
+                         required time                         27.799    
+                         arrival time                         -19.196    
+  -------------------------------------------------------------------
+                         slack                                  8.603    
+
+
+
+
+
+---------------------------------------------------------------------------------------------------
+Path Group:  **default**
+From Clock:  clk_i
+  To Clock:  
+
+Setup :            0  Failing Endpoints,  Worst Slack       11.227ns,  Total Violation        0.000ns
+Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             11.227ns  (required time - arrival time)
+  Source:                 u_dmem/gen_par_scr[0].u_prim_prince/gen_data_reg.data_state_middle_q_reg[52]/C
+                            (rising edge-triggered cell FDCE clocked by clk_i  {rise@0.000ns fall@13.158ns period=26.316ns})
+  Destination:            tl_o[d_data][21]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            26.316ns  (MaxDelay Path 26.316ns)
+  Data Path Delay:        13.319ns  (logic 1.512ns (11.352%)  route 11.807ns (88.648%))
+  Logic Levels:           15  (LUT3=3 LUT5=4 LUT6=6 MUXF7=1 MUXF8=1)
+  Output Delay:           0.000ns
+  Clock Path Skew:        -1.770ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.000ns
+    Source Clock Delay      (SCD):    1.770ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Timing Exception:       MaxDelay Path 26.316ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_i rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clk_i (IN)
+                         net (fo=16882, unset)        1.770     1.770    u_dmem/gen_par_scr[0].u_prim_prince/clk_i
+    SLICE_X57Y29         FDCE                                         r  u_dmem/gen_par_scr[0].u_prim_prince/gen_data_reg.data_state_middle_q_reg[52]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X57Y29         FDCE (Prop_fdce_C_Q)         0.269     2.039 r  u_dmem/gen_par_scr[0].u_prim_prince/gen_data_reg.data_state_middle_q_reg[52]/Q
+                         net (fo=3, routed)           0.832     2.871    u_dmem/gen_par_scr[0].u_prim_prince/p_388_in[0]
+    SLICE_X57Y32         LUT3 (Prop_lut3_I0_O)        0.062     2.933 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_0_i_314/O
+                         net (fo=4, routed)           0.658     3.591    u_dmem/gen_par_scr[0].u_prim_prince/prince_nibble_red1659_return[0]
+    SLICE_X60Y33         LUT5 (Prop_lut5_I2_O)        0.165     3.756 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_0_i_219/O
+                         net (fo=2, routed)           0.505     4.261    u_dmem/gen_par_scr[0].u_prim_prince/gen_bwd_pass[1].gen_bwd_d64.state_in[48]
+    SLICE_X62Y29         LUT6 (Prop_lut6_I5_O)        0.053     4.314 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_0_i_276/O
+                         net (fo=2, routed)           0.555     4.868    u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_0_i_276_n_0
+    SLICE_X59Y29         LUT6 (Prop_lut6_I5_O)        0.053     4.921 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_0_i_186/O
+                         net (fo=4, routed)           0.528     5.449    u_dmem/gen_par_scr[0].u_prim_prince/prince_nibble_red1664_return[0]
+    SLICE_X54Y30         LUT5 (Prop_lut5_I4_O)        0.053     5.502 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_0_i_117/O
+                         net (fo=3, routed)           0.835     6.337    u_dmem/gen_par_scr[0].u_prim_prince/gen_bwd_pass[2].gen_bwd_d64.state_in[5]
+    SLICE_X50Y34         LUT3 (Prop_lut3_I0_O)        0.053     6.390 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_1_i_48/O
+                         net (fo=4, routed)           0.587     6.977    u_dmem/gen_par_scr[0].u_prim_prince/gen_bwd_pass[2].gen_bwd_d64.(null)[5].state_in[1]
+    SLICE_X50Y35         LUT5 (Prop_lut5_I1_O)        0.053     7.030 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_1_i_35/O
+                         net (fo=3, routed)           0.641     7.671    u_dmem/gen_par_scr[0].u_prim_prince/gen_bwd_pass[3].gen_bwd_d64.state_in[40]
+    SLICE_X50Y32         LUT3 (Prop_lut3_I2_O)        0.068     7.739 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_2_i_26/O
+                         net (fo=4, routed)           0.581     8.320    u_dmem/gen_par_scr[0].u_prim_prince/gen_bwd_pass[3].gen_bwd_d64.(null)[2].state_in[4]
+    SLICE_X51Y29         LUT6 (Prop_lut6_I1_O)        0.172     8.492 r  u_dmem/gen_par_scr[0].u_prim_prince/mem_reg_0_2_i_14/O
+                         net (fo=15, routed)          1.000     9.491    u_dmem/gen_par_scr[0].u_prim_prince/keystream[21]
+    SLICE_X33Y26         LUT6 (Prop_lut6_I0_O)        0.053     9.544 r  u_dmem/gen_par_scr[0].u_prim_prince/g_rf[0].rf[0][21]_i_6/O
+                         net (fo=7, routed)           2.241    11.786    u_tlul_adapter_sram_dmem/u_sramreqfifo/dmem_rdata[21]
+    SLICE_X61Y24         LUT5 (Prop_lut5_I2_O)        0.053    11.839 f  u_tlul_adapter_sram_dmem/u_sramreqfifo/gen_singleton_fifo.storage[29]_i_5/O
+                         net (fo=1, routed)           0.000    11.839    u_tlul_adapter_sram_dmem/u_sramreqfifo/gen_singleton_fifo.storage[29]_i_5_n_0
+    SLICE_X61Y24         MUXF7 (Prop_muxf7_I0_O)      0.143    11.982 f  u_tlul_adapter_sram_dmem/u_sramreqfifo/gen_singleton_fifo.storage_reg[29]_i_2/O
+                         net (fo=2, routed)           0.000    11.982    u_tlul_adapter_sram_dmem/u_sramreqfifo/gen_singleton_fifo.storage_reg[29]_i_2_n_0
+    SLICE_X61Y24         MUXF8 (Prop_muxf8_I0_O)      0.056    12.038 f  u_tlul_adapter_sram_dmem/u_sramreqfifo/tl_o[d_data][21]_INST_0_i_4/O
+                         net (fo=1, routed)           0.826    12.863    u_tlul_adapter_sram_dmem/u_reqfifo/tl_o[d_data][21]_0
+    SLICE_X61Y17         LUT6 (Prop_lut6_I1_O)        0.153    13.016 r  u_tlul_adapter_sram_dmem/u_reqfifo/tl_o[d_data][21]_INST_0_i_1/O
+                         net (fo=1, routed)           1.348    14.364    u_reg/u_socket/tl_win_d2h[1][d_data][21]
+    SLICE_X82Y11         LUT6 (Prop_lut6_I4_O)        0.053    14.417 r  u_reg/u_socket/tl_o[d_data][21]_INST_0/O
+                         net (fo=0)                   0.672    15.089    tl_o[d_data][21]
+                                                                      r  tl_o[d_data][21] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   26.316    26.316    
+                         clock pessimism              0.000    26.316    
+                         output delay                -0.000    26.316    
+  -------------------------------------------------------------------
+                         required time                         26.316    
+                         arrival time                         -15.089    
+  -------------------------------------------------------------------
+                         slack                                 11.227    
+
+
+
+
+
+---------------------------------------------------------------------------------------------------
+Path Group:  **default**
+From Clock:  input port clock
+  To Clock:  
+
+Setup :            0  Failing Endpoints,  Worst Slack       17.244ns,  Total Violation        0.000ns
+Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             17.244ns  (required time - arrival time)
+  Source:                 tl_i[a_address][19]
+                            (input port)
+  Destination:            tl_o[a_ready]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            26.316ns  (MaxDelay Path 26.316ns)
+  Data Path Delay:        9.072ns  (logic 0.795ns (8.763%)  route 8.277ns (91.237%))
+  Logic Levels:           10  (LUT2=1 LUT3=2 LUT4=1 LUT6=6)
+  Output Delay:           0.000ns
+  Timing Exception:       MaxDelay Path 26.316ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  tl_i[a_address][19] (IN)
+                         net (fo=3, unset)            0.672     0.672    u_reg/u_socket/tl_i[a_address][18]
+    SLICE_X103Y9         LUT2 (Prop_lut2_I0_O)        0.067     0.739 r  u_reg/u_socket/tl_o[a_ready]_INST_0_i_61/O
+                         net (fo=1, routed)           0.835     1.574    u_reg/u_socket/tl_o[a_ready]_INST_0_i_61_n_0
+    SLICE_X103Y14        LUT6 (Prop_lut6_I1_O)        0.170     1.744 r  u_reg/u_socket/tl_o[a_ready]_INST_0_i_32/O
+                         net (fo=1, routed)           0.343     2.087    u_reg/u_socket/tl_o[a_ready]_INST_0_i_32_n_0
+    SLICE_X102Y14        LUT6 (Prop_lut6_I4_O)        0.053     2.140 r  u_reg/u_socket/tl_o[a_ready]_INST_0_i_13/O
+                         net (fo=3, routed)           0.878     3.019    u_dmem/err_q_reg
+    SLICE_X101Y2         LUT6 (Prop_lut6_I3_O)        0.053     3.072 r  u_dmem/tl_o[a_ready]_INST_0_i_5/O
+                         net (fo=9, routed)           1.131     4.202    u_reg/u_socket/err_q0
+    SLICE_X89Y3          LUT6 (Prop_lut6_I3_O)        0.053     4.255 f  u_reg/u_socket/tl_o[a_ready]_INST_0_i_1/O
+                         net (fo=27, routed)          1.425     5.680    u_reg/u_socket/tl_o[a_ready]_INST_0_i_1_n_0
+    SLICE_X95Y3          LUT3 (Prop_lut3_I1_O)        0.068     5.748 r  u_reg/u_socket/wmask_q[38]_i_1/O
+                         net (fo=58, routed)          0.473     6.221    u_reg/u_socket/tl_i[a_valid]_0
+    SLICE_X95Y2          LUT6 (Prop_lut6_I3_O)        0.169     6.390 r  u_reg/u_socket/gen_singleton_fifo.storage[15]_i_3/O
+                         net (fo=51, routed)          0.907     7.297    u_tlul_adapter_sram_imem/u_reqfifo/imem_req_bus
+    SLICE_X87Y4          LUT4 (Prop_lut4_I3_O)        0.053     7.350 r  u_tlul_adapter_sram_imem/u_reqfifo/tl_o[a_ready]_INST_0_i_7/O
+                         net (fo=1, routed)           0.448     7.798    u_tlul_adapter_sram_imem/u_reqfifo/tl_win_d2h[0][a_ready]
+    SLICE_X87Y3          LUT6 (Prop_lut6_I0_O)        0.053     7.851 f  u_tlul_adapter_sram_imem/u_reqfifo/tl_o[a_ready]_INST_0_i_2/O
+                         net (fo=5, routed)           0.493     8.344    u_reg/u_socket/dev_select_outstanding_reg[0]_4
+    SLICE_X89Y1          LUT3 (Prop_lut3_I2_O)        0.056     8.400 r  u_reg/u_socket/tl_o[a_ready]_INST_0/O
+                         net (fo=0)                   0.672     9.072    tl_o[a_ready]
+                                                                      r  tl_o[a_ready] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   26.316    26.316    
+                         output delay                -0.000    26.316    
+  -------------------------------------------------------------------
+                         required time                         26.316    
+                         arrival time                          -9.072    
+  -------------------------------------------------------------------
+                         slack                                 17.244    
+
+
+
+
+

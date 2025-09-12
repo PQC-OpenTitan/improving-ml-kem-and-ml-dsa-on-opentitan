@@ -1,0 +1,275 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 11:30:05 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA/otbn_KMAC/utilization_hierarchical.txt
+| Design       : otbn
+| Device       : 7k160tfbg676-1
+| Design State : Routed
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++---------------------------------------------------+------------------------------------------+------------+------------+---------+------+-------+--------+--------+------------+
+|                      Instance                     |                  Module                  | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | DSP Blocks |
++---------------------------------------------------+------------------------------------------+------------+------------+---------+------+-------+--------+--------+------------+
+| otbn                                              |                                    (top) |      35174 |      35094 |      80 |    0 | 16635 |     42 |      8 |         16 |
+|   (otbn)                                          |                                    (top) |         87 |         87 |       0 |    0 |    48 |      0 |      0 |          0 |
+|   gen_alert_tx[0].u_prim_alert_sender             |                        prim_alert_sender |         17 |         17 |       0 |    0 |    25 |      0 |      0 |          0 |
+|     (gen_alert_tx[0].u_prim_alert_sender)         |                        prim_alert_sender |          0 |          0 |       0 |    0 |     6 |      0 |      0 |          0 |
+|     u_decode_ack                                  |                      prim_diff_decode_91 |         12 |         12 |       0 |    0 |     9 |      0 |      0 |          0 |
+|       (u_decode_ack)                              |                      prim_diff_decode_91 |          0 |          0 |       0 |    0 |     5 |      0 |      0 |          0 |
+|       gen_async.i_sync_n                          |      prim_flop_2sync__parameterized0_101 |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |            prim_flop__parameterized0_105 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |            prim_flop__parameterized0_106 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|       gen_async.i_sync_p                          |                      prim_flop_2sync_102 |         12 |         12 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |                            prim_flop_103 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |                            prim_flop_104 |         12 |         12 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_decode_ping                                 |                      prim_diff_decode_92 |          5 |          5 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       (u_decode_ping)                             |                      prim_diff_decode_92 |          0 |          0 |       0 |    0 |     4 |      0 |      0 |          0 |
+|       gen_async.i_sync_n                          |       prim_flop_2sync__parameterized0_95 |          2 |          2 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |             prim_flop__parameterized0_99 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |            prim_flop__parameterized0_100 |          2 |          2 |       0 |    0 |     1 |      0 |      0 |          0 |
+|       gen_async.i_sync_p                          |                       prim_flop_2sync_96 |          3 |          3 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |                             prim_flop_97 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |                             prim_flop_98 |          3 |          3 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_prim_flop_alert                             |                  prim_sec_anchor_flop_93 |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|       u_secure_anchor_flop                        |             prim_flop__parameterized1_94 |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|   gen_alert_tx[1].u_prim_alert_sender             |        prim_alert_sender__parameterized0 |         19 |         19 |       0 |    0 |    25 |      0 |      0 |          0 |
+|     (gen_alert_tx[1].u_prim_alert_sender)         |        prim_alert_sender__parameterized0 |          0 |          0 |       0 |    0 |     6 |      0 |      0 |          0 |
+|     u_decode_ack                                  |                         prim_diff_decode |         14 |         14 |       0 |    0 |     9 |      0 |      0 |          0 |
+|       (u_decode_ack)                              |                         prim_diff_decode |          0 |          0 |       0 |    0 |     5 |      0 |      0 |          0 |
+|       gen_async.i_sync_n                          |       prim_flop_2sync__parameterized0_85 |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |             prim_flop__parameterized0_89 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |             prim_flop__parameterized0_90 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|       gen_async.i_sync_p                          |                       prim_flop_2sync_86 |         14 |         14 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |                             prim_flop_87 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |                             prim_flop_88 |         14 |         14 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_decode_ping                                 |                      prim_diff_decode_79 |          5 |          5 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       (u_decode_ping)                             |                      prim_diff_decode_79 |          0 |          0 |       0 |    0 |     4 |      0 |      0 |          0 |
+|       gen_async.i_sync_n                          |          prim_flop_2sync__parameterized0 |          2 |          2 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |             prim_flop__parameterized0_83 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |             prim_flop__parameterized0_84 |          2 |          2 |       0 |    0 |     1 |      0 |      0 |          0 |
+|       gen_async.i_sync_p                          |                       prim_flop_2sync_80 |          3 |          3 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         u_sync_1                                  |                             prim_flop_81 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_sync_2                                  |                             prim_flop_82 |          3 |          3 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_prim_flop_alert                             |                     prim_sec_anchor_flop |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|       u_secure_anchor_flop                        |                prim_flop__parameterized1 |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|   u_dmem                                          |          prim_ram_1p_scr__parameterized0 |       1746 |       1746 |       0 |    0 |   759 |     32 |      8 |          0 |
+|     (u_dmem)                                      |          prim_ram_1p_scr__parameterized0 |         22 |         22 |       0 |    0 |   677 |      0 |      0 |          0 |
+|     gen_par_scr[0].u_prim_prince                  |                           prim_prince_74 |        706 |        706 |       0 |    0 |    64 |      0 |      0 |          0 |
+|     u_addr_collision_flop                         |             prim_flop__parameterized5_75 |          2 |          2 |       0 |    0 |     4 |      0 |      0 |          0 |
+|     u_prim_ram_1p_adv                             |          prim_ram_1p_adv__parameterized0 |        687 |        687 |       0 |    0 |     6 |     32 |      8 |          0 |
+|       (u_prim_ram_1p_adv)                         |          prim_ram_1p_adv__parameterized0 |          0 |          0 |       0 |    0 |     6 |      0 |      0 |          0 |
+|       gen_ram_inst[0].u_mem                       |              prim_ram_1p__parameterized0 |        687 |        687 |       0 |    0 |     0 |     32 |      8 |          0 |
+|     u_rvalid_flop                                 |             prim_flop__parameterized5_76 |          5 |          5 |       0 |    0 |     2 |      0 |      0 |          0 |
+|     u_write_en_flop                               |             prim_flop__parameterized5_77 |          9 |          9 |       0 |    0 |     2 |      0 |      0 |          0 |
+|     u_write_pending_flop                          |             prim_flop__parameterized5_78 |        315 |        315 |       0 |    0 |     4 |      0 |      0 |          0 |
+|   u_imem                                          |                          prim_ram_1p_scr |        801 |        801 |       0 |    0 |   176 |     10 |      0 |          0 |
+|     (u_imem)                                      |                          prim_ram_1p_scr |          2 |          2 |       0 |    0 |    97 |      0 |      0 |          0 |
+|     gen_par_scr[0].u_prim_prince                  |                              prim_prince |        368 |        368 |       0 |    0 |    64 |      0 |      0 |          0 |
+|     u_addr_collision_flop                         |             prim_flop__parameterized5_70 |          1 |          1 |       0 |    0 |     4 |      0 |      0 |          0 |
+|     u_prim_ram_1p_adv                             |                          prim_ram_1p_adv |         36 |         36 |       0 |    0 |     3 |     10 |      0 |          0 |
+|       (u_prim_ram_1p_adv)                         |                          prim_ram_1p_adv |          0 |          0 |       0 |    0 |     3 |      0 |      0 |          0 |
+|       gen_ram_inst[0].u_mem                       |                              prim_ram_1p |         36 |         36 |       0 |    0 |     0 |     10 |      0 |          0 |
+|     u_rvalid_flop                                 |             prim_flop__parameterized5_71 |        343 |        343 |       0 |    0 |     2 |      0 |      0 |          0 |
+|     u_write_en_flop                               |             prim_flop__parameterized5_72 |          3 |          3 |       0 |    0 |     2 |      0 |      0 |          0 |
+|     u_write_pending_flop                          |             prim_flop__parameterized5_73 |         48 |         48 |       0 |    0 |     4 |      0 |      0 |          0 |
+|   u_imem_rdata_bus_blanker                        |                             prim_blanker |         32 |         32 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     u_blank_and                                   |                                prim_and2 |         32 |         32 |       0 |    0 |     0 |      0 |      0 |          0 |
+|   u_intr_hw_done                                  |                             prim_intr_hw |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|   u_lc_escalate_en_sync                           |                             prim_lc_sync |          4 |          4 |       0 |    0 |     8 |      0 |      0 |          0 |
+|     gen_flops.u_prim_flop_2sync                   |       prim_flop_2sync__parameterized1_67 |          4 |          4 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       u_sync_1                                    |             prim_flop__parameterized3_68 |          0 |          0 |       0 |    0 |     4 |      0 |      0 |          0 |
+|       u_sync_2                                    |             prim_flop__parameterized3_69 |          4 |          4 |       0 |    0 |     4 |      0 |      0 |          0 |
+|   u_lc_rma_req_sync                               |             prim_lc_sync__parameterized0 |          4 |          4 |       0 |    0 |     8 |      0 |      0 |          0 |
+|     gen_flops.u_prim_flop_2sync                   |          prim_flop_2sync__parameterized1 |          4 |          4 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       u_sync_1                                    |                prim_flop__parameterized3 |          0 |          0 |       0 |    0 |     4 |      0 |      0 |          0 |
+|       u_sync_2                                    |             prim_flop__parameterized3_66 |          4 |          4 |       0 |    0 |     4 |      0 |      0 |          0 |
+|   u_mem_load_crc32                                |                               prim_crc32 |         53 |         53 |       0 |    0 |    32 |      0 |      0 |          0 |
+|   u_otbn_core                                     |                                otbn_core |      29723 |      29643 |      80 |    0 | 14358 |      0 |      0 |         16 |
+|     (u_otbn_core)                                 |                                otbn_core |          1 |          1 |       0 |    0 |    27 |      0 |      0 |          0 |
+|     u_otbn_alu_bignum                             |                          otbn_alu_bignum |       2834 |       2834 |       0 |    0 |  1286 |      0 |      0 |          0 |
+|       (u_otbn_alu_bignum)                         |                          otbn_alu_bignum |       2495 |       2495 |       0 |    0 |   998 |      0 |      0 |          0 |
+|       u_kmac_msg_ctr                              |               prim_count__parameterized1 |         70 |         70 |       0 |    0 |    25 |      0 |      0 |          0 |
+|         (u_kmac_msg_ctr)                          |               prim_count__parameterized1 |          4 |          4 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         gen_cnts[0].u_cnt_flop                    |               prim_flop__parameterized20 |         40 |         40 |       0 |    0 |    12 |      0 |      0 |          0 |
+|         gen_cnts[1].u_cnt_flop                    |               prim_flop__parameterized21 |         27 |         27 |       0 |    0 |    12 |      0 |      0 |          0 |
+|       u_kmac_msg_fifo                             |         prim_packer_fifo__parameterized0 |        269 |        269 |       0 |    0 |   263 |      0 |      0 |          0 |
+|     u_otbn_controller                             |                          otbn_controller |       2351 |       2299 |      52 |    0 |   636 |      0 |      0 |          0 |
+|       (u_otbn_controller)                         |                          otbn_controller |         45 |         45 |       0 |    0 |    92 |      0 |      0 |          0 |
+|       rf_bignum_rd_a_idirect_onehot__enc          |                          prim_onehot_enc |         16 |         16 |       0 |    0 |     0 |      0 |      0 |          0 |
+|       rf_bignum_rd_b_indirect_onehot_enc          |                       prim_onehot_enc_38 |         16 |         16 |       0 |    0 |     0 |      0 |      0 |          0 |
+|       rf_bignum_wr_indirect_onehot_enc            |                       prim_onehot_enc_39 |         16 |         16 |       0 |    0 |     0 |      0 |      0 |          0 |
+|       u_otbn_loop_controller                      |                     otbn_loop_controller |       2176 |       2124 |      52 |    0 |   539 |      0 |      0 |          0 |
+|         g_loop_counters[0].u_loop_count           |                               prim_count |        231 |        231 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[0].u_loop_count)       |                               prim_count |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |            prim_flop__parameterized15_64 |        151 |        151 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |            prim_flop__parameterized16_65 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         g_loop_counters[1].u_loop_count           |                            prim_count_41 |        215 |        215 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[1].u_loop_count)       |                            prim_count_41 |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |            prim_flop__parameterized15_62 |        135 |        135 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |            prim_flop__parameterized16_63 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         g_loop_counters[2].u_loop_count           |                            prim_count_42 |        231 |        231 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[2].u_loop_count)       |                            prim_count_42 |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |            prim_flop__parameterized15_60 |        151 |        151 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |            prim_flop__parameterized16_61 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         g_loop_counters[3].u_loop_count           |                            prim_count_43 |        215 |        215 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[3].u_loop_count)       |                            prim_count_43 |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |            prim_flop__parameterized15_58 |        135 |        135 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |            prim_flop__parameterized16_59 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         g_loop_counters[4].u_loop_count           |                            prim_count_44 |        231 |        231 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[4].u_loop_count)       |                            prim_count_44 |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |            prim_flop__parameterized15_56 |        151 |        151 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |            prim_flop__parameterized16_57 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         g_loop_counters[5].u_loop_count           |                            prim_count_45 |        215 |        215 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[5].u_loop_count)       |                            prim_count_45 |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |            prim_flop__parameterized15_54 |        135 |        135 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |            prim_flop__parameterized16_55 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         g_loop_counters[6].u_loop_count           |                            prim_count_46 |        232 |        232 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[6].u_loop_count)       |                            prim_count_46 |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |            prim_flop__parameterized15_52 |        152 |        152 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |            prim_flop__parameterized16_53 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         g_loop_counters[7].u_loop_count           |                            prim_count_47 |        215 |        215 |       0 |    0 |    65 |      0 |      0 |          0 |
+|           (g_loop_counters[7].u_loop_count)       |                            prim_count_47 |          8 |          8 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |               prim_flop__parameterized15 |        135 |        135 |       0 |    0 |    32 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |               prim_flop__parameterized16 |         72 |         72 |       0 |    0 |    32 |      0 |      0 |          0 |
+|         loop_info_stack                           |                               otbn_stack |        354 |        302 |      52 |    0 |    11 |      0 |      0 |          0 |
+|           (loop_info_stack)                       |                               otbn_stack |         58 |          6 |      52 |    0 |     0 |      0 |      0 |          0 |
+|           u_cnt_err_flop                          |                             prim_flop_48 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           u_stack_wr_ptr                          |            prim_count__parameterized0_49 |        295 |        295 |       0 |    0 |    10 |      0 |      0 |          0 |
+|             (u_stack_wr_ptr)                      |            prim_count__parameterized0_49 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|             gen_cnts[0].u_cnt_flop                |            prim_flop__parameterized17_50 |        288 |        288 |       0 |    0 |     5 |      0 |      0 |          0 |
+|             gen_cnts[1].u_cnt_flop                |            prim_flop__parameterized18_51 |          7 |          7 |       0 |    0 |     4 |      0 |      0 |          0 |
+|         u_loop_addrs_intg_dec                     |                prim_secded_inv_39_32_dec |         29 |         29 |       0 |    0 |     0 |      0 |      0 |          0 |
+|         u_loop_counter_err_flop                   |               prim_flop__parameterized19 |         10 |         10 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       u_state_error_flop                          |                             prim_flop_40 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|       u_state_regs                                |     prim_sparse_fsm_flop__parameterized1 |         82 |         82 |       0 |    0 |     4 |      0 |      0 |          0 |
+|         u_state_flop                              |               prim_flop__parameterized14 |         82 |         82 |       0 |    0 |     4 |      0 |      0 |          0 |
+|     u_otbn_instruction_fetch                      |                   otbn_instruction_fetch |      19628 |      19628 |       0 |    0 |   384 |      0 |      0 |          0 |
+|       (u_otbn_instruction_fetch)                  |                   otbn_instruction_fetch |          8 |          8 |       0 |    0 |    32 |      0 |      0 |          0 |
+|       u_alu_predec_bignum_flop                    |                prim_flop__parameterized8 |        896 |        896 |       0 |    0 |    85 |      0 |      0 |          0 |
+|       u_ctrl_flow_predec_flop                     |               prim_flop__parameterized10 |          2 |          2 |       0 |    0 |     6 |      0 |      0 |          0 |
+|       u_ctrl_flow_target_predec_flop              |               prim_flop__parameterized11 |          8 |          8 |       0 |    0 |    15 |      0 |      0 |          0 |
+|       u_insn_fetch_resp_data_intg_flop            |                prim_flop__parameterized7 |       4971 |       4971 |       0 |    0 |    73 |      0 |      0 |          0 |
+|       u_ispr_predec_bignum_flop                   |               prim_flop__parameterized13 |        519 |        519 |       0 |    0 |    43 |      0 |      0 |          0 |
+|       u_lsu_addr_en_predec_flop                   |                             prim_flop_37 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|       u_mac_predec_bignum_flop                    |                prim_flop__parameterized9 |          0 |          0 |       0 |    0 |     7 |      0 |      0 |          0 |
+|       u_otbn_predecode                            |                           otbn_predecode |         13 |         13 |       0 |    0 |     0 |      0 |      0 |          0 |
+|       u_rf_predec_bignum_flop                     |               prim_flop__parameterized12 |      13225 |      13225 |       0 |    0 |   122 |      0 |      0 |          0 |
+|     u_otbn_lsu                                    |                                 otbn_lsu |        133 |        133 |       0 |    0 |     3 |      0 |      0 |          0 |
+|     u_otbn_mac_bignum                             |                          otbn_mac_bignum |       1217 |       1217 |       0 |    0 |   312 |      0 |      0 |         16 |
+|       (u_otbn_mac_bignum)                         |                          otbn_mac_bignum |        782 |        782 |       0 |    0 |   312 |      0 |      0 |          0 |
+|       mul                                         |                          otbn_bignum_mul |        435 |        435 |       0 |    0 |     0 |      0 |      0 |         16 |
+|     u_otbn_rf_base                                |                             otbn_rf_base |       1076 |       1048 |      28 |    0 |  1180 |      0 |      0 |          0 |
+|       (u_otbn_rf_base)                            |                             otbn_rf_base |         35 |         35 |       0 |    0 |     0 |      0 |      0 |          0 |
+|       gen_rf_base_ff.u_otbn_rf_base_inner         |                          otbn_rf_base_ff |        702 |        702 |       0 |    0 |  1170 |      0 |      0 |          0 |
+|       u_call_stack                                |               otbn_stack__parameterized0 |        339 |        311 |      28 |    0 |    10 |      0 |      0 |          0 |
+|         (u_call_stack)                            |               otbn_stack__parameterized0 |         28 |          0 |      28 |    0 |     0 |      0 |      0 |          0 |
+|         u_cnt_err_flop                            |                             prim_flop_36 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         u_stack_wr_ptr                            |               prim_count__parameterized0 |        310 |        310 |       0 |    0 |     9 |      0 |      0 |          0 |
+|           (u_stack_wr_ptr)                        |               prim_count__parameterized0 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           gen_cnts[0].u_cnt_flop                  |               prim_flop__parameterized17 |        303 |        303 |       0 |    0 |     4 |      0 |      0 |          0 |
+|           gen_cnts[1].u_cnt_flop                  |               prim_flop__parameterized18 |          7 |          7 |       0 |    0 |     4 |      0 |      0 |          0 |
+|     u_otbn_rf_bignum                              |                           otbn_rf_bignum |        212 |        212 |       0 |    0 |  9985 |      0 |      0 |          0 |
+|       gen_rf_bignum_ff.u_otbn_rf_bignum_inner     |                        otbn_rf_bignum_ff |        212 |        212 |       0 |    0 |  9985 |      0 |      0 |          0 |
+|         (gen_rf_bignum_ff.u_otbn_rf_bignum_inner) |                        otbn_rf_bignum_ff |        212 |        212 |       0 |    0 |  9984 |      0 |      0 |          0 |
+|         u_we_err_flop                             |                             prim_flop_35 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_otbn_rnd                                    |                                 otbn_rnd |       1872 |       1872 |       0 |    0 |   519 |      0 |      0 |          0 |
+|       (u_otbn_rnd)                                |                                 otbn_rnd |          4 |          4 |       0 |    0 |   263 |      0 |      0 |          0 |
+|       u_xoshiro256pp                              |                        prim_xoshiro256pp |       1868 |       1868 |       0 |    0 |   256 |      0 |      0 |          0 |
+|     u_otbn_start_stop_control                     |                  otbn_start_stop_control |        471 |        471 |       0 |    0 |    26 |      0 |      0 |          0 |
+|       (u_otbn_start_stop_control)                 |                  otbn_start_stop_control |          5 |          5 |       0 |    0 |    13 |      0 |      0 |          0 |
+|       u_prim_mubi4_sender_rma_ack                 |        prim_mubi4_sender__parameterized0 |          5 |          5 |       0 |    0 |     4 |      0 |      0 |          0 |
+|         gen_flops.u_prim_flop                     |             prim_flop__parameterized5_34 |          5 |          5 |       0 |    0 |     4 |      0 |      0 |          0 |
+|       u_state_regs                                |     prim_sparse_fsm_flop__parameterized0 |        457 |        457 |       0 |    0 |     7 |      0 |      0 |          0 |
+|         u_state_flop                              |                prim_flop__parameterized6 |        457 |        457 |       0 |    0 |     7 |      0 |      0 |          0 |
+|       u_wipe_after_urnd_refresh_flop              |        prim_mubi4_sender__parameterized1 |          5 |          5 |       0 |    0 |     2 |      0 |      0 |          0 |
+|         gen_flops.u_prim_flop                     |                prim_flop__parameterized5 |          5 |          5 |       0 |    0 |     2 |      0 |      0 |          0 |
+|   u_otbn_scramble_ctrl                            |                       otbn_scramble_ctrl |        998 |        998 |       0 |    0 |   400 |      0 |      0 |          0 |
+|     (u_otbn_scramble_ctrl)                        |                       otbn_scramble_ctrl |        970 |        970 |       0 |    0 |   388 |      0 |      0 |          0 |
+|     u_otp_key_req_sync                            |                    prim_sync_reqack_data |          5 |          5 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       u_prim_sync_reqack                          |                      prim_sync_reqack_27 |          5 |          5 |       0 |    0 |     8 |      0 |      0 |          0 |
+|         (u_prim_sync_reqack)                      |                      prim_sync_reqack_27 |          2 |          2 |       0 |    0 |     4 |      0 |      0 |          0 |
+|         gen_nrz_hs_protocol.ack_sync              |                       prim_flop_2sync_28 |          1 |          1 |       0 |    0 |     2 |      0 |      0 |          0 |
+|           u_sync_1                                |                             prim_flop_32 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           u_sync_2                                |                             prim_flop_33 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         gen_nrz_hs_protocol.req_sync              |                       prim_flop_2sync_29 |          2 |          2 |       0 |    0 |     2 |      0 |      0 |          0 |
+|           u_sync_1                                |                             prim_flop_30 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           u_sync_2                                |                             prim_flop_31 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_state_regs                                  |                     prim_sparse_fsm_flop |         24 |         24 |       0 |    0 |     4 |      0 |      0 |          0 |
+|       u_state_flop                                |                prim_flop__parameterized4 |         24 |         24 |       0 |    0 |     4 |      0 |      0 |          0 |
+|   u_prim_edn_rnd_req                              |                             prim_edn_req |        285 |        285 |       0 |    0 |   307 |      0 |      0 |          0 |
+|     (u_prim_edn_rnd_req)                          |                             prim_edn_req |         11 |         11 |       0 |    0 |    35 |      0 |      0 |          0 |
+|     u_prim_packer_fifo                            |                      prim_packer_fifo_18 |        267 |        267 |       0 |    0 |   264 |      0 |      0 |          0 |
+|     u_prim_sync_reqack_data                       | prim_sync_reqack_data__parameterized0_19 |          7 |          7 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       u_prim_sync_reqack                          |                      prim_sync_reqack_20 |          7 |          7 |       0 |    0 |     8 |      0 |      0 |          0 |
+|         (u_prim_sync_reqack)                      |                      prim_sync_reqack_20 |          2 |          2 |       0 |    0 |     4 |      0 |      0 |          0 |
+|         gen_nrz_hs_protocol.ack_sync              |                       prim_flop_2sync_21 |          3 |          3 |       0 |    0 |     2 |      0 |      0 |          0 |
+|           u_sync_1                                |                             prim_flop_25 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           u_sync_2                                |                             prim_flop_26 |          3 |          3 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         gen_nrz_hs_protocol.req_sync              |                       prim_flop_2sync_22 |          2 |          2 |       0 |    0 |     2 |      0 |      0 |          0 |
+|           u_sync_1                                |                             prim_flop_23 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           u_sync_2                                |                             prim_flop_24 |          2 |          2 |       0 |    0 |     1 |      0 |      0 |          0 |
+|   u_prim_edn_urnd_req                             |             prim_edn_req__parameterized0 |        271 |        271 |       0 |    0 |   272 |      0 |      0 |          0 |
+|     u_prim_packer_fifo                            |                         prim_packer_fifo |        267 |        267 |       0 |    0 |   264 |      0 |      0 |          0 |
+|     u_prim_sync_reqack_data                       |    prim_sync_reqack_data__parameterized0 |          4 |          4 |       0 |    0 |     8 |      0 |      0 |          0 |
+|       u_prim_sync_reqack                          |                         prim_sync_reqack |          4 |          4 |       0 |    0 |     8 |      0 |      0 |          0 |
+|         (u_prim_sync_reqack)                      |                         prim_sync_reqack |          2 |          2 |       0 |    0 |     4 |      0 |      0 |          0 |
+|         gen_nrz_hs_protocol.ack_sync              |                          prim_flop_2sync |          1 |          1 |       0 |    0 |     2 |      0 |      0 |          0 |
+|           u_sync_1                                |                             prim_flop_16 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           u_sync_2                                |                             prim_flop_17 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|         gen_nrz_hs_protocol.req_sync              |                       prim_flop_2sync_14 |          1 |          1 |       0 |    0 |     2 |      0 |      0 |          0 |
+|           u_sync_1                                |                                prim_flop |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|           u_sync_2                                |                             prim_flop_15 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|   u_prim_mubi4_sender                             |                        prim_mubi4_sender |          1 |          1 |       0 |    0 |     2 |      0 |      0 |          0 |
+|     gen_flops.u_prim_flop                         |                prim_flop__parameterized2 |          1 |          1 |       0 |    0 |     2 |      0 |      0 |          0 |
+|   u_reg                                           |                             otbn_reg_top |        804 |        804 |       0 |    0 |    71 |      0 |      0 |          0 |
+|     (u_reg)                                       |                             otbn_reg_top |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_bad_internal_state        |              prim_subreg__parameterized2 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_bus_intg_violation        |            prim_subreg__parameterized2_7 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_dmem_intg_violation       |            prim_subreg__parameterized2_8 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_fatal_software            |            prim_subreg__parameterized2_9 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_illegal_bus_access        |           prim_subreg__parameterized2_10 |          2 |          2 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_imem_intg_violation       |           prim_subreg__parameterized2_11 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_lifecycle_escalation      |           prim_subreg__parameterized2_12 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_fatal_alert_cause_reg_intg_violation        |           prim_subreg__parameterized2_13 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_intr_enable                                 |              prim_subreg__parameterized0 |          0 |          0 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_intr_state                                  |                              prim_subreg |          2 |          2 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_reg_if                                      |                         tlul_adapter_reg |         78 |         78 |       0 |    0 |    45 |      0 |      0 |          0 |
+|     u_socket                                      |                           tlul_socket_1n |        705 |        705 |       0 |    0 |    11 |      0 |      0 |          0 |
+|     u_status                                      |              prim_subreg__parameterized1 |          9 |          9 |       0 |    0 |     4 |      0 |      0 |          0 |
+|   u_tlul_adapter_sram_dmem                        |        tlul_adapter_sram__parameterized0 |        273 |        273 |       0 |    0 |    73 |      0 |      0 |          0 |
+|     (u_tlul_adapter_sram_dmem)                    |        tlul_adapter_sram__parameterized0 |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|     u_reqfifo                                     |                         prim_fifo_sync_2 |         49 |         49 |       0 |    0 |    19 |      0 |      0 |          0 |
+|       (u_reqfifo)                                 |                         prim_fifo_sync_2 |         44 |         44 |       0 |    0 |    18 |      0 |      0 |          0 |
+|       gen_singleton_fifo.gen_secure.u_inv_full    |              prim_flop__parameterized0_6 |          5 |          5 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_rspfifo                                     |         prim_fifo_sync__parameterized1_3 |         21 |         21 |       0 |    0 |    42 |      0 |      0 |          0 |
+|       (u_rspfifo)                                 |         prim_fifo_sync__parameterized1_3 |         20 |         20 |       0 |    0 |    41 |      0 |      0 |          0 |
+|       gen_singleton_fifo.gen_secure.u_inv_full    |              prim_flop__parameterized0_5 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_sramreqfifo                                 |           prim_fifo_sync__parameterized2 |        203 |        203 |       0 |    0 |    10 |      0 |      0 |          0 |
+|       (u_sramreqfifo)                             |           prim_fifo_sync__parameterized2 |        197 |        197 |       0 |    0 |     9 |      0 |      0 |          0 |
+|       gen_singleton_fifo.gen_secure.u_inv_full    |              prim_flop__parameterized0_4 |          6 |          6 |       0 |    0 |     1 |      0 |      0 |          0 |
+|   u_tlul_adapter_sram_imem                        |                        tlul_adapter_sram |         82 |         82 |       0 |    0 |    70 |      0 |      0 |          0 |
+|     (u_tlul_adapter_sram_imem)                    |                        tlul_adapter_sram |          0 |          0 |       0 |    0 |     2 |      0 |      0 |          0 |
+|     u_reqfifo                                     |                           prim_fifo_sync |         68 |         68 |       0 |    0 |    19 |      0 |      0 |          0 |
+|       (u_reqfifo)                                 |                           prim_fifo_sync |         65 |         65 |       0 |    0 |    18 |      0 |      0 |          0 |
+|       gen_singleton_fifo.gen_secure.u_inv_full    |              prim_flop__parameterized0_1 |          3 |          3 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_rspfifo                                     |           prim_fifo_sync__parameterized1 |         10 |         10 |       0 |    0 |    42 |      0 |      0 |          0 |
+|       (u_rspfifo)                                 |           prim_fifo_sync__parameterized1 |          9 |          9 |       0 |    0 |    41 |      0 |      0 |          0 |
+|       gen_singleton_fifo.gen_secure.u_inv_full    |              prim_flop__parameterized0_0 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
+|     u_sramreqfifo                                 |           prim_fifo_sync__parameterized0 |          5 |          5 |       0 |    0 |     7 |      0 |      0 |          0 |
+|       (u_sramreqfifo)                             |           prim_fifo_sync__parameterized0 |          3 |          3 |       0 |    0 |     6 |      0 |      0 |          0 |
+|       gen_singleton_fifo.gen_secure.u_inv_full    |                prim_flop__parameterized0 |          2 |          2 |       0 |    0 |     1 |      0 |      0 |          0 |
++---------------------------------------------------+------------------------------------------+------------+------------+---------+------+-------+--------+--------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+

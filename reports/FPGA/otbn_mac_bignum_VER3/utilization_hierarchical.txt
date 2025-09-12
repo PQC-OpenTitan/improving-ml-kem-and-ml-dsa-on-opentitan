@@ -1,12 +1,11 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
-| Date         : Thu Sep  4 15:38:57 2025
-| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 08:57:15 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
 | Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA/otbn_mac_bignum_VER3/utilization_hierarchical.txt
 | Design       : otbn_mac_bignum
-| Device       : xc7a200tfbg676-3
-| Speed File   : -3
+| Device       : 7k160tfbg676-1
 | Design State : Routed
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -22,17 +21,17 @@ Table of Contents
 +-----------------------+----------------+------------+------------+---------+------+-----+--------+--------+------------+
 |        Instance       |     Module     | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP Blocks |
 +-----------------------+----------------+------------+------------+---------+------+-----+--------+--------+------------+
-| otbn_mac_bignum       |          (top) |       5926 |       5926 |       0 |    0 | 624 |      0 |      0 |         16 |
+| otbn_mac_bignum       |          (top) |       5771 |       5771 |       0 |    0 | 624 |      0 |      0 |         16 |
 |   (otbn_mac_bignum)   |          (top) |        253 |        253 |       0 |    0 | 624 |      0 |      0 |          0 |
-|   adder               |     buffer_bit |       1890 |       1890 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   adder               |     buffer_bit |       1850 |       1850 |       0 |    0 |   0 |      0 |      0 |          0 |
 |   adder16             |   buffer_bit_0 |        997 |        997 |       0 |    0 |   0 |      0 |      0 |          0 |
-|   mul                 |    unified_mul |       2424 |       2424 |       0 |    0 |   0 |      0 |      0 |         16 |
+|   mul                 |    unified_mul |       2123 |       2123 |       0 |    0 |   0 |      0 |      0 |         16 |
 |   u_acc_blanker       |   prim_blanker |          1 |          1 |       0 |    0 |   0 |      0 |      0 |          0 |
 |     u_blank_and       |    prim_and2_4 |          1 |          1 |       0 |    0 |   0 |      0 |      0 |          0 |
-|   u_operand_a_blanker | prim_blanker_1 |        314 |        314 |       0 |    0 |   0 |      0 |      0 |          0 |
-|     u_blank_and       |    prim_and2_3 |        314 |        314 |       0 |    0 |   0 |      0 |      0 |          0 |
-|   u_operand_b_blanker | prim_blanker_2 |         63 |         63 |       0 |    0 |   0 |      0 |      0 |          0 |
-|     u_blank_and       |      prim_and2 |         63 |         63 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   u_operand_a_blanker | prim_blanker_1 |        448 |        448 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     u_blank_and       |    prim_and2_3 |        448 |        448 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   u_operand_b_blanker | prim_blanker_2 |        102 |        102 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     u_blank_and       |      prim_and2 |        102 |        102 |       0 |    0 |   0 |      0 |      0 |          0 |
 +-----------------------+----------------+------------+------------+---------+------+-----+--------+--------+------------+
 * Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
 

@@ -64,7 +64,7 @@ TOP_MODULES = [
 ]
 
 # List of adders used in the design.
-MULTIPLIERS = ["unified_mul", "otbn_bignum_mul"]
+MULTIPLIERS = ["unified_mul", "otbn_bignum_mul", "otbn_mul"]
 
 # List of adders used in the design.
 ADDERS = ["buffer_bit", "brent_kung", "sklansky", "kogge_stone"]
@@ -75,6 +75,7 @@ CLOCK_PERIOD = {
   "brent_kung":  "4.1",
   "sklansky":    "4.0",
   "kogge_stone": "5.1",
+  "otbn_mul": "10.5",
   "unified_mul": "10.5",
   "otbn_bignum_mul": "10.5"
 }
