@@ -137,6 +137,9 @@ parameters:
   BNMULV_COND_SUB:
     datatype: bool
     paramtype: vlogdefine
+  WALLACE:
+    datatype: bool
+    paramtype: vlogdefine
   TOWARDS_BASE:
     datatype: bool
     paramtype: vlogdefine
@@ -208,6 +211,7 @@ targets:
       - towards     ? (TOWARDS_BASE=true)
       - towards     ? (TOWARDS_MAC=true)
       - towards     ? (TOWARDS_ADDER=true)
+      - wallace     ? (WALLACE=true)
       - bnmulv_ver1 ? (TOWARDS_KMAC=true)
       - bnmulv_ver1 ? (TOWARDS_BASE=true)
       - bnmulv_ver1 ? (BNMULV=true)

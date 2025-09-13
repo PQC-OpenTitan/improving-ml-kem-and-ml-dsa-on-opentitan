@@ -36,6 +36,10 @@ async def run_unified_test(dut):
 
             result = int(dut.result.value)
 
+#            print(dut.carry[10].value)
+#
+#            assert False
+
             print(data_type, dut.word_sel_A.value, dut.word_sel_B.value, dut.half_sel.value, dut.lane_mode.value, dut.lane_word_32.value, dut.lane_word_16.value)
 
 
@@ -63,13 +67,15 @@ async def run_unified_test(dut):
                 assert out == expected, f"16x16 FAIL: A={A}, B={B}, got={hex(out)}, expected={hex(expected)}"
 
 
-def test_unified_mult_build():
+@pytest.mark.parametrize("define",[None, "WALLACE"])
+def test_unified_mult_build(define):
     run(
         toplevel="unified_mul",
         module="test_unified_mul",
         toplevel_lang="verilog",
         testcase="run_unified_test",
         simulator="verilator",
+        extra_args=[f"-D{define}"] if define else [],
         sim_build=f"sim_build/unified_mul",
         verilog_sources=["bn_vec_core/unified_mul.sv"],
         #waves=True,

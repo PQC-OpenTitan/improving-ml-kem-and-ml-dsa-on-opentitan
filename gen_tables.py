@@ -278,7 +278,8 @@ if __name__ == "__main__":
   if args.mul:
     modules = [("otbn_bignum_mul", None, []),
                ("otbn_mul",        None, ["towards"]),
-               ("unified_mul",     None, ["bnmulv_ver1"])]
+               ("unified_mul",     None, []),
+               ("unified_mul",     "wallace", ["wallace"])]
   elif args.adders:
     modules = [(top_module, None, []) for top_module in ["ref_add", "towards_alu_adder", "towards_mac_adder", "buffer_bit", "brent_kung", "kogge_stone", "sklansky"]]
     if args.tool in ["all", "Vivado"]:
@@ -303,6 +304,7 @@ if __name__ == "__main__":
     modules = [(top_module, flag_group, flag) for top_module in ["otbn_mac_bignum", "otbn_alu_bignum"] for flag_group, flag in flags]
 
   if args.flags:
+    flags = args.flags.split(",")
     modules = [(args.top_module, "_".join(flags), flags)]
 
   if args.run_synthesis:

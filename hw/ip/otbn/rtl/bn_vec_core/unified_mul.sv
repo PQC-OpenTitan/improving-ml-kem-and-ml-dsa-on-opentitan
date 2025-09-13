@@ -244,14 +244,81 @@ module unified_mul #(
     end
   end
 
+`ifdef WALLACE
+  // Splitt operands into NOF_OP chunks of width OP_W
+  localparam OP_W = 16; 
+  localparam NOF_OP = 4;
+
+  // Carry-Save-Addition function to build CSA-tree after computation of partial products
+  function automatic logic [WLEN-1:0] csa(
+    input logic [WLEN/2-1:0] op0_i,
+    input logic [WLEN/2-1:0] op1_i,
+    input logic [WLEN/2-1:0] op2_i
+  );
+    logic [WLEN/2:0] c;
+    logic [WLEN/2-1:0] s;
+
+    c[0] = 1'b0;
+    for (int i=0; i<WLEN/2; ++i) begin
+        {c[i+1], s[i]} = op0_i[i] + op1_i[i] + op2_i[i];
+    end
+
+    return {c[WLEN/2-1:0],s};
+  endfunction
+
+  logic [WLEN/2-1:0] mul2csa [7];
+
+  assign mul2csa[0] = {products[15], products[12], products[3], products[0]};
+  assign mul2csa[1] = {{16'b0}, products[14], products[10], products[2], {16'b0}};
+  assign mul2csa[2] = {{16'b0}, products[13], products[9], products[1], {16'b0}};
+  assign mul2csa[3] = {{32'b0}, products[11], products[8], {32'b0}};
+  assign mul2csa[4] = {{32'b0}, products[7], products[4], {32'b0}};
+  assign mul2csa[5] = {{48'b0}, products[6], {48'b0}};
+  assign mul2csa[6] = {{48'b0}, products[5], {48'b0}};
+
+  /* verilator lint_off UNUSED */
+  /* verilator lint_off UNOPTFLAT */
+  /* verilator lint_off SIDEEFFECT */
+  logic [WLEN/2-1:0] mul2csa2 [5];
+
+  assign mul2csa2[0] = mul2csa[6];
+  assign {mul2csa2[1], mul2csa2[2]} = csa (.op0_i(mul2csa[0]), .op1_i(mul2csa[1]), .op2_i(mul2csa[2]));
+  assign {mul2csa2[3], mul2csa2[4]} = csa (.op0_i(mul2csa[3]), .op1_i(mul2csa[4]), .op2_i(mul2csa[5]));
+
+  // Partial Product Combination
+  localparam NOF_CSASTAGES = 3;
+
+  logic [WLEN/2-1:0] carry [NOF_CSASTAGES-1:0];
+  logic [WLEN/2-1:0] sum [NOF_CSASTAGES-1:0];
+
+  // Build CSA tree for addition of (NOF_DSP_W x NOF_DSP_H) operands
+  generate
+    for (genvar i=0; i<NOF_CSASTAGES; ++i) begin
+      if (i == 0) begin : g_inital_stage
+        assign {carry[i],sum[i]} = csa (.op0_i(mul2csa2[0]), .op1_i(mul2csa2[1]), .op2_i(mul2csa2[2]));
+      end : g_inital_stage else begin : g_intermediate_stage
+        assign {carry[i],sum[i]} = csa (.op0_i(sum[i-1]), .op1_i(carry[i-1]), .op2_i(mul2csa2[2+i]));
+      end : g_intermediate_stage
+    end
+  endgenerate
+
+  /* verilator lint_on SIDEEFFECT */
+  /* verilator lint_on UNUSED */
+  /* verilator lint_on UNOPTFLAT */
+`endif
+
   // -- 64x64 reconstruction using the 32x32 results --
   always_comb begin
     result_64 = '0;
     if (word_mode == MODE_64) begin
+`ifdef WALLACE
+      result_64 = sum[$left(sum)] + carry[$left(carry)];
+`else
       result_64 = {{DLEN{1'b0}}, partial32[0]} +
                   {{SLEN{1'b0}}, partial32[1], {SLEN{1'b0}}} +
                   {{SLEN{1'b0}}, partial32[2], {SLEN{1'b0}}} +
                   {partial32[3], {DLEN{1'b0}}};
+`endif
     end
   end
 
