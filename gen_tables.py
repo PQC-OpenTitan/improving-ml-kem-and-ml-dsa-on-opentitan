@@ -83,6 +83,7 @@ def extract_Genus(file_path):
 
     utilization_data = {
         "Fmax": None,
+        "Total Area": None
     }
 
     try:
@@ -114,36 +115,46 @@ def extract_Genus(file_path):
     return utilization_data
 
 
-def extract(top_module, flag_group):
+def extract(top_module, flag_group, tool):
   outdir = top_module + ("_" + flag_group if flag_group else "")
 
-  result = extract_utilization_FPGA(f"reports/FPGA/{outdir}")
+  data = [top_module.replace("_", "\_") + (" " + flag_group if flag_group else "")]
 
-#  timing = extract_delay_FPGA(f"reports/FPGA/{outdir}/timing.txt")
-
-  #print(timing, type(timing), result)
-
-#  result["Fmax"] = 1000.0 / timing if timing else timing
+  if tool in ["all", "Vivado"]:
+    result = extract_utilization_FPGA(f"reports/FPGA/{outdir}")
+    data += list(result.values())
 
   #asap7 = extract_ORFS(f"reports/ASIC/{top_module}{'_' + flag_group if flag_group else ''}_asap7_stats")
-  sky130hd = extract_ORFS(f"reports/ASIC/{top_module}{'_' + flag_group if flag_group else ''}_sky130hd_stats")
-
-  genus = extract_Genus(f"reports/ASIC-Genus/{outdir}")
-
-  data = [top_module.replace("_", "\_") + (" " + flag_group if flag_group else "")] +\
-          list(result.values()) + \
-          list(sky130hd.values()) + \
-          list(genus.values())
           #[1000/timing if timing else 0] + list(asap7.values()) + \
+
+  if tool in ["all", "ORFS"]:
+    sky130hd = extract_ORFS(f"reports/ASIC/{top_module}{'_' + flag_group if flag_group else ''}_sky130hd_stats")
+    data += list(sky130hd.values())
+
+  if tool in ["all", "Genus"]:
+    genus = extract_Genus(f"reports/ASIC-Genus/{outdir}")
+    data += list(genus.values())
 
   return data
 
-def report(data):
-  headers = ["top\\_module", "LUT", "DSP", "CARRY4", "FF", "BRAM", "Fmax", "Fmax", "area", "Fmax", "area"]
+def report(data, tool):
+  headers = ["top\\_module"]
+  floatfmt= [""]
+
+  if tool in ["all", "Vivado"]:
+    headers += ["LUT", "DSP", "CARRY4", "FF", "BRAM", "Fmax"]
+    floatfmt += ["g", "g", "g", "g", "g", "g"]
+
+  if tool in ["all", "ORFS"]:
+    headers += ["Fmax", "area"]
+    floatfmt += ["g", ".3f"]
+
+  if tool in ["all", "Genus"]:
+    headers += ["Fmax", "area"]
+    floatfmt += ["g", ".3f"]
   
   latex_table = tabulate(data, headers, tablefmt="latex_raw",
-                         floatfmt=["", "g", "g", "g", "g", "g", "g", "g", ".3f"], #, ".3f", ".3f"],
-                         missingval="{---}")
+                         floatfmt=floatfmt, missingval="{---}")
   
   print("""
 \\documentclass{standalone}
@@ -196,8 +207,16 @@ if __name__ == "__main__":
 
   parser.add_argument(
       "--run_synthesis",
-      choices=['Vivado', 'ORFS', 'Genus'],
-      help="Run synthesis with specified tool."
+      action="store_true",
+      default=False,
+      help="Run synthesis. (default: False)"
+  )
+
+  parser.add_argument(
+      "--tool",
+      choices=['Vivado', 'ORFS', 'Genus', 'all'],
+      default='all',
+      help="Output results or run synthesis for specified tool. (default: all)"
   )
 
   parser.add_argument(
@@ -254,51 +273,48 @@ if __name__ == "__main__":
   print(f"run_synthesis: {args.run_synthesis}")
   print(f"top_module: {args.top_module}")
 
-  flags = {"": []}
-  modules = [(args.top_module, flags)]
+  modules = [(args.top_module, None, [])]
 
   if args.mul:
-    modules = [("otbn_bignum_mul", {None: []}),
-               ("otbn_mul",        {None: ["towards"]}),
-               ("unified_mul",     {None: ["bnmulv_ver1"]})]
+    modules = [("otbn_bignum_mul", None, []),
+               ("otbn_mul",        None, ["towards"]),
+               ("unified_mul",     None, ["bnmulv_ver1"])]
   elif args.adders:
-    modules = [(top_module, {"": []}) for top_module in ["ref_add", "towards_alu_adder", "towards_mac_adder", "buffer_bit", "brent_kung", "kogge_stone", "sklansky"]]
+    modules = [(top_module, None, []) for top_module in ["ref_add", "towards_alu_adder", "towards_mac_adder", "buffer_bit", "brent_kung", "kogge_stone", "sklansky"]]
+    if args.tool in ["all", "Vivado"]:
+      modules.insert(4, ("csa_carry4", None, "carry4"))
   #elif args.cond_sub:
   #  modules = ["cond_sub", "cond_sub_buffer_bit"]
   elif args.otbn:
-    flags = {"": [],
-             "KMAC": ["kmac"],
-             "TOWARDS": ["towards"],
-             "VER1": ["bnmulv_ver1"],
-             "VER2": ["bnmulv_ver2"],
-             "VER3": ["bnmulv_ver3"]}
-    modules = [("otbn", flags)]
+    flags = [(None, []),
+             ("KMAC", ["kmac"]),
+             ("TOWARDS", ["towards"]),
+             ("VER1", ["bnmulv_ver1"]),
+             ("VER2", ["bnmulv_ver2"]),
+             ("VER3", ["bnmulv_ver3"])]
+    modules = [("otbn", flag_group, flag) for flag_group, flag in flags]
   elif args.otbn_sub:
-    flags = {"": [],
-             "KMAC": ["kmac"],
-             "TOWARDS": ["towards"],
-             "VER1": ["bnmulv_ver1"],
-             "VER2": ["bnmulv_ver2"],
-             "VER3": ["bnmulv_ver3"]}
-    modules = [(top_module, flags) for top_module in ["otbn_mac_bignum", "otbn_alu_bignum"]]
+    flags = [(None, []),
+             ("KMAC", ["kmac"]),
+             ("TOWARDS", ["towards"]),
+             ("VER1", ["bnmulv_ver1"]),
+             ("VER2", ["bnmulv_ver2"]),
+             ("VER3", ["bnmulv_ver3"])]
+    modules = [(top_module, flag_group, flag) for top_module in ["otbn_mac_bignum", "otbn_alu_bignum"] for flag_group, flag in flags]
 
   if args.flags:
-    flags = args.flags.split(",")
-    flags = {"_".join(flags): flags}
-
-    modules = [(args.top_module, flags)]
+    modules = [(args.top_module, "_".join(flags), flags)]
 
   if args.run_synthesis:
-    for top_module, flags in modules:
-      for flag_group, flag in flags.items():
-        if args.run_synthesis == "Genus":
-          synthesize_Genus(top_module, "reports/ASIC-Genus/"+ top_module + ("_" + flag_group if flag_group else ""), flag)
-        if args.run_synthesis == "ORFS":
-          synthesize_ORFS(top_module, "reports/ASIC/", flag_group)
-        if args.run_synthesis == "Vivado":
-          synthesize(top_module, "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else ""), flag)
+    for top_module, flag_group, flag in modules:
+      if args.run_synthesis and (args.tool in ["all", "Genus"]):
+        synthesize_Genus(top_module, "reports/ASIC-Genus/"+ top_module + ("_" + flag_group if flag_group else ""), flag)
+      if args.run_synthesis and (args.tool in ["all", "ORFS"]):
+        synthesize_ORFS(top_module, "reports/ASIC/", flag_group)
+      if args.run_synthesis and (args.tool in ["all", "Vivado"]):
+        synthesize(top_module, "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else ""), flag)
 
-  data = [extract(top_module, flag_group) for flag_group in flags.keys() for top_module, flags in modules]
+  data = [extract(top_module, flag_group, args.tool) for top_module, flag_group, flag in modules]
 
-  report(data)
+  report(data, args.tool)
 
