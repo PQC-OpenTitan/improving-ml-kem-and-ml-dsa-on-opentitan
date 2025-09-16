@@ -60,6 +60,7 @@ async def run_adder_test(dut):
     [("sklansky_adder_256_mode0_only", MODE_64, "yes")] +
     [("sklansky_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]] +
     [("kogge_stone_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]] +
+    [("kogge_stone_adder_256_mode0_only", MODE_64, "yes")] +
     [("csa_adder_256", i, "yes") for i in [MODE_16, MODE_32, MODE_64]] #+
     #[("buffer_bit", i, "yes") for i in [MODE_16, MODE_32, MODE_64]]
 )
