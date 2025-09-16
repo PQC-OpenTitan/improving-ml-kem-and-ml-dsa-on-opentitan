@@ -138,7 +138,6 @@ def target_list(bnmulv_ver, verbose):
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Help message printed in multi-lines",
         formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument(
@@ -220,7 +219,7 @@ def main() -> int:
         print_info(f'INFO: Set BNMULV_VER = {bnmulv_ver}')
         flags  = f'--flag=bnmulv_ver{bnmulv_ver} '
         if args.mac_adder == 'csa_carry4' or args.alu_adder == 'csa_carry4':
-            flags += '--flag=csa_carry4 '
+            flags += '--flag=carry4 '
     elif bnmulv_ver == 0:
         print_info(f'INFO: Set BNMULV_VER = {bnmulv_ver}')
         flags = '--flag=towards '
