@@ -17,7 +17,6 @@ async def run_buffer_bit_test(dut):
         word_mode = VecType(int(os.environ.get("WORD_MODE")))
         addition = int(os.environ.get("ADDITION"))
 
-        random.seed(0)  # For reproducibility
         in_a = random.getrandbits(256)
         in_b = random.getrandbits(256)
         print(f"in_b: {format(in_b, '064x')}")

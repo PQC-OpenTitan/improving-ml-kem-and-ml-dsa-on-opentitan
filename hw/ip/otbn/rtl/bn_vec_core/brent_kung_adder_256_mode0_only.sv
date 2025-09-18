@@ -1,5 +1,3 @@
-`timescale 1ns/1ps
-
 module brent_kung_adder_256_mode0_only (
     input  logic [255:0] A,
     input  logic [255:0] B,

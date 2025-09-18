@@ -121,12 +121,12 @@ module kogge_stone
             end else begin
                 assign g5[i] = (((word_mode == VecType_h16)) | 
                                 ((word_mode == VecType_s32) && ((i % 32) < 16)) | 
-                                ((word_mode == VecType_d64) && ((i % 64) < 32)))
+                                ((word_mode == VecType_d64) && ((i % 64) < 16)))
                               ? g4[i] | (p4[i] & b_invert)
                               : g4[i] | (p4[i] & g4[i-16]);
                 assign p5[i] = (((word_mode == VecType_h16)) | 
                                 ((word_mode == VecType_s32) && ((i % 32) < 16)) |
-                                ((word_mode == VecType_d64) && ((i % 64) < 32)))
+                                ((word_mode == VecType_d64) && ((i % 64) < 16)))
                               ? p4[i]
                               : p4[i] & p4[i-16];
             end
@@ -140,14 +140,16 @@ module kogge_stone
                 assign g6[i] = g5[i];
                 assign p6[i] = p5[i];
             end else begin
-                assign g6[i] = (((word_mode == VecType_v256)) |
-                                ((word_mode == VecType_d64) && ((i % 128) < 64)))
-                              ? (g5[i] | (p5[i] & b_invert)) | (p5[i] & g5[i-32])
-                              : g5[i];
-                assign p6[i] = (((word_mode == VecType_v256)) |
-                                ((word_mode == VecType_d64) && ((i % 128) < 64)))
-                              ? p5[i] & p5[i-32]
-                              : p5[i];
+                assign g6[i] = (((word_mode == VecType_h16)) | 
+                                ((word_mode == VecType_s32)) | 
+                                ((word_mode == VecType_d64) && ((i % 64) < 32)))
+                              ? g5[i] | (p5[i] & b_invert)
+                              : g5[i] | (p5[i] & g5[i-32]);
+                assign p6[i] = (((word_mode == VecType_h16)) | 
+                                ((word_mode == VecType_s32)) |
+                                ((word_mode == VecType_d64) && ((i % 64) < 32)))
+                              ? p5[i]
+                              : p5[i] & p5[i-32];
             end
         end
     endgenerate
@@ -159,7 +161,7 @@ module kogge_stone
                 assign g7[i] = g6[i];
                 assign p7[i] = p6[i];
             end else begin
-                assign g7[i] = (word_mode == VecType_v256) ? g6[i] | (p6[i] & g6[i-64]) : g6[i];
+                assign g7[i] = (word_mode == VecType_v256) ? g6[i] | (p6[i] & g6[i-64]) : g6[i] | (p6[i] & b_invert);
                 assign p7[i] = (word_mode == VecType_v256) ? p6[i] & p6[i-64] : p6[i];
             end
         end

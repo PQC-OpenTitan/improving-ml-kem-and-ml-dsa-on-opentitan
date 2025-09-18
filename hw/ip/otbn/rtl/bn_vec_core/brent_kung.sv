@@ -400,9 +400,12 @@ module brent_kung
         end
     endgenerate
 
+  logic Cx;
+  assign Cx = (word_mode == VecType_v256) ? C[128] : b_invert;
+
   generate
     for(i = 0; i < 16; i++) begin
-      assign cout[i] = G8[i*16 + 15];
+      assign cout[i] = G8[i*16 + 15] | (P7[i*16 + 15] & Cx);
     end
   endgenerate
 
