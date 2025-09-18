@@ -624,7 +624,6 @@ module otbn_mac_bignum
     .A        (adder_op_a[WLEN-1:0]),
     .B        (adder_op_b[WLEN-1:0]),
     .word_mode(mode),
-    .b_invert (1'b0),
     .cin      (1'b0),
     .res      (adder_result[WLEN-1:0]),
     .cout     ()
@@ -635,7 +634,6 @@ module otbn_mac_bignum
     .A        (operation_i.mulv ? adder_op_a[WLEN+:WLEN] : 256'b0),
     .B        (operation_i.mulv ? adder_op_b[WLEN+:WLEN] : 256'b0),
     .word_mode(operation_i.data_type == 1'b0 ? VecType_s32 : VecType_d64),
-    .b_invert (1'b0),
     .cin      (1'b0),
     .res      (adder_result[WLEN+:WLEN]),
     .cout     ()

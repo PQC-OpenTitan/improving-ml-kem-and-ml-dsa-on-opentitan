@@ -1460,7 +1460,6 @@ module otbn_alu_bignum
     .A        (adder_w_op_a_blanked),
     .B        (adder_w_op_b_blanked),
     .word_mode(mode),
-    .b_invert (1'b1), // Operand b is always ~q because this is conditional subtraction.
     .cin      (1'b1), // cin is always set because this is conditional subtraction.
     .res      (adder_w_res),
     .cout     (adder_w_carry_out)
@@ -1502,7 +1501,6 @@ module otbn_alu_bignum
     .A        (adder_x_op_a_blanked),
     .B        (adder_x_op_b_blanked),
     .word_mode(mode),
-    .b_invert (adder_x_op_b_invert),
     .cin      (adder_x_carry_in),
     .res      (adder_x_res),
     .cout     (adder_x_carry_out)
@@ -1538,7 +1536,6 @@ module otbn_alu_bignum
     .A        (adder_y_op_a),
     .B        (adder_y_op_b),
     .word_mode(mode),
-    .b_invert (adder_y_op_b_invert),
     .cin      (adder_y_carry_in),
     .res      (adder_y_res),
     .cout     (adder_y_carry_out)

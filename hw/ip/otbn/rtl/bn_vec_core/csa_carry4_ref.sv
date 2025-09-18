@@ -19,7 +19,6 @@ module csa_carry4_ref
   input logic [WLEN-1:0]  A,
   input logic [WLEN-1:0]  B,
   input vec_type_e        word_mode,
-  input logic             b_invert,
   input logic             cin,
   output logic [WLEN-1:0] res,
   output logic [15:0]     cout
@@ -47,9 +46,9 @@ module csa_carry4_ref
                             (word_mode == VecType_s32) ? (((i*16) % 32) == 0 ? 1'b0 : S_all[i*16 - 1]) :
                             (word_mode == VecType_d64) ? (((i*16) % 64) == 0 ? 1'b0 : S_all[i*16 - 1]) :
                             S_all[i*16 - 1];
-      assign DI[i*16 - 1] = (word_mode == VecType_h16) ? (((i*16) % 16) == 0 ? b_invert : DI_all[i*16 - 1]) :
-                            (word_mode == VecType_s32) ? (((i*16) % 32) == 0 ? b_invert : DI_all[i*16 - 1]) :
-                            (word_mode == VecType_d64) ? (((i*16) % 64) == 0 ? b_invert : DI_all[i*16 - 1]) :
+      assign DI[i*16 - 1] = (word_mode == VecType_h16) ? (((i*16) % 16) == 0 ? cin : DI_all[i*16 - 1]) :
+                            (word_mode == VecType_s32) ? (((i*16) % 32) == 0 ? cin : DI_all[i*16 - 1]) :
+                            (word_mode == VecType_d64) ? (((i*16) % 64) == 0 ? cin : DI_all[i*16 - 1]) :
                             DI_all[i*16 - 1];
     end
   endgenerate

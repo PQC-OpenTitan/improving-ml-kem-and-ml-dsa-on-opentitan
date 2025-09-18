@@ -4,7 +4,6 @@ module sklansky
   input logic [WLEN-1:0]  A,
   input logic [WLEN-1:0]  B,
   input vec_type_e        word_mode,
-  input logic             b_invert,
   input logic             cin,
   output logic [WLEN-1:0] res,
   output logic [15:0]     cout
@@ -85,7 +84,7 @@ module sklansky
         // Stage 5 (distance = 16)
         for (i = 0; i < 256; i = i + 1) begin : stage_5
             if ((i % 32) >= 16) begin
-                assign g_s5[i] = (word_mode != VecType_h16) ? g_s4[i] | (p_s4[i] & g_s4[i - (i%32) + 15])  : g_s4[i] | (p_s4[i] & b_invert);
+                assign g_s5[i] = (word_mode != VecType_h16) ? g_s4[i] | (p_s4[i] & g_s4[i - (i%32) + 15])  : g_s4[i] | (p_s4[i] & cin);
                 assign p_s5[i] = (word_mode != VecType_h16) ? p_s4[i] & p_s4[i - (i%32) + 15]              : 1'b0;
             end else begin
                 assign g_s5[i] = g_s4[i];
@@ -96,7 +95,7 @@ module sklansky
         // Stage 6 (distance = 32)
         for (i = 0; i < 256; i = i + 1) begin : stage_6
             if ((i % 64) >= 32) begin
-                assign g_s6[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32)) ? g_s5[i] | (p_s5[i] & g_s5[i - (i%64) + 31]) : g_s5[i] | (p_s5[i] & b_invert);
+                assign g_s6[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32)) ? g_s5[i] | (p_s5[i] & g_s5[i - (i%64) + 31]) : g_s5[i] | (p_s5[i] & cin);
                 assign p_s6[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32)) ? p_s5[i] & p_s5[i - (i%64) + 31]             : 1'b0;
             end else begin
                 assign g_s6[i] = g_s5[i];
@@ -107,7 +106,7 @@ module sklansky
         // Stage 7 (distance = 64)
         for (i = 0; i < 256; i = i + 1) begin : stage_7
             if ((i % 128) >= 64) begin
-                assign g_s7[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32) & (word_mode != VecType_d64)) ? g_s6[i] | (p_s6[i] & g_s6[i - (i%128) + 63]) : g_s6[i] | (p_s6[i] & b_invert);
+                assign g_s7[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32) & (word_mode != VecType_d64)) ? g_s6[i] | (p_s6[i] & g_s6[i - (i%128) + 63]) : g_s6[i] | (p_s6[i] & cin);
                 assign p_s7[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32) & (word_mode != VecType_d64)) ? p_s6[i] & p_s6[i - (i%128) + 63]             : 1'b0;
             end else begin
                 assign g_s7[i] = g_s6[i];
@@ -118,7 +117,7 @@ module sklansky
         // Stage 8 (distance = 128)
         for (i = 0; i < 256; i = i + 1) begin : stage_8
             if ((i % 256) >= 128) begin
-                assign g_s8[i] = (word_mode == VecType_v256) ? g_s7[i] | (p_s7[i] & g_s7[i - (i%256) + 127]) : g_s7[i] | (p_s7[i] & b_invert);
+                assign g_s8[i] = (word_mode == VecType_v256) ? g_s7[i] | (p_s7[i] & g_s7[i - (i%256) + 127]) : g_s7[i] | (p_s7[i] & cin);
                 assign p_s8[i] = (word_mode == VecType_v256) ? p_s7[i] & p_s7[i - (i%256) + 127]             : 1'b0;
             end else begin
                 assign g_s8[i] = g_s7[i];
@@ -131,11 +130,11 @@ module sklansky
     generate
         for (i = 1; i < 256; i = i + 1) begin : carry_assign
           if ((i % 64) == 0)
-            assign carry[i] = (word_mode == VecType_v256) ? g_s8[i - 1] : b_invert;
+            assign carry[i] = (word_mode == VecType_v256) ? g_s8[i - 1] : cin;
           else if ((i % 32) == 0)
-            assign carry[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32)) ? g_s8[i - 1] : b_invert;
+            assign carry[i] = ((word_mode != VecType_h16) & (word_mode != VecType_s32)) ? g_s8[i - 1] : cin;
           else if ((i % 16) == 0)
-            assign carry[i] = (word_mode != VecType_h16) ? g_s8[i - 1] : b_invert;
+            assign carry[i] = (word_mode != VecType_h16) ? g_s8[i - 1] : cin;
           else
             assign carry[i] = g_s8[i - 1];
         end

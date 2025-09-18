@@ -68,7 +68,7 @@ def create_lut_sdi(verbose=False, bit=0):
 
             init += str(i6[i])
     elif bit == 16:
-        # I0 = A, I1 = B, I2 = word_mode0, I3 = word_mode1, I4 = b_invert, I5 = 1, O5 = S, O6 = D
+        # I0 = A, I1 = B, I2 = word_mode0, I3 = word_mode1, I4 = cin, I5 = 1, O5 = S, O6 = D
         for i in range(64):
             if i >= 32:
                 if i3[i] == 0 and i2[i] == 0: # VecType_h16 == 00
@@ -83,7 +83,7 @@ def create_lut_sdi(verbose=False, bit=0):
 
             init += str(i6[i])
     elif bit == 32:
-        # I0 = A, I1 = B, I2 = word_mode1, I3 = b_invert, O5 = S, O6 = D
+        # I0 = A, I1 = B, I2 = word_mode1, I3 = cin, O5 = S, O6 = D
         for i in range(64):
             if i >= 32:
                 if i2[i] == 1:
@@ -98,7 +98,7 @@ def create_lut_sdi(verbose=False, bit=0):
 
             init += str(i6[i])
     elif bit == 64:
-        # I0 = A, I1 = B, I2 = word_mode0, I3 = word_mode1, I4 = b_invert, O5 = S, O6 = D
+        # I0 = A, I1 = B, I2 = word_mode0, I3 = word_mode1, I4 = cin, O5 = S, O6 = D
         for i in range(64):
             if i >= 32:
                 if i3[i] == 1 and i2[i] == 1: # VecType_v256

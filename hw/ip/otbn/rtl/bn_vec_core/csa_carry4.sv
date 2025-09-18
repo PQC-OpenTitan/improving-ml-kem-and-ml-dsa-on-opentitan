@@ -4,7 +4,6 @@ module csa_carry4
 	input logic [WLEN-1:0]  A,
 	input logic [WLEN-1:0]  B,
 	input vec_type_e        word_mode,
-	input logic             b_invert,
 	input logic             cin,
 	output logic [WLEN-1:0] res,
 	output logic [15:0]     cout
@@ -51,7 +50,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y3", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_12  (.I0(A[12]), .I1(B[12]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[12]), .O6(S[12]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y3", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_13  (.I0(A[13]), .I1(B[13]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[13]), .O6(S[13]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y3", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_14  (.I0(A[14]), .I1(B[14]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[14]), .O6(S[14]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y3", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_15  (.I0(A[15]), .I1(B[15]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[15]), .O6(S[15]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y3", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_15  (.I0(A[15]), .I1(B[15]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[15]), .O6(S[15]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y3", HU_SET = "BOTTOM" *)CARRY4 c_lo_3 (.CI(CO[2][3]), .CYINIT(1'b0), .DI(DI[15:12]), .S(S[15:12]), .O({O[0], res[14:12]}), .CO(CO[3]));
 	// 16..19
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y4", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_16  (.I0(A[16]), .I1(B[16]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[16]), .O6(S[16]));
@@ -75,7 +74,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y7", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_28  (.I0(A[28]), .I1(B[28]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[28]), .O6(S[28]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y7", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_29  (.I0(A[29]), .I1(B[29]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[29]), .O6(S[29]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y7", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_30  (.I0(A[30]), .I1(B[30]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[30]), .O6(S[30]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y7", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI_31  (.I0(A[31]), .I1(B[31]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI[31]), .O6(S[31]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y7", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI_31  (.I0(A[31]), .I1(B[31]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI[31]), .O6(S[31]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y7", HU_SET = "BOTTOM" *)CARRY4 c_lo_7 (.CI(CO[6][3]), .CYINIT(1'b0), .DI(DI[31:28]), .S(S[31:28]), .O({O[1], res[30:28]}), .CO(CO[7]));
 	// 32..35
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y8", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_32  (.I0(A[32]), .I1(B[32]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[32]), .O6(S[32]));
@@ -99,7 +98,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y11", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_44  (.I0(A[44]), .I1(B[44]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[44]), .O6(S[44]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y11", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_45  (.I0(A[45]), .I1(B[45]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[45]), .O6(S[45]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y11", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_46  (.I0(A[46]), .I1(B[46]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[46]), .O6(S[46]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y11", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_47  (.I0(A[47]), .I1(B[47]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[47]), .O6(S[47]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y11", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_47  (.I0(A[47]), .I1(B[47]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[47]), .O6(S[47]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y11", HU_SET = "BOTTOM" *)CARRY4 c_lo_11 (.CI(CO[10][3]), .CYINIT(1'b0), .DI(DI[47:44]), .S(S[47:44]), .O({O[2], res[46:44]}), .CO(CO[11]));
 	// 48..51
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y12", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_48  (.I0(A[48]), .I1(B[48]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[48]), .O6(S[48]));
@@ -123,7 +122,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y15", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_60  (.I0(A[60]), .I1(B[60]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[60]), .O6(S[60]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y15", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_61  (.I0(A[61]), .I1(B[61]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[61]), .O6(S[61]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y15", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_62  (.I0(A[62]), .I1(B[62]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[62]), .O6(S[62]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y15", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI_63  (.I0(A[63]), .I1(B[63]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[63]), .O6(S[63]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y15", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI_63  (.I0(A[63]), .I1(B[63]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[63]), .O6(S[63]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y15", HU_SET = "BOTTOM" *)CARRY4 c_lo_15 (.CI(CO[14][3]), .CYINIT(1'b0), .DI(DI[63:60]), .S(S[63:60]), .O({O[3], res[62:60]}), .CO(CO[15]));
 	// 64..67
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y16", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_64  (.I0(A[64]), .I1(B[64]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[64]), .O6(S[64]));
@@ -147,7 +146,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y19", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_76  (.I0(A[76]), .I1(B[76]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[76]), .O6(S[76]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y19", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_77  (.I0(A[77]), .I1(B[77]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[77]), .O6(S[77]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y19", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_78  (.I0(A[78]), .I1(B[78]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[78]), .O6(S[78]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y19", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_79  (.I0(A[79]), .I1(B[79]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[79]), .O6(S[79]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y19", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_79  (.I0(A[79]), .I1(B[79]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[79]), .O6(S[79]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y19", HU_SET = "BOTTOM" *)CARRY4 c_lo_19 (.CI(CO[18][3]), .CYINIT(1'b0), .DI(DI[79:76]), .S(S[79:76]), .O({O[4], res[78:76]}), .CO(CO[19]));
 	// 80..83
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y20", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_80  (.I0(A[80]), .I1(B[80]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[80]), .O6(S[80]));
@@ -171,7 +170,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y23", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_92  (.I0(A[92]), .I1(B[92]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[92]), .O6(S[92]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y23", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_93  (.I0(A[93]), .I1(B[93]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[93]), .O6(S[93]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y23", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_94  (.I0(A[94]), .I1(B[94]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[94]), .O6(S[94]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y23", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI_95  (.I0(A[95]), .I1(B[95]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI[95]), .O6(S[95]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y23", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI_95  (.I0(A[95]), .I1(B[95]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI[95]), .O6(S[95]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y23", HU_SET = "BOTTOM" *)CARRY4 c_lo_23 (.CI(CO[22][3]), .CYINIT(1'b0), .DI(DI[95:92]), .S(S[95:92]), .O({O[5], res[94:92]}), .CO(CO[23]));
 	// 96..99
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y24", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_96  (.I0(A[96]), .I1(B[96]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[96]), .O6(S[96]));
@@ -195,7 +194,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y27", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_108  (.I0(A[108]), .I1(B[108]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[108]), .O6(S[108]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y27", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_109  (.I0(A[109]), .I1(B[109]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[109]), .O6(S[109]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y27", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_110  (.I0(A[110]), .I1(B[110]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[110]), .O6(S[110]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y27", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_111  (.I0(A[111]), .I1(B[111]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[111]), .O6(S[111]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y27", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI_111  (.I0(A[111]), .I1(B[111]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[111]), .O6(S[111]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y27", HU_SET = "BOTTOM" *)CARRY4 c_lo_27 (.CI(CO[26][3]), .CYINIT(1'b0), .DI(DI[111:108]), .S(S[111:108]), .O({O[6], res[110:108]}), .CO(CO[27]));
 	// 112..115
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y28", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_112  (.I0(A[112]), .I1(B[112]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[112]), .O6(S[112]));
@@ -219,7 +218,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y31", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_124  (.I0(A[124]), .I1(B[124]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[124]), .O6(S[124]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y31", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_125  (.I0(A[125]), .I1(B[125]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[125]), .O6(S[125]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y31", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI_126  (.I0(A[126]), .I1(B[126]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI[126]), .O6(S[126]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y31", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI_127  (.I0(A[127]), .I1(B[127]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[127]), .O6(S[127]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y31", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI_127  (.I0(A[127]), .I1(B[127]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[127]), .O6(S[127]));
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y31", HU_SET = "BOTTOM" *)CARRY4 c_lo_31 (.CI(CO[30][3]), .CYINIT(1'b0), .DI(DI[127:124]), .S(S[127:124]), .O({O[7], res[126:124]}), .CO(CO[31]));
 	// COMPUTE S0, DI0 FOR TOP 128 BITS WHEN CARRY IN = 0
 	// 128..131
@@ -241,7 +240,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y3", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_12  (.I0(A[140]), .I1(B[140]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[12]), .O6(S0[12]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y3", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_13  (.I0(A[141]), .I1(B[141]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[13]), .O6(S0[13]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y3", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_14  (.I0(A[142]), .I1(B[142]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[14]), .O6(S0[14]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y3", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_15  (.I0(A[143]), .I1(B[143]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI0[15]), .O6(S0[15]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y3", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_15  (.I0(A[143]), .I1(B[143]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI0[15]), .O6(S0[15]));
 	// 144..147
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y4", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_16  (.I0(A[144]), .I1(B[144]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[16]), .O6(S0[16]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y4", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_17  (.I0(A[145]), .I1(B[145]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[17]), .O6(S0[17]));
@@ -261,7 +260,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y7", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_28  (.I0(A[156]), .I1(B[156]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[28]), .O6(S0[28]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y7", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_29  (.I0(A[157]), .I1(B[157]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[29]), .O6(S0[29]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y7", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_30  (.I0(A[158]), .I1(B[158]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[30]), .O6(S0[30]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y7", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI0_31  (.I0(A[159]), .I1(B[159]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI0[31]), .O6(S0[31]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y7", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI0_31  (.I0(A[159]), .I1(B[159]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI0[31]), .O6(S0[31]));
 	// 160..163
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y8", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_32  (.I0(A[160]), .I1(B[160]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[32]), .O6(S0[32]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y8", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_33  (.I0(A[161]), .I1(B[161]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[33]), .O6(S0[33]));
@@ -281,7 +280,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y11", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_44  (.I0(A[172]), .I1(B[172]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[44]), .O6(S0[44]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y11", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_45  (.I0(A[173]), .I1(B[173]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[45]), .O6(S0[45]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y11", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_46  (.I0(A[174]), .I1(B[174]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[46]), .O6(S0[46]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y11", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_47  (.I0(A[175]), .I1(B[175]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI0[47]), .O6(S0[47]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y11", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_47  (.I0(A[175]), .I1(B[175]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI0[47]), .O6(S0[47]));
 	// 176..179
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y12", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_48  (.I0(A[176]), .I1(B[176]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[48]), .O6(S0[48]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y12", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_49  (.I0(A[177]), .I1(B[177]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[49]), .O6(S0[49]));
@@ -301,7 +300,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y15", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_60  (.I0(A[188]), .I1(B[188]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[60]), .O6(S0[60]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y15", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_61  (.I0(A[189]), .I1(B[189]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[61]), .O6(S0[61]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y15", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_62  (.I0(A[190]), .I1(B[190]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[62]), .O6(S0[62]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y15", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI0_63  (.I0(A[191]), .I1(B[191]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI0[63]), .O6(S0[63]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y15", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI0_63  (.I0(A[191]), .I1(B[191]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI0[63]), .O6(S0[63]));
 	// 192..195
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y16", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_64  (.I0(A[192]), .I1(B[192]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[64]), .O6(S0[64]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y16", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_65  (.I0(A[193]), .I1(B[193]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[65]), .O6(S0[65]));
@@ -321,7 +320,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y19", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_76  (.I0(A[204]), .I1(B[204]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[76]), .O6(S0[76]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y19", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_77  (.I0(A[205]), .I1(B[205]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[77]), .O6(S0[77]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y19", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_78  (.I0(A[206]), .I1(B[206]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[78]), .O6(S0[78]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y19", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_79  (.I0(A[207]), .I1(B[207]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI0[79]), .O6(S0[79]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y19", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_79  (.I0(A[207]), .I1(B[207]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI0[79]), .O6(S0[79]));
 	// 208..211
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y20", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_80  (.I0(A[208]), .I1(B[208]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[80]), .O6(S0[80]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y20", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_81  (.I0(A[209]), .I1(B[209]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[81]), .O6(S0[81]));
@@ -341,7 +340,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y23", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_92  (.I0(A[220]), .I1(B[220]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[92]), .O6(S0[92]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y23", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_93  (.I0(A[221]), .I1(B[221]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[93]), .O6(S0[93]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y23", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_94  (.I0(A[222]), .I1(B[222]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[94]), .O6(S0[94]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y23", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI0_95  (.I0(A[223]), .I1(B[223]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI0[95]), .O6(S0[95]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y23", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI0_95  (.I0(A[223]), .I1(B[223]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI0[95]), .O6(S0[95]));
 	// 224..227
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y24", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_96  (.I0(A[224]), .I1(B[224]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[96]), .O6(S0[96]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y24", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_97  (.I0(A[225]), .I1(B[225]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[97]), .O6(S0[97]));
@@ -361,7 +360,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y27", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_108  (.I0(A[236]), .I1(B[236]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[108]), .O6(S0[108]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y27", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_109  (.I0(A[237]), .I1(B[237]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[109]), .O6(S0[109]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y27", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_110  (.I0(A[238]), .I1(B[238]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[110]), .O6(S0[110]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y27", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_111  (.I0(A[239]), .I1(B[239]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI0[111]), .O6(S0[111]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y27", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI0_111  (.I0(A[239]), .I1(B[239]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI0[111]), .O6(S0[111]));
 	// 240..243
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y28", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_112  (.I0(A[240]), .I1(B[240]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[112]), .O6(S0[112]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y28", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_113  (.I0(A[241]), .I1(B[241]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[113]), .O6(S0[113]));
@@ -381,7 +380,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y31", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_124  (.I0(A[252]), .I1(B[252]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[124]), .O6(S0[124]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y31", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_125  (.I0(A[253]), .I1(B[253]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[125]), .O6(S0[125]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y31", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI0_126  (.I0(A[254]), .I1(B[254]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI0[126]), .O6(S0[126]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y31", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI0_127  (.I0(A[255]), .I1(B[255]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI0[127]), .O6(S0[127]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y31", HU_SET = "TOPC0" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI0_127  (.I0(A[255]), .I1(B[255]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI0[127]), .O6(S0[127]));
 
 	// COMPUTE CARRY4 CHAIN FOR TOP 128 BITS WHEN CARRY IN = 0
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y0", HU_SET = "TOPC0" *)CARRY4 c_hi0_0 (.CI(1'b0), .CYINIT(1'b0), .DI(DI0[3:0]), .S(S0[3:0]), .O(O_HI0[0]), .CO(CO_HI0[0]));
@@ -437,7 +436,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y3", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_12  (.I0(A[140]), .I1(B[140]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[12]), .O6(S1[12]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y3", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_13  (.I0(A[141]), .I1(B[141]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[13]), .O6(S1[13]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y3", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_14  (.I0(A[142]), .I1(B[142]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[14]), .O6(S1[14]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y3", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_15  (.I0(A[143]), .I1(B[143]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI1[15]), .O6(S1[15]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y3", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_15  (.I0(A[143]), .I1(B[143]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI1[15]), .O6(S1[15]));
 	// 144..147
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y4", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_16  (.I0(A[144]), .I1(B[144]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[16]), .O6(S1[16]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y4", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_17  (.I0(A[145]), .I1(B[145]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[17]), .O6(S1[17]));
@@ -457,7 +456,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y7", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_28  (.I0(A[156]), .I1(B[156]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[28]), .O6(S1[28]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y7", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_29  (.I0(A[157]), .I1(B[157]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[29]), .O6(S1[29]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y7", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_30  (.I0(A[158]), .I1(B[158]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[30]), .O6(S1[30]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y7", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI1_31  (.I0(A[159]), .I1(B[159]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI1[31]), .O6(S1[31]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y7", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI1_31  (.I0(A[159]), .I1(B[159]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI1[31]), .O6(S1[31]));
 	// 160..163
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y8", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_32  (.I0(A[160]), .I1(B[160]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[32]), .O6(S1[32]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y8", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_33  (.I0(A[161]), .I1(B[161]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[33]), .O6(S1[33]));
@@ -477,7 +476,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y11", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_44  (.I0(A[172]), .I1(B[172]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[44]), .O6(S1[44]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y11", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_45  (.I0(A[173]), .I1(B[173]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[45]), .O6(S1[45]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y11", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_46  (.I0(A[174]), .I1(B[174]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[46]), .O6(S1[46]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y11", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_47  (.I0(A[175]), .I1(B[175]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI1[47]), .O6(S1[47]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y11", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_47  (.I0(A[175]), .I1(B[175]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI1[47]), .O6(S1[47]));
 	// 176..179
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y12", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_48  (.I0(A[176]), .I1(B[176]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[48]), .O6(S1[48]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y12", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_49  (.I0(A[177]), .I1(B[177]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[49]), .O6(S1[49]));
@@ -497,7 +496,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y15", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_60  (.I0(A[188]), .I1(B[188]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[60]), .O6(S1[60]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y15", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_61  (.I0(A[189]), .I1(B[189]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[61]), .O6(S1[61]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y15", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_62  (.I0(A[190]), .I1(B[190]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[62]), .O6(S1[62]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y15", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI1_63  (.I0(A[191]), .I1(B[191]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI1[63]), .O6(S1[63]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y15", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI1_63  (.I0(A[191]), .I1(B[191]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI1[63]), .O6(S1[63]));
 	// 192..195
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y16", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_64  (.I0(A[192]), .I1(B[192]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[64]), .O6(S1[64]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y16", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_65  (.I0(A[193]), .I1(B[193]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[65]), .O6(S1[65]));
@@ -517,7 +516,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y19", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_76  (.I0(A[204]), .I1(B[204]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[76]), .O6(S1[76]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y19", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_77  (.I0(A[205]), .I1(B[205]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[77]), .O6(S1[77]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y19", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_78  (.I0(A[206]), .I1(B[206]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[78]), .O6(S1[78]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y19", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_79  (.I0(A[207]), .I1(B[207]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI1[79]), .O6(S1[79]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y19", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_79  (.I0(A[207]), .I1(B[207]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI1[79]), .O6(S1[79]));
 	// 208..211
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y20", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_80  (.I0(A[208]), .I1(B[208]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[80]), .O6(S1[80]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y20", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_81  (.I0(A[209]), .I1(B[209]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[81]), .O6(S1[81]));
@@ -537,7 +536,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y23", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_92  (.I0(A[220]), .I1(B[220]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[92]), .O6(S1[92]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y23", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_93  (.I0(A[221]), .I1(B[221]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[93]), .O6(S1[93]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y23", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_94  (.I0(A[222]), .I1(B[222]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[94]), .O6(S1[94]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y23", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI1_95  (.I0(A[223]), .I1(B[223]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI1[95]), .O6(S1[95]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y23", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h606060608F808F80)) gen_SDI1_95  (.I0(A[223]), .I1(B[223]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI1[95]), .O6(S1[95]));
 	// 224..227
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y24", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_96  (.I0(A[224]), .I1(B[224]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[96]), .O6(S1[96]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y24", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_97  (.I0(A[225]), .I1(B[225]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[97]), .O6(S1[97]));
@@ -557,7 +556,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y27", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_108  (.I0(A[236]), .I1(B[236]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[108]), .O6(S1[108]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y27", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_109  (.I0(A[237]), .I1(B[237]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[109]), .O6(S1[109]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y27", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_110  (.I0(A[238]), .I1(B[238]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[110]), .O6(S1[110]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y27", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_111  (.I0(A[239]), .I1(B[239]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI1[111]), .O6(S1[111]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y27", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h66606660888F8880)) gen_SDI1_111  (.I0(A[239]), .I1(B[239]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI1[111]), .O6(S1[111]));
 	// 240..243
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y28", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_112  (.I0(A[240]), .I1(B[240]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[112]), .O6(S1[112]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y28", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_113  (.I0(A[241]), .I1(B[241]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[113]), .O6(S1[113]));
@@ -577,7 +576,7 @@ module csa_carry4
 	(* DONT_TOUCH = "yes", BEL = "A6LUT", RLOC = "X0Y31", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_124  (.I0(A[252]), .I1(B[252]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[124]), .O6(S1[124]));
 	(* DONT_TOUCH = "yes", BEL = "B6LUT", RLOC = "X0Y31", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_125  (.I0(A[253]), .I1(B[253]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[125]), .O6(S1[125]));
 	(* DONT_TOUCH = "yes", BEL = "C6LUT", RLOC = "X0Y31", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h6666666688888888)) gen_SDI1_126  (.I0(A[254]), .I1(B[254]), .I2(0), .I3(0), .I4(0), .I5(1), .O5(DI1[126]), .O6(S1[126]));
-	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y31", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI1_127  (.I0(A[255]), .I1(B[255]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI1[127]), .O6(S1[127]));
+	(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X0Y31", HU_SET = "TOPC1" *)LUT6_2 #(.INIT(64'h600060008FFF8000)) gen_SDI1_127  (.I0(A[255]), .I1(B[255]), .I2(word_mode[0]), .I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI1[127]), .O6(S1[127]));
 
 	// COMPUTE CARRY4 CHAIN FOR TOP 128 BITS WHEN CARRY IN = 1
 	(* DONT_TOUCH = "yes", BEL = "CARRY4", RLOC = "X0Y0", HU_SET = "TOPC1" *)CARRY4 c_hi1_0 (.CI(1'b1), .CYINIT(1'b0), .DI(DI1[3:0]), .S(S1[3:0]), .O(O_HI1[0]), .CO(CO_HI1[0]));

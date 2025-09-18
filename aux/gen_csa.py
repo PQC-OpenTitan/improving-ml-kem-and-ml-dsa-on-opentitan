@@ -41,18 +41,18 @@ def gen_code():
             block += (
                 f'\t(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X{x}Y{y}", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64\'h66606660888F8880)) '
                 f'gen_SDI_{i+3}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[0]), '
-                f'.I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[{i + 3}]), .O6(S[{i + 3}]));\n'
+                f'.I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[{i + 3}]), .O6(S[{i + 3}]));\n'
             )
         elif i in {28, 92}:
             block += (
                 f'\t(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X{x}Y{y}", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64\'h606060608F808F80)) '
-                f'gen_SDI_{i+3}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI[{i + 3}]), .O6(S[{i + 3}]));\n'
+                f'gen_SDI_{i+3}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI[{i + 3}]), .O6(S[{i + 3}]));\n'
             )
         elif i in {60, 124}:
             block += (
                 f'\t(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X{x}Y{y}", HU_SET = "BOTTOM" *)LUT6_2 #(.INIT(64\'h600060008FFF8000)) '
                 f'gen_SDI_{i+3}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[0]), '
-                f'.I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI[{i + 3}]), .O6(S[{i + 3}]));\n'
+                f'.I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI[{i + 3}]), .O6(S[{i + 3}]));\n'
             )
         else:
             block += (
@@ -109,19 +109,19 @@ def gen_code():
                     # Compute S0
                     f'\t(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X{x}Y{y}", HU_SET = "TOPC{c}" *)LUT6_2 #(.INIT(64\'h66606660888F8880)) '
                     f'gen_SDI{c}_{i + 3 - 128}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[0]), '
-                    f'.I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI{c}[{i + 3 - 128}]), .O6(S{c}[{i + 3 - 128}]));\n'
+                    f'.I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI{c}[{i + 3 - 128}]), .O6(S{c}[{i + 3 - 128}]));\n'
                 )
             elif i in {156, 220}:
                 block += (
                     # Compute S0
                     f'\t(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X{x}Y{y}", HU_SET = "TOPC{c}" *)LUT6_2 #(.INIT(64\'h606060608F808F80)) '
-                    f'gen_SDI{c}_{i + 3 - 128}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[1]), .I3(b_invert), .I4(0), .I5(1), .O5(DI{c}[{i + 3 - 128}]), .O6(S{c}[{i + 3 - 128}]));\n'
+                    f'gen_SDI{c}_{i + 3 - 128}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[1]), .I3(cin), .I4(0), .I5(1), .O5(DI{c}[{i + 3 - 128}]), .O6(S{c}[{i + 3 - 128}]));\n'
                 )
             elif i in {188, 252}:
                 block += (
                     f'\t(* DONT_TOUCH = "yes", BEL = "D6LUT", RLOC = "X{x}Y{y}", HU_SET = "TOPC{c}" *)LUT6_2 #(.INIT(64\'h600060008FFF8000)) '
                     f'gen_SDI{c}_{i + 3 - 128}  (.I0(A[{i + 3}]), .I1(B[{i + 3}]), .I2(word_mode[0]), '
-                    f'.I3(word_mode[1]), .I4(b_invert), .I5(1), .O5(DI{c}[{i + 3 - 128}]), .O6(S{c}[{i + 3 - 128}]));\n'
+                    f'.I3(word_mode[1]), .I4(cin), .I5(1), .O5(DI{c}[{i + 3 - 128}]), .O6(S{c}[{i + 3 - 128}]));\n'
                 )
             else:
                 block += (
@@ -405,7 +405,6 @@ def main() -> int:
         "\tinput logic [WLEN-1:0]  A,\n"
         "\tinput logic [WLEN-1:0]  B,\n"
         "\tinput vec_type_e        word_mode,\n"
-        "\tinput logic             b_invert,\n"
         "\tinput logic             cin,\n"
         "\toutput logic [WLEN-1:0] res,\n"
         "\toutput logic [15:0]     cout\n"
@@ -435,40 +434,9 @@ def main() -> int:
     )
     block = header + regs
     block += gen_code()
-    # block += gen_carry4(0)
-    # block += gen_carry4(1)
-    # block += (
-    #     "\n\t//CARRY4 CHAIN FOR TOP 128 BITS\n"
-    #     "\tcsa_carry4_top_cin0 gen_c_0 (.S0(S0), .DI0(DI0), .O_HI0(O_HI0), .CO_HI0(CO_HI0));\n"
-    #     "\tcsa_carry4_top_cin1 gen_c_1 (.S1(S1), .DI1(DI1), .O_HI1(O_HI1), .CO_HI1(CO_HI1));\n"
-    #     "\n"
-    # )
     block += gen_res(2, 0)
     block += gen_co_res(2, 32)
     block += "endmodule\n"
-    with filepath.open("a") as f:
-        f.write(block)
-
-    # Create files for CARRY4 chains
-    block = gen_carry4(0)
-    filename = "hw/ip/otbn/rtl/bn_vec_core/csa_carry4_top_cin0.sv"
-    filepath = Path(filename)
-    if filepath.exists():
-        print_info(f"INFO: {filename} exists. It will be overwritten")
-        filepath.unlink()
-    else:
-        print_info(f"INFO: {filename} does not exist. It will be created")
-    with filepath.open("a") as f:
-        f.write(block)
-
-    block = gen_carry4(1)
-    filename = "hw/ip/otbn/rtl/bn_vec_core/csa_carry4_top_cin1.sv"
-    filepath = Path(filename)
-    if filepath.exists():
-        print_info(f"INFO: {filename} exists. It will be overwritten")
-        filepath.unlink()
-    else:
-        print_info(f"INFO: {filename} does not exist. It will be created")
     with filepath.open("a") as f:
         f.write(block)
 
