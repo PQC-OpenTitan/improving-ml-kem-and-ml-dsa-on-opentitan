@@ -1,4 +1,4 @@
-module brent_kung_adder_256_mode0_only (
+module brent_kung_256 (
     input  logic [255:0] A,
     input  logic [255:0] B,
     input  logic [1:0]   word_mode,
