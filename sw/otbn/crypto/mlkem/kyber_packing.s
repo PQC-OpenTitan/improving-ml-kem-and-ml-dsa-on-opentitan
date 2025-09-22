@@ -315,240 +315,175 @@ unpack_sk:
 
 poly_compress:
 #if (KYBER_K == 2 || KYBER_K == 3)
-  bn.rshi w3, w31, w3 >> 4 /* 80635 */
-  LOOPI 4, 17
-    LOOPI 4, 15
+  bn.rshi w5, w31, w3 >> 4 /* w5 = 80635 */
+  LOOPI 4, 15
+    LOOPI 4, 13
       bn.lid       x4, 0(x11++)  /* Load input */
       bn.shv.16H   w0, w0 << 4   /* <= 4 */ 
       bn.addv.16H  w0, w0, w2    /* += 1665 */
-      LOOPI 2, 10
-        LOOPI 8, 3
-          bn.rshi    w1, w0, w1 >> 16  /* write one coeff to w1 */
-          bn.rshi    w1, w31, w1 >> 16 /* make the coeff 32-bit */
-          bn.rshi    w0, w31, w0 >> 16 /* shift out used coeff */
-        bn.mulv.l.8S w1, w1, w3, 0     /* *= 80635 */
-        bn.shv.8S    w1, w1 >> 28      /* >>= 28 */
-        LOOPI 8, 2
-          bn.rshi    w4, w1, w4 >> 4
-          bn.rshi    w1, w31, w1 >> 32 
-        NOP
-      NOP 
+      bn.trn1.16H  w1, w0, w31 /* Put even coeffs to 32-bit slots */
+      bn.mulv.l.8S w1, w1, w5, 0     /* *= 80635 */
+      bn.trn2.16H  w0, w0, w31 /* Put odd coeffs to 32-bit slots */
+      bn.mulv.l.8S w0, w0, w5, 0
+      bn.trn2.16H  w1, w1, w0 /* Interleaving the results >> 16 to original order */
+      bn.shv.8S    w1, w1 >> 12
+      LOOPI 16, 2
+        bn.rshi    w4, w1, w4 >> 4
+        bn.rshi    w1, w31, w1 >> 16 
+      NOP
     bn.sid x8, 0(x12++)
 #elif (KYBER_K == 4)
-  bn.shv.8S  w2, w2 << 16
-  bn.shv.8S  w2, w2 >> 17 
-  bn.shv.8S  w2, w2 << 1 /* 1664 */
-  bn.rshi     w3, w31, w3 >> 4
-  bn.addi     w3, w3, 1 /* 40318 */
-  /* First WDR */
-  LOOPI 3, 15
-    bn.lid      x4, 0(x11++) 
-    LOOPI 2, 12 
-      LOOPI 8, 3
-        bn.rshi w1, w0, w1 >> 16
-        bn.rshi w1, w31, w1 >> 16
-        bn.rshi w0, w31, w0 >> 16
-      bn.shv.8S    w1, w1 << 5
-      bn.addv.8S   w1, w1, w2
-      bn.mulv.l.8S w1, w1, w3, 0
-      bn.shv.8S    w1, w1 >> 27 
-      LOOPI 8, 2 
-        bn.rshi w4, w1, w4 >> 5
-        bn.rshi w1, w31, w1 >> 32
-      NOP 
+  bn.rshi   w5, w31, w3 >> 5
+  bn.addi   w5, w5, 1 /* w5 = 40318 */
+  bn.shv.8S w7, w2 >> 17 /* w7 = (0x340)^8 */
+  bn.shv.8S w7, w7 << 1 /* w7 = (0x680)^8 */
+  /* First WDR: 80 bits (16 coeffs) + (Reload) 80 bits (16 coeffs) +
+   * (Reload) 80 bits (16 coeffs) + (Reload) 15 bits (3 coeffs) + 1 bits */
+  LOOPI 3, 6
+  /* Load 1st + 2nd + 3rd batch */
+    bn.lid x4, 0(x11++)
+    jal    x1, _poly_compress_16
+    /* Pack 80 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 5
+      bn.rshi w1, w31, w1 >> 16
     NOP
-  bn.lid      x4, 0(x11++)
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
-    bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27 
-  LOOPI 3, 2 
+  /* Load 4th batch */
+  bn.lid x4, 0(x11++)
+  jal    x1, _poly_compress_16
+  /* Pack 15 bits */
+  LOOPI 3, 2
     bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
+    bn.rshi w1, w31, w1 >> 16
+  /* Pack 1 bit */
   bn.rshi w4, w1, w4 >> 1
-  bn.sid  x8, 0(x12++)
-  
-  /* Second WDR */
-  bn.rshi w4, w1, w4 >> 5
-  bn.rshi w1, w31, w1 >> 32 
-  LOOPI 4, 2 
-    bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
-    bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27
-  LOOPI 8, 2 
-    bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  LOOPI 2, 15
-    bn.lid      x4, 0(x11++)
-    LOOPI 2, 12 
-      LOOPI 8, 3
-        bn.rshi w1, w0, w1 >> 16
-        bn.rshi w1, w31, w1 >> 16
-        bn.rshi w0, w31, w0 >> 16
-      bn.shv.8S    w1, w1 << 5
-      bn.addv.8S   w1, w1, w2
-      bn.mulv.l.8S w1, w1, w3, 0
-      bn.shv.8S    w1, w1 >> 27 
-      LOOPI 8, 2 
-        bn.rshi w4, w1, w4 >> 5
-        bn.rshi w1, w31, w1 >> 32
-      NOP 
-    NOP
-  bn.lid      x4, 0(x11++)
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
-    bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27 
-  LOOPI 6, 2 
-    bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  bn.rshi w4, w1, w4 >> 2 
-  bn.sid  x8, 0(x12++)
+  bn.sid  x5, 0(x12++)
 
-  /* Third WDR */
-  bn.rshi w4, w1, w4 >> 5
-  bn.rshi w1, w31, w1 >> 32 
-  bn.rshi w4, w1, w4 >> 5
-  bn.rshi w1, w31, w1 >> 32
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
-    bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27
-  LOOPI 8, 2 
+  /* Second WDR: 4 bits + 60 bits (12 coeffs) + (Reload) 80 bits + (Reload) 80 bits +
+   * (Reload) 30 bits (6 coeffs) + 2 bits */
+  /* Pack 4 bits + 60 bits */
+  LOOPI 13, 2
     bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  LOOPI 2, 15
-    bn.lid      x4, 0(x11++)
-    LOOPI 2, 12 
-      LOOPI 8, 3
-        bn.rshi w1, w0, w1 >> 16
-        bn.rshi w1, w31, w1 >> 16
-        bn.rshi w0, w31, w0 >> 16
-      bn.shv.8S    w1, w1 << 5
-      bn.addv.8S   w1, w1, w2
-      bn.mulv.l.8S w1, w1, w3, 0
-      bn.shv.8S    w1, w1 >> 27 
-      LOOPI 8, 2 
-        bn.rshi w4, w1, w4 >> 5
-        bn.rshi w1, w31, w1 >> 32
-      NOP 
+    bn.rshi w1, w31, w1 >> 16
+  LOOPI 2, 6
+    /* Load 5th + 6th batch */
+    bn.lid x4, 0(x11++)
+    jal    x1, _poly_compress_16
+    /* Pack 80 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 5
+      bn.rshi w1, w31, w1 >> 16
     NOP
-  bn.lid      x4, 0(x11++)
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
-    bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27 
-  LOOPI 8, 2 
+  /* Load 7th batch */
+  bn.lid x4, 0(x11++)
+  jal    x1, _poly_compress_16
+  /* Pack 30 bits */
+  LOOPI 6, 2
     bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
     bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27
-  bn.rshi w4, w1, w4 >> 5
-  bn.rshi w1, w31, w1 >> 32
-  bn.rshi      w4, w1, w4 >> 3
-  bn.sid       x8, 0(x12++)
+  /* Pack 2 bits */
+  bn.rshi w4, w1, w4 >> 2
+  bn.sid  x5, 0(x12++)
 
-  /* Fourth WDR */
-  bn.rshi      w4, w1, w4 >> 5
-  bn.rshi      w1, w31, w1 >> 32 
-  LOOPI 6, 2 
+  /* Third WDR: 3 bits + 45 bits (9 coeffs) + (Reload) 80 bits (16 coeffs)
+   * (Reload) 80 bits (16 coeffs) + (Reload) 45 bits (9 coeffs) + 3 bits */
+  /* Pack 3 bits + 45 bits */
+   LOOPI 10, 2
     bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  LOOPI 2, 15
-    bn.lid      x4, 0(x11++)
-    LOOPI 2, 12
-      LOOPI 8, 3
-        bn.rshi w1, w0, w1 >> 16
-        bn.rshi w1, w31, w1 >> 16
-        bn.rshi w0, w31, w0 >> 16
-      bn.shv.8S    w1, w1 << 5
-      bn.addv.8S   w1, w1, w2
-      bn.mulv.l.8S w1, w1, w3, 0
-      bn.shv.8S    w1, w1 >> 27 
-      LOOPI 8, 2 
-        bn.rshi w4, w1, w4 >> 5
-        bn.rshi w1, w31, w1 >> 32
-      NOP 
+    bn.rshi w1, w31, w1 >> 16
+  LOOPI 2, 6
+    /* Load 8th + 9th batch */
+    bn.lid x4, 0(x11++)
+    jal    x1, _poly_compress_16
+    /* Pack 80 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 5
+      bn.rshi w1, w31, w1 >> 16
     NOP
-  bn.lid      x4, 0(x11++)
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
-    bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27 
-  LOOPI 8, 2 
+  /* Load 10th batch */
+  bn.lid x4, 0(x11++)
+  jal    x1, _poly_compress_16
+  /* Pack 45 bits */
+  LOOPI 9, 2
     bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  LOOPI 8, 3
-    bn.rshi w1, w0, w1 >> 16
     bn.rshi w1, w31, w1 >> 16
-    bn.rshi w0, w31, w0 >> 16
-  bn.shv.8S    w1, w1 << 5
-  bn.addv.8S   w1, w1, w2
-  bn.mulv.l.8S w1, w1, w3, 0
-  bn.shv.8S    w1, w1 >> 27
-  LOOPI 4, 2 
-    bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  bn.rshi      w4, w1, w4 >> 4
-  bn.sid       x8, 0(x12++)
+  /* Pack 3 bits */
+  bn.rshi w4, w1, w4 >> 3
+  bn.sid  x5, 0(x12++)
 
-  /* Fifth WDR */
-  bn.rshi      w4, w1, w4 >> 5
-  bn.rshi      w1, w31, w1 >> 32
-  LOOPI 3, 2 
+  /* Fourth WDR: 2 bits + 30 bits (6 coeffs) + (Reload) 80 bits (16 coeffs) +
+   * (Reload) 80 bits (16 coeffs) + (Reload) 60 bits (12 coeffs) + 4 bits */
+  /* Pack 2 bits + 30 bits */
+   LOOPI 7, 2
     bn.rshi w4, w1, w4 >> 5
-    bn.rshi w1, w31, w1 >> 32
-  LOOPI 3, 15
-    bn.lid      x4, 0(x11++)
-    LOOPI 2, 12 
-      LOOPI 8, 3
-        bn.rshi w1, w0, w1 >> 16
-        bn.rshi w1, w31, w1 >> 16
-        bn.rshi w0, w31, w0 >> 16
-      bn.shv.8S    w1, w1 << 5
-      bn.addv.8S   w1, w1, w2
-      bn.mulv.l.8S w1, w1, w3, 0
-      bn.shv.8S    w1, w1 >> 27 
-      LOOPI 8, 2 
-        bn.rshi w4, w1, w4 >> 5
-        bn.rshi w1, w31, w1 >> 32
-      NOP 
+    bn.rshi w1, w31, w1 >> 16
+  LOOPI 2, 6
+    /* Load 11th + 12th batch */
+    bn.lid x4, 0(x11++)
+    jal    x1, _poly_compress_16
+    /* Pack 80 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 5
+      bn.rshi w1, w31, w1 >> 16
     NOP
-  bn.sid  x8, 0(x12++)
+  /* Load 13th batch */
+  bn.lid x4, 0(x11++)
+  jal    x1, _poly_compress_16
+  /* Pack 60 bits */
+  LOOPI 12, 2
+    bn.rshi w4, w1, w4 >> 5
+    bn.rshi w1, w31, w1 >> 16
+  /* Pack 4 bits */
+  bn.rshi w4, w1, w4 >> 4
+  bn.sid  x5, 0(x12++)
+
+  /* Fifth WDR: 1 bits + 15 bits (3 coeffs) + (Reload) 80 bits (16 coeffs) +
+   * (Reload) 80 bits (16 coeffs) + (Reload) 80 bits (16 coeffs) */
+  /* Pack 1 bits + 15 bits */
+  LOOPI 4, 2
+    bn.rshi w4, w1, w4 >> 5
+    bn.rshi w1, w31, w1 >> 16
+  LOOPI 3, 6
+  /* Load 14th + 15th + 16th batch */
+    bn.lid x4, 0(x11++)
+    jal    x1, _poly_compress_16
+    /* Pack 80 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 5
+      bn.rshi w1, w31, w1 >> 16
+    NOP
+  bn.sid  x5, 0(x12++)
 #endif
+  ret
+
+/*
+ * Name:        _poly_compress_16 
+ *
+ * Description: Subroutine of poly_compress for compressing 16 coefficients
+ *
+ * @param[in]   w0: input vector with 16 16-bit coefficients
+ * @param[in]   w7: 1664
+ * @param[in]   w5: 40318
+ * @param[in]  w31: all-zero
+ * @param[out]  w1: output vector with 16 compressed coefficients
+ *
+ * clobbered registers:
+ */
+
+_poly_compress_16:
+  /* Instead of shifting result by 27 bits, we can use trn2 to interleave only the top halves of the
+   * the products, meaning they are already shifted right by 16 bits. Then we only need 1 shift for
+   * shifting right again 11 bits. This approach saves 1 instruction. */
+  bn.trn1.16H  w1, w0, w31 /* Put even coeffs to 32-bit slots */
+  bn.shv.8S    w1, w1 << 5
+  bn.addv.8S   w1, w1, w7
+  bn.mulv.l.8S w1, w1, w5, 0
+  bn.trn2.16H  w0, w0, w31 /* Put odd coeffs to 32-bit slots */
+  bn.shv.8S    w0, w0 << 5
+  bn.addv.8S   w0, w0, w7
+  bn.mulv.l.8S w0, w0, w5, 0
+  bn.trn2.16H  w1, w1, w0 /* Interleaving the results >> 16 to original order */
+  bn.shv.16H   w1, w1 >> 11
   ret
 
 /*
@@ -563,514 +498,397 @@ poly_compress:
  *
  * @param[in]  x10: dptr_input, dmem pointer to input polynomial
  * @param[out] x12: dptr_output, dmem pointer to output byte array
- * @param[in]  x13: const_1290167
- * @param[in]  x14: modulus_bn
- * @param[in]  x15: dptr_modulus_over_2
+ * @param[in]  w3: const_1290167
+ * @param[in]  w2: modulus_over_2
  * @param[in]  w31: all-zero
  *
  * clobbered registers: x4-x30, w0-w31
  */
 polyvec_compress:
 #if (KYBER_K == 2 || KYBER_K == 3)
-  bn.rshi w7, w31, w2 >> 240 /* extract (Q+1)/2 */
-  LOOPI KYBER_POLYVECCOMPRESSED_LOOP, 141
-    /* First WDR: 25 coeffs (250 bits) + 6 bits of 10th coeff of next load */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi          w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi          w1, w31, w1 >> 230 /* << 10 */
-      bn.add           w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z  w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi          w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi          w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi          w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 9, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-    bn.add          w1, w1, w7 /* +1665 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-    bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-    bn.rshi         w4, w1, w4 >> 6 /* store 6 bits of w1 to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.sid          x8, 0(x12++)
+  bn.shv.8S  w7, w2 >> 16 /* w7 = (0x681)^8 */
+  bn.trn1.8S w7, w7, w31 /* w7 = (0x681)^4 */
+  bn.mov     w8, w3 /* w8 = 1290167 */
+  LOOPI KYBER_POLYVECCOMPRESSED_LOOP, 61
+    /* First WDR: 160 bits (16 coeffs) + (Reload) 90 bits (9 coeffs) + 6 bits */
+    /* Load 1st batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 160 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Load 2nd batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 90 bits */
+    LOOPI 9, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 6 bits */
+    bn.rshi w4, w1, w4 >> 6
+    bn.sid  x5, 0(x12++)
 
-    /* Second WDR: 4 bits + 25 coeffs (250 bits) + 2 bits */
-    bn.rshi w4, w1, w4 >> 10 /* store 4 bits of w1 to w4 */
-    LOOPI 6, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 3, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-    bn.add          w1, w1, w7 /* +1665 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-    bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-    bn.rshi         w4, w1, w4 >> 2 /* store 2 bits of w1 to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.sid          x8, 0(x12++)
+    /* Second WDR: 4 bits + 60 bits (6 coeffs) + (Reload) 160 bits (16 coeffs) +
+    * (Reload) 30 bits (3 coeffs) + 2 bits */
+    /* Pack 4 + 60 bits */
+    LOOPI 7, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Load 3rd batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 160 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Load 4th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 30 bits */
+    LOOPI 3, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 2 bits */
+    bn.rshi w4, w1, w4 >> 2
+    bn.sid  x5, 0(x12++)
 
-    /* Third WDR: 8 bits + 24 coeffs (240 bits) + 8 bits */
-    bn.rshi w4, w1, w4 >> 10 /* store 8 bits of w1 to w4 */
-    LOOPI 12, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 12, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-    bn.add          w1, w1, w7 /* +1665 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-    bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-    bn.rshi         w4, w1, w4 >> 8 /* store 8 bits of w1 to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.sid          x8, 0(x12++)
+    /* Third WDR: 8 bits + 120 bits (12 coeffs) + (Reload) 120 bits (12 coeffs) + 8 bits */
+    /* Pack 8 + 120 bits */
+    LOOPI 13, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Load 5th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 120 bits */
+    LOOPI 12, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 8 bits */
+    bn.rshi w4, w1, w4 >> 8
+    bn.sid  x5, 0(x12++)
 
-    /* Fourth WDR: 2 bits + 25 coeffs (250 bits) + 4 bits */
-    bn.rshi w4, w1, w4 >> 10 /* store 2 bits of w1 to w4 */
-    LOOPI 3, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 6, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-    bn.add          w1, w1, w7 /* +1665 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-    bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-    bn.rshi         w4, w1, w4 >> 4 /* store 4 bits of w1 to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.sid          x8, 0(x12++)
+    /* Fourth WDR: 2 bits + 30 bits (3 coeffs) + (Reload) 160 bits (16 coeffs) +
+     * (Reload) 60 bits (6 coeffs) + 4 bits */
+    /* Pack 2 + 30 bits */
+    LOOPI 4, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Load 6th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 160 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Load 7th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 60 bits */
+    LOOPI 6, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 4 bits */
+    bn.rshi w4, w1, w4 >> 4
+    bn.sid  x5, 0(x12++)
 
-    /* Fifth WDR: 6 bits + 25 coeffs (250 bits) */
-    bn.rshi w4, w1, w4 >> 10 /* store 6 bits of w1 to w4 */
-    LOOPI 9, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 230 /* << 10 */
-      bn.add          w1, w1, w7 /* +1665 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *1290167 (w3) */
-      bn.rshi         w1, w31, w1 >> 32 /* >> 32 */
-      bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.sid x8, 0(x12++)
+    /* Fifth WDR: 6 bits + 90 bits (9 coeffs) + (Reload) 160 bits (16 coeffs) */
+    /* Pack 6 + 90 bits */
+    LOOPI 10, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    /* Load 8th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 160 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 10
+      bn.rshi w1, w31, w1 >> 16
+    bn.sid x5, 0(x12++)
 #elif (KYBER_K == 4)
-  bn.rshi w7, w31, w2 >> 240 /* extract (Q+1)/2 */
-  bn.subi w7, w7, 1 /* 1664 */
-  bn.rshi w3, w31, w3 >> 1 
-  bn.addi w3, w3, 1 /* 645084 */
-  LOOPI KYBER_K, 317
-    /* 1st WDR */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 7, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 3 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+  /* We multiply by 1290168 instead of 645084 in order to shift right 32 bits, instead of 31 bits.
+   * By doing this, we omit one shift while reordering the results with bn.trn. */
+  bn.addi    w8, w3, 1 /* w8 = 1290168 */
+  bn.shv.8S  w7, w2 >> 17 /* w7 = (0x340)^8 */
+  bn.shv.8S  w7, w7 << 1 /* w7 = (0x680)^8 */
+  bn.trn1.8S w7, w7, w31 /* w7 = (0x680)^4 */
+  LOOPI KYBER_K, 130
+    /* 1st WDR: 176 bits (16 bits) + (Reload) 77 bits + 3 bits */
+    /* Load the 1st batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 176 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 2nd batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 77 bits */
+    LOOPI 7, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 3 bits */
+    bn.rshi w4, w1, w4 >> 3
+    bn.sid  x5, 0(x12++)
 
-    /* 2nd WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 8, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 14, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 6 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 2nd WDR: 8 bits + 88 bits (8 coeffs) + (Reload) 154 bits (14 coeffs) + 6 bits */
+    /* Pack 8 bits + 88 bits */
+    LOOPI 9, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 3rd batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 154 bits */
+    LOOPI 14, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 6 bits */
+    bn.rshi w4, w1, w4 >> 6
+    bn.sid  x5, 0(x12++)
 
-    /* 3rd WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid          x4, 0(x10++)
-    bn.shv.16H      w5, w0 >> 15
-    bn.subv.16H     w5, w31, w5 /* Build mask from MSBs */
-    bn.and          w5, w5, w6
-    bn.addv.16H     w0, w0, w5
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 5, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 9 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 3rd WDR: 5 bits + 11 bits + (Reload) 176 bits (16 coeffs) + (Reload) 55 bits (5 coeffs) + 9 bits */
+    /* Pack 5 bits + 11 bits */
+    LOOPI 2, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 4th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 176 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 5th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 55 bits */
+    LOOPI 5, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 9 bits */
+    bn.rshi w4, w1, w4 >> 9
+    bn.sid  x5, 0(x12++)
 
-    /* 4th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 10, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 13, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 1 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 4th WDR: 2 bits + 110 bits (10 coeffs) + (Reload) 143 bits (13 coeffs) + 1 bits */
+    /* Pack 2 bits + 110 bits */
+    LOOPI 11, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 6th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 143 bits */
+    LOOPI 13, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 1 bits */
+    bn.rshi w4, w1, w4 >> 1
+    bn.sid  x5, 0(x12++)
 
-    /* 5th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 2, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 4, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 4 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 5th WDR: 10 bits + 22 bits (2 coeffs) + (Reload) 176 bits (16 coeffs) +
+     * (Reload) 44 bits (4 coeffs) + 4 bits */
+    /* Pack 10 bits + 22 bits */
+    LOOPI 3, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 7th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 176 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 8th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 44 bits */
+    LOOPI 4, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 4 bits */
+    bn.rshi w4, w1, w4 >> 4
+    bn.sid  x5, 0(x12++)
 
-    /* 6th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 11, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 11, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 7 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 6th WDR: 7 bits + 121 bits (11 coeffs) + (Reload) 121 bits (11 coeffs) + 7 bits */
+    /* Pack 7 bits + 121 bits */
+    LOOPI 12, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 9th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 121 bits */
+    LOOPI 11, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 7 bits */
+    bn.rshi w4, w1, w4 >> 7
+    bn.sid  x5, 0(x12++)
 
-    /* 7th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 4, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 2, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 10 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 7th WDR: 4 bits + 44 bits (4 coeffs) + (Reload) 176 bits (16 coeffs) +
+     * (Reload) 22 bits (2 coeffs) + 10 bits */
+    /* Pack 4 bits + 44 bits */
+    LOOPI 5, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 10th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 176 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 11th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 22 bits */
+    LOOPI 2, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 10 bits */
+    bn.rshi w4, w1, w4 >> 10
+    bn.sid  x5, 0(x12++)
 
-    /* 8th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 13, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 10, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 2 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 8th WDR: 1 bits + 143 bits (13 coeffs) + (Reload) 110 bits (10 coeffs) + 2 bits */
+    /* Pack 1 bits + 143 bits */
+    LOOPI 14, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 12th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 110 bits */
+    LOOPI 10, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 2 bits */
+    bn.rshi w4, w1, w4 >> 2
+    bn.sid  x5, 0(x12++)
 
-    /* 9th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 5, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 5 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 9th WDR: 9 bits + 55 bits (5 coeffs) + (Reload) 176 bits (16 coeffs)
+     + (Reload) 11 bits + 5 bits */
+    /* Pack 9 bits + 55 bits */
+    LOOPI 6, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 13th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 176 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 14th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 11 bits */
+    bn.rshi w4, w1, w4 >> 11
+    bn.rshi w1, w31, w1 >> 16
+    /* Pack 5 bits */
+    bn.rshi w4, w1, w4 >> 5
+    bn.sid  x5, 0(x12++)
 
-    /* 10th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 14, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 8, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-    bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-    bn.add          w1, w1, w7 /* +1664 (w7) */
-    bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-    bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-    bn.rshi         w4, w1, w4 >> 8 /* store res to w4 */
-    bn.sid          x8, 0(x12++)
+    /* 10th WDR: 6 bits + 154 bits (14 coeffs) + (Reload) 88 bits (8 coeffs) + 8 bits */
+    /* Pack 6 bits + 154 bits */
+    LOOPI 15, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 15th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 88 bits */
+    LOOPI 8, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Pack 8 bits */
+    bn.rshi w4, w1, w4 >> 8
+    bn.sid  x5, 0(x12++)
 
-    /* 11th WDR */
-    bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-    bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    LOOPI 7, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.lid       x4, 0(x10++)
-    LOOPI 16, 7
-      bn.rshi         w1, w0, w1 >> 16 /* shift one coeff on w1 */
-      bn.rshi         w1, w31, w1 >> 229 /* << 11 */
-      bn.add          w1, w1, w7 /* +1664 (w7) */
-      bn.mulqacc.wo.z w1, w1.0, w3.0, 0 /* *645084 (w3) */
-      bn.rshi         w1, w31, w1 >> 31 /* >> 31 */
-      bn.rshi         w4, w1, w4 >> 11 /* store res to w4 */
-      bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
-    bn.sid          x8, 0(x12++)
+    /* 11th WDR: 3 bits + 77 bits (7 coeffs) + (Reload) 176 bits (16 coeffs) */
+    /* Pack 3 bits + 77 bits */
+    LOOPI 8, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    /* Load the 16th batch */
+    bn.lid x4, 0(x10++)
+    jal    x1, _polyvec_compress_16
+    /* Pack 176 bits */
+    LOOPI 16, 2
+      bn.rshi w4, w1, w4 >> 11
+      bn.rshi w1, w31, w1 >> 16
+    bn.sid x5, 0(x12++)
 #endif 
   ret
 
+/*
+ * Name:        _polyvec_compress_16 
+ *
+ * Description: Subroutine of polyvec_compress for compressing 16 coefficients
+ *
+ * @param[in]   w0: input vector with 16 16-bit coefficients
+ * @param[in]   w8: 1290167 (if KYBER_K != 4); 1290168 (if KYBER_K == 4)
+ * @param[in]   w7: 1665 (if KYBER_K != 4); 1664 (if KYBER_K == 4)
+ * @param[in]  w31: all-zero
+ * @param[out]  w1: output vector with 16 compressed coefficients
+ *
+ * clobbered registers:
+ */
+_polyvec_compress_16:
+  bn.trn1.16H   w1, w0, w31 /* Put even coeffs to 32-bit slots */
+  bn.trn1.8S    w5, w1, w31 /* Put even of even coeffs to 64-bit slots */
+#if (KYBER_K == 2 || KYBER_K == 3)
+  bn.shv.8S     w5, w5 << 10
+#elif (KYBER_K == 4)
+  bn.shv.8S     w5, w5 << 11
+#endif
+  bn.add        w5, w5, w7
+  bn.mulqacc.z  w5.0, w8.0, 0
+  bn.mulqacc    w5.1, w8.0, 64
+  bn.mulqacc    w5.2, w8.0, 128
+  bn.mulqacc.wo w5, w5.3, w8.0, 192
+  bn.trn2.8S    w6, w1, w31 /* Put odd of even coeffs to 64-bit slots */
+#if (KYBER_K == 2 || KYBER_K == 3)
+  bn.shv.8S     w6, w6 << 10
+#elif (KYBER_K == 4)
+  bn.shv.8S     w6, w6 << 11
+#endif
+  bn.add        w6, w6, w7
+  bn.mulqacc.z  w6.0, w8.0, 0
+  bn.mulqacc    w6.1, w8.0, 64
+  bn.mulqacc    w6.2, w8.0, 128
+  bn.mulqacc.wo w6, w6.3, w8.0, 192
+  bn.trn2.8S    w1, w5, w6 /* Interleaving the results >> 32 (odd positions) to original order */
+
+  bn.trn2.16H   w0, w0, w31 /* Put odd coeffs to 32-bit slots */
+  bn.trn1.8S    w5, w0, w31 /* Put even of even coeffs to 64-bit slots */
+#if (KYBER_K == 2 || KYBER_K == 3)
+  bn.shv.8S     w5, w5 << 10
+#elif (KYBER_K == 4)
+  bn.shv.8S     w5, w5 << 11
+#endif
+  bn.add        w5, w5, w7
+  bn.mulqacc.z  w5.0, w8.0, 0
+  bn.mulqacc    w5.1, w8.0, 64
+  bn.mulqacc    w5.2, w8.0, 128
+  bn.mulqacc.wo w5, w5.3, w8.0, 192
+  bn.trn2.8S    w6, w0, w31 /* Put odd of even coeffs to 64-bit slots */
+#if (KYBER_K == 2 || KYBER_K == 3)
+  bn.shv.8S     w6, w6 << 10
+#elif (KYBER_K == 4)
+  bn.shv.8S     w6, w6 << 11
+#endif
+  bn.add        w6, w6, w7
+  bn.mulqacc.z  w6.0, w8.0, 0
+  bn.mulqacc    w6.1, w8.0, 64
+  bn.mulqacc    w6.2, w8.0, 128
+  bn.mulqacc.wo w6, w6.3, w8.0, 192
+  bn.trn2.8S    w0, w5, w6 /* Interleaving the results >> 32 (odd positions) to original order */
+
+  bn.trn1.16H   w1, w1, w0 /* Interleaving the results to original order */
+  ret
 
 /*
  * Name:        pack_ciphertext 
@@ -1100,19 +918,17 @@ polyvec_compress:
 pack_ciphertext:
   /* Set up registers for input and output */
   li x4, 0
-  li x5, 1
+  li x5, 4
   li x6, 2
-  li x7, 3
-  li x8, 4
 
   /* Load const */
-  bn.lid  x6, 0(x15) /* modulus_over_2 (w2) */
-  bn.lid  x7, 0(x13) /* const_1290167 (w3) */
+  bn.lid x6++, 0(x15) /* w2 = modulus_over_2 = (0x681)^16 */
+  bn.lid x6, 0(x13) /* w3 = const_1290167 */
 
-  bn.xor  w31, w31, w31
-  bn.xor  w1, w1, w1
-  jal     x1, polyvec_compress
-  jal     x1, poly_compress
+  /* Zeroize w31 */
+  bn.xor w31, w31, w31
+  jal    x1, polyvec_compress
+  jal    x1, poly_compress
 
   ret
 
