@@ -1,0 +1,62 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Fri Sep 19 15:44:30 2025
+| Host         : jadem4ci running 64-bit unknown
+| Command      : report_timing -file ../../../reports/FPGA-Vivado/brent_kung/timing.txt
+| Design       : brent_kung
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.106ns  (required time - arrival time)
+  Source:                 B[30]
+                            (input port)
+  Destination:            res[139]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            6.250ns  (MaxDelay Path 6.250ns)
+  Data Path Delay:        6.144ns  (logic 0.492ns (8.007%)  route 5.652ns (91.993%))
+  Logic Levels:           9  (LUT3=2 LUT4=1 LUT5=3 LUT6=3)
+  Output Delay:           0.000ns
+  Timing Exception:       MaxDelay Path 6.250ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  B[30] (IN)
+                         net (fo=3, unset)            0.672     0.672    B[30]
+    SLICE_X31Y34         LUT4 (Prop_lut4_I3_O)        0.053     0.725 r  cout[1]_INST_0_i_10/O
+                         net (fo=2, routed)           0.569     1.294    cout[1]_INST_0_i_10_n_0
+    SLICE_X28Y34         LUT6 (Prop_lut6_I0_O)        0.053     1.347 r  cout[1]_INST_0_i_5/O
+                         net (fo=4, routed)           0.595     1.942    cout[1]_INST_0_i_5_n_0
+    SLICE_X22Y35         LUT6 (Prop_lut6_I5_O)        0.053     1.995 r  cout[1]_INST_0_i_1/O
+                         net (fo=3, routed)           0.565     2.560    P7_31
+    SLICE_X19Y34         LUT3 (Prop_lut3_I0_O)        0.053     2.613 r  cout[7]_INST_0_i_1/O
+                         net (fo=4, routed)           0.473     3.086    P7_63
+    SLICE_X18Y34         LUT5 (Prop_lut5_I1_O)        0.053     3.139 r  res[129]_INST_0_i_2/O
+                         net (fo=2, routed)           0.407     3.547    res[129]_INST_0_i_2_n_0
+    SLICE_X17Y34         LUT6 (Prop_lut6_I0_O)        0.053     3.600 r  res[129]_INST_0_i_1/O
+                         net (fo=12, routed)          0.571     4.171    res262
+    SLICE_X15Y37         LUT3 (Prop_lut3_I0_O)        0.053     4.224 r  res[137]_INST_0_i_1/O
+                         net (fo=4, routed)           0.684     4.908    res246
+    SLICE_X14Y38         LUT5 (Prop_lut5_I0_O)        0.053     4.961 r  res[139]_INST_0_i_1/O
+                         net (fo=2, routed)           0.444     5.404    res242
+    SLICE_X15Y38         LUT5 (Prop_lut5_I2_O)        0.068     5.472 r  res[139]_INST_0/O
+                         net (fo=0)                   0.672     6.144    res[139]
+                                                                      r  res[139] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                    6.250     6.250    
+                         output delay                -0.000     6.250    
+  -------------------------------------------------------------------
+                         required time                          6.250    
+                         arrival time                          -6.144    
+  -------------------------------------------------------------------
+                         slack                                  0.106    
+
+
+
+

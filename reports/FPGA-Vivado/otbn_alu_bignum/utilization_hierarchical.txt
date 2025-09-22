@@ -1,0 +1,40 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Fri Sep 19 17:02:31 2025
+| Host         : jadem4ci running 64-bit unknown
+| Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA-Vivado/otbn_alu_bignum/utilization_hierarchical.txt
+| Design       : otbn_alu_bignum
+| Device       : xc7k160tfbg676-1
+| Speed File   : -1
+| Design State : Routed
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++------------------------------------+--------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+|              Instance              |             Module             | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP Blocks |
++------------------------------------+--------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+| otbn_alu_bignum                    |                          (top) |       6324 |       6324 |       0 |    0 | 320 |      0 |      0 |          0 |
+|   (otbn_alu_bignum)                |                          (top) |       2057 |       2057 |       0 |    0 | 320 |      0 |      0 |          0 |
+|   u_adder_x_op_a_blanked           |   prim_blanker__parameterized2 |       1766 |       1766 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     u_blank_and                    |      prim_and2__parameterized7 |       1766 |       1766 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   u_expected_ispr_rd_en_enc        |                prim_onehot_enc |          6 |          6 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   u_expected_ispr_wr_en_enc        |              prim_onehot_enc_0 |         10 |         10 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   u_logical_op_a_blanker           |   prim_blanker__parameterized1 |        137 |        137 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     u_blank_and                    |    prim_and2__parameterized6_4 |        137 |        137 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   u_logical_op_shifter_res_blanker | prim_blanker__parameterized1_1 |        942 |        942 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     u_blank_and                    |    prim_and2__parameterized6_3 |        942 |        942 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   u_shifter_operand_a_blanker      | prim_blanker__parameterized1_2 |       1407 |       1407 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     u_blank_and                    |      prim_and2__parameterized6 |       1407 |       1407 |       0 |    0 |   0 |      0 |      0 |          0 |
++------------------------------------+--------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+

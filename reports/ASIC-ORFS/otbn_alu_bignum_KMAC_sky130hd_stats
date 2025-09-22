@@ -1,0 +1,7 @@
+name: otbn_alu_bignum
+Fmax: 90.0 MHz (11.11111111111111 ns)
+slack: 0.087101
+required: 11.111112
+instances: 39374
+design_area: 310847
+utilization: 60

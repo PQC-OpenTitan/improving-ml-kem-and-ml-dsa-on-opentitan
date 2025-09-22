@@ -1,0 +1,7 @@
+name: otbn
+Fmax: 97.0 MHz (10.309278350515465 ns)
+slack: 0.097803
+required: 10.309278
+instances: 258299
+design_area: 2314056
+utilization: 53

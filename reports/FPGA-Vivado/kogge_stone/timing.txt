@@ -1,0 +1,60 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Fri Sep 19 15:52:15 2025
+| Host         : jadem4ci running 64-bit unknown
+| Command      : report_timing -file ../../../reports/FPGA-Vivado/kogge_stone/timing.txt
+| Design       : kogge_stone
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.110ns  (required time - arrival time)
+  Source:                 word_mode[0]
+                            (input port)
+  Destination:            res[188]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            6.250ns  (MaxDelay Path 6.250ns)
+  Data Path Delay:        6.140ns  (logic 0.424ns (6.905%)  route 5.716ns (93.095%))
+  Logic Levels:           8  (LUT2=2 LUT3=1 LUT4=1 LUT5=1 LUT6=3)
+  Output Delay:           0.000ns
+  Timing Exception:       MaxDelay Path 6.250ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 f  word_mode[0] (IN)
+                         net (fo=14, unset)           0.672     0.672    word_mode[0]
+    SLICE_X28Y47         LUT2 (Prop_lut2_I1_O)        0.053     0.725 f  res[152]_INST_0_i_4/O
+                         net (fo=111, routed)         1.325     2.050    res[152]_INST_0_i_4_n_0
+    SLICE_X30Y22         LUT6 (Prop_lut6_I1_O)        0.053     2.103 r  res[216]_INST_0_i_24/O
+                         net (fo=2, routed)           0.497     2.599    res[216]_INST_0_i_24_n_0
+    SLICE_X23Y20         LUT4 (Prop_lut4_I3_O)        0.053     2.652 f  res[196]_INST_0_i_16/O
+                         net (fo=4, routed)           0.447     3.099    res[196]_INST_0_i_16_n_0
+    SLICE_X21Y21         LUT3 (Prop_lut3_I1_O)        0.053     3.152 f  res[220]_INST_0_i_20/O
+                         net (fo=2, routed)           0.531     3.683    res[220]_INST_0_i_20_n_0
+    SLICE_X19Y20         LUT5 (Prop_lut5_I3_O)        0.053     3.736 f  res[220]_INST_0_i_12/O
+                         net (fo=3, routed)           0.678     4.414    res[220]_INST_0_i_12_n_0
+    SLICE_X17Y22         LUT6 (Prop_lut6_I2_O)        0.053     4.467 r  res[252]_INST_0_i_13/O
+                         net (fo=2, routed)           0.481     4.948    res[252]_INST_0_i_13_n_0
+    SLICE_X21Y26         LUT2 (Prop_lut2_I0_O)        0.053     5.001 r  res[188]_INST_0_i_2/O
+                         net (fo=1, routed)           0.414     5.415    res[188]_INST_0_i_2_n_0
+    SLICE_X23Y26         LUT6 (Prop_lut6_I2_O)        0.053     5.468 r  res[188]_INST_0/O
+                         net (fo=0)                   0.672     6.140    res[188]
+                                                                      r  res[188] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                    6.250     6.250    
+                         output delay                -0.000     6.250    
+  -------------------------------------------------------------------
+                         required time                          6.250    
+                         arrival time                          -6.140    
+  -------------------------------------------------------------------
+                         slack                                  0.110    
+
+
+
+

@@ -1,0 +1,127 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Fri Sep 19 16:12:31 2025
+| Host         : jadem4ci running 64-bit unknown
+| Command      : report_timing -file ../../../reports/FPGA-Vivado/unified_mul_wallace/timing.txt
+| Design       : unified_mul
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.115ns  (required time - arrival time)
+  Source:                 B[35]
+                            (input port)
+  Destination:            result[112]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            13.158ns  (MaxDelay Path 13.158ns)
+  Data Path Delay:        13.043ns  (logic 5.214ns (39.975%)  route 7.829ns (60.025%))
+  Logic Levels:           31  (CARRY4=20 DSP48E1=1 LUT3=2 LUT4=3 LUT5=1 LUT6=4)
+  Output Delay:           0.000ns
+  Timing Exception:       MaxDelay Path 13.158ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  B[35] (IN)
+                         net (fo=2, unset)            0.672     0.672    B[35]
+    SLICE_X33Y49         LUT6 (Prop_lut6_I5_O)        0.053     0.725 f  gen_mults[12].product_full_i_69/O
+                         net (fo=4, routed)           0.724     1.449    gen_mults[12].product_full_i_69_n_0
+    SLICE_X32Y50         LUT3 (Prop_lut3_I0_O)        0.053     1.502 f  gen_mults[1].product_full_i_145/O
+                         net (fo=1, routed)           0.414     1.916    gen_mults[1].product_full_i_145_n_0
+    SLICE_X30Y50         LUT6 (Prop_lut6_I3_O)        0.053     1.969 f  gen_mults[1].product_full_i_82/O
+                         net (fo=10, routed)          0.293     2.262    gen_mults[1].product_full_i_82_n_0
+    SLICE_X31Y50         LUT5 (Prop_lut5_I1_O)        0.053     2.315 r  gen_mults[2].product_full_i_69/O
+                         net (fo=2, routed)           0.792     3.107    gen_mults[2].product_full_i_69_n_0
+    SLICE_X18Y50         LUT4 (Prop_lut4_I0_O)        0.053     3.160 r  gen_mults[2].product_full_i_13/O
+                         net (fo=1, routed)           0.526     3.686    gen_mults[2].product_full_i_13_n_0
+    DSP48_X0Y21          DSP48E1 (Prop_dsp48e1_B[3]_P[21])
+                                                      3.098     6.784 r  gen_mults[2].product_full/P[21]
+                         net (fo=8, routed)           1.029     7.814    p_0_in653_in
+    SLICE_X19Y51         LUT6 (Prop_lut6_I3_O)        0.053     7.867 r  result[234]_INST_0_i_53/O
+                         net (fo=2, routed)           0.600     8.466    result[234]_INST_0_i_53_n_0
+    SLICE_X20Y53         LUT4 (Prop_lut4_I1_O)        0.053     8.519 r  result[234]_INST_0_i_31/O
+                         net (fo=3, routed)           0.655     9.175    result[234]_INST_0_i_31_n_0
+    SLICE_X24Y51         LUT4 (Prop_lut4_I0_O)        0.053     9.228 r  result[230]_INST_0_i_4/O
+                         net (fo=1, routed)           0.464     9.692    csa1_return01168_out[0]
+    SLICE_X25Y51         CARRY4 (Prop_carry4_DI[3]_CO[3])
+                                                      0.230     9.922 r  result[230]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000     9.922    result[230]_INST_0_i_2_n_0
+    SLICE_X25Y52         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     9.980 r  result[234]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000     9.980    result[234]_INST_0_i_2_n_0
+    SLICE_X25Y53         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.038 r  result[238]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.038    result[238]_INST_0_i_2_n_0
+    SLICE_X25Y54         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.096 r  result[242]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.096    result[242]_INST_0_i_2_n_0
+    SLICE_X25Y55         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.154 r  result[246]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.154    result[246]_INST_0_i_2_n_0
+    SLICE_X25Y56         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.212 r  result[250]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.212    result[250]_INST_0_i_2_n_0
+    SLICE_X25Y57         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.270 r  result[254]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.270    result[254]_INST_0_i_2_n_0
+    SLICE_X25Y58         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.328 r  result[255]_INST_0_i_6/CO[3]
+                         net (fo=1, routed)           0.000    10.328    result[255]_INST_0_i_6_n_0
+    SLICE_X25Y59         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.386 r  result[198]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.386    result[198]_INST_0_i_2_n_0
+    SLICE_X25Y60         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.444 r  result[202]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.444    result[202]_INST_0_i_2_n_0
+    SLICE_X25Y61         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.502 r  result[210]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000    10.502    result[210]_INST_0_i_5_n_0
+    SLICE_X25Y62         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.560 r  result[210]_INST_0_i_2/CO[3]
+                         net (fo=1, routed)           0.000    10.560    result[210]_INST_0_i_2_n_0
+    SLICE_X25Y63         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.618 r  result[214]_INST_0_i_3/CO[3]
+                         net (fo=1, routed)           0.000    10.618    result[214]_INST_0_i_3_n_0
+    SLICE_X25Y64         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.676 r  result[218]_INST_0_i_3/CO[3]
+                         net (fo=1, routed)           0.000    10.676    result[218]_INST_0_i_3_n_0
+    SLICE_X25Y65         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.734 r  result[222]_INST_0_i_3/CO[3]
+                         net (fo=1, routed)           0.000    10.734    result[222]_INST_0_i_3_n_0
+    SLICE_X25Y66         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.792 r  result[226]_INST_0_i_3/CO[3]
+                         net (fo=1, routed)           0.000    10.792    result[226]_INST_0_i_3_n_0
+    SLICE_X25Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.850 r  result[230]_INST_0_i_3/CO[3]
+                         net (fo=1, routed)           0.000    10.850    result[230]_INST_0_i_3_n_0
+    SLICE_X25Y68         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.908 r  result[234]_INST_0_i_3/CO[3]
+                         net (fo=1, routed)           0.000    10.908    result[234]_INST_0_i_3_n_0
+    SLICE_X25Y69         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.966 r  result[238]_INST_0_i_3/CO[3]
+                         net (fo=1, routed)           0.000    10.966    result[238]_INST_0_i_3_n_0
+    SLICE_X25Y70         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.213    11.179 r  result[242]_INST_0_i_3/O[1]
+                         net (fo=2, routed)           0.517    11.696    result_640[112]
+    SLICE_X28Y63         LUT3 (Prop_lut3_I2_O)        0.152    11.848 r  result[240]_INST_0_i_1/O
+                         net (fo=2, routed)           0.470    12.318    result[240]_INST_0_i_1_n_0
+    SLICE_X28Y63         LUT6 (Prop_lut6_I1_O)        0.053    12.371 r  result[112]_INST_0/O
+                         net (fo=0)                   0.672    13.043    result[112]
+                                                                      r  result[112] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   13.158    13.158    
+                         output delay                -0.000    13.158    
+  -------------------------------------------------------------------
+                         required time                         13.158    
+                         arrival time                         -13.043    
+  -------------------------------------------------------------------
+                         slack                                  0.115    
+
+
+
+

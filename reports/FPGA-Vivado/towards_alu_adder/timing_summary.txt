@@ -1,0 +1,498 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Fri Sep 19 15:35:10 2025
+| Host         : jadem4ci running 64-bit unknown
+| Command      : report_timing_summary -file ../../../reports/FPGA-Vivado/towards_alu_adder/timing_summary.txt
+| Design       : towards_alu_adder
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Summary Report
+
+------------------------------------------------------------------------------------------------
+| Timer Settings
+| --------------
+------------------------------------------------------------------------------------------------
+
+  Enable Multi Corner Analysis               :  Yes
+  Enable Pessimism Removal                   :  Yes
+  Pessimism Removal Resolution               :  Nearest Common Node
+  Enable Input Delay Default Clock           :  No
+  Enable Preset / Clear Arcs                 :  No
+  Disable Flight Delays                      :  No
+  Ignore I/O Paths                           :  No
+  Timing Early Launch at Borrowing Latches   :  No
+  Borrow Time for Max Delay Exceptions       :  Yes
+  Merge Timing Exceptions                    :  Yes
+  Inter-SLR Compensation                     :  Conservative
+
+  Corner  Analyze    Analyze    
+  Name    Max Paths  Min Paths  
+  ------  ---------  ---------  
+  Slow    Yes        Yes        
+  Fast    Yes        Yes        
+
+
+------------------------------------------------------------------------------------------------
+| Report Methodology
+| ------------------
+------------------------------------------------------------------------------------------------
+
+No report available as report_methodology has not been run prior. Run report_methodology on the current design for the summary of methodology violations.
+
+
+
+check_timing report
+
+Table of Contents
+-----------------
+1. checking no_clock (0)
+2. checking constant_clock (0)
+3. checking pulse_width_clock (0)
+4. checking unconstrained_internal_endpoints (0)
+5. checking no_input_delay (0)
+6. checking no_output_delay (0)
+7. checking multiple_clock (0)
+8. checking generated_clocks (0)
+9. checking loops (0)
+10. checking partial_input_delay (547)
+11. checking partial_output_delay (0)
+12. checking latch_loops (0)
+
+1. checking no_clock (0)
+------------------------
+ There are 0 register/latch pins with no clock.
+
+
+2. checking constant_clock (0)
+------------------------------
+ There are 0 register/latch pins with constant_clock.
+
+
+3. checking pulse_width_clock (0)
+---------------------------------
+ There are 0 register/latch pins which need pulse_width check
+
+
+4. checking unconstrained_internal_endpoints (0)
+------------------------------------------------
+ There are 0 pins that are not constrained for maximum delay.
+
+ There are 0 pins that are not constrained for maximum delay due to constant clock.
+
+
+5. checking no_input_delay (0)
+------------------------------
+ There are 0 input ports with no input delay specified.
+
+ There are 0 input ports with no input delay but user has a false path constraint.
+
+
+6. checking no_output_delay (0)
+-------------------------------
+ There are 0 ports with no output delay specified.
+
+ There are 0 ports with no output delay but user has a false path constraint
+
+ There are 0 ports with no output delay but with a timing clock defined on it or propagating through it
+
+
+7. checking multiple_clock (0)
+------------------------------
+ There are 0 register/latch pins with multiple clocks.
+
+
+8. checking generated_clocks (0)
+--------------------------------
+ There are 0 generated clocks that are not connected to a clock source.
+
+
+9. checking loops (0)
+---------------------
+ There are 0 combinational loops in the design.
+
+
+10. checking partial_input_delay (547)
+--------------------------------------
+ There are 547 input ports with partial input delay specified. (HIGH)
+
+
+11. checking partial_output_delay (0)
+-------------------------------------
+ There are 0 ports with partial output delay specified.
+
+
+12. checking latch_loops (0)
+----------------------------
+ There are 0 combinational latch loops in the design through latch input
+
+
+
+------------------------------------------------------------------------------------------------
+| Design Timing Summary
+| ---------------------
+------------------------------------------------------------------------------------------------
+
+    WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+    -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+      0.133        0.000                      0                  272           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
+
+
+All user specified timing constraints are met.
+
+
+------------------------------------------------------------------------------------------------
+| Clock Summary
+| -------------
+------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------
+| Intra Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Inter Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Other Path Groups Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group        From Clock        To Clock              WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------        ----------        --------              -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+**default**       input port clock                          0.133        0.000                      0                  272                                                                        
+
+
+------------------------------------------------------------------------------------------------
+| Timing Details
+| --------------
+------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+Path Group:  **default**
+From Clock:  input port clock
+  To Clock:  
+
+Setup :            0  Failing Endpoints,  Worst Slack        0.133ns,  Total Violation        0.000ns
+Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.133ns  (required time - arrival time)
+  Source:                 B[0][1]
+                            (input port)
+  Destination:            sum[252]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            17.241ns  (MaxDelay Path 17.241ns)
+  Data Path Delay:        17.108ns  (logic 11.620ns (67.922%)  route 5.488ns (32.078%))
+  Logic Levels:           95  (CARRY4=79 LUT2=1 LUT4=7 LUT5=8)
+  Output Delay:           0.000ns
+  Timing Exception:       MaxDelay Path 17.241ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  B[0][1] (IN)
+                         net (fo=0)                   0.672     0.672    B[0][1]
+    SLICE_X58Y93         LUT2 (Prop_lut2_I1_O)        0.053     0.725 r  sum[0]_INST_0_i_3/O
+                         net (fo=1, routed)           0.000     0.725    sum[0]_INST_0_i_3_n_0
+    SLICE_X58Y93         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.310     1.035 r  sum[0]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     1.035    sum[0]_INST_0_n_0
+    SLICE_X58Y94         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     1.095 r  sum[3]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     1.095    sum[3]_INST_0_n_0
+    SLICE_X58Y95         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     1.155 r  sum[7]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     1.155    sum[7]_INST_0_n_0
+    SLICE_X58Y96         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     1.215 r  sum[11]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     1.215    sum[11]_INST_0_n_0
+    SLICE_X58Y97         CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     1.308 r  cout[0]_INST_0/CO[1]
+                         net (fo=1, routed)           0.276     1.584    cout[0]
+    SLICE_X59Y97         LUT5 (Prop_lut5_I1_O)        0.153     1.737 r  sum[16]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     1.737    sum[16]_INST_0_i_4_n_0
+    SLICE_X59Y97         CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313     2.050 r  sum[16]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     2.050    sum[16]_INST_0_n_0
+    SLICE_X59Y98         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     2.108 r  sum[19]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     2.108    sum[19]_INST_0_n_0
+    SLICE_X59Y99         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     2.166 r  sum[23]_INST_0/CO[3]
+                         net (fo=1, routed)           0.001     2.167    sum[23]_INST_0_n_0
+    SLICE_X59Y100        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     2.225 r  sum[27]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     2.225    sum[27]_INST_0_n_0
+    SLICE_X59Y101        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094     2.319 r  cout[1]_INST_0/CO[1]
+                         net (fo=1, routed)           0.282     2.600    cout[1]
+    SLICE_X58Y101        LUT4 (Prop_lut4_I1_O)        0.152     2.752 r  sum[32]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     2.752    sum[32]_INST_0_i_4_n_0
+    SLICE_X58Y101        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297     3.049 r  sum[32]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.049    sum[32]_INST_0_n_0
+    SLICE_X58Y102        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     3.109 r  sum[35]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.109    sum[35]_INST_0_n_0
+    SLICE_X58Y103        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     3.169 r  sum[39]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.169    sum[39]_INST_0_n_0
+    SLICE_X58Y104        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     3.229 r  sum[43]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.229    sum[43]_INST_0_n_0
+    SLICE_X58Y105        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     3.322 r  cout[2]_INST_0/CO[1]
+                         net (fo=1, routed)           0.233     3.555    cout[2]
+    SLICE_X57Y105        LUT5 (Prop_lut5_I1_O)        0.153     3.708 r  sum[48]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     3.708    sum[48]_INST_0_i_4_n_0
+    SLICE_X57Y105        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313     4.021 r  sum[48]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.021    sum[48]_INST_0_n_0
+    SLICE_X57Y106        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.079 r  sum[51]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.079    sum[51]_INST_0_n_0
+    SLICE_X57Y107        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.137 r  sum[55]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.137    sum[55]_INST_0_n_0
+    SLICE_X57Y108        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.195 r  sum[59]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.195    sum[59]_INST_0_n_0
+    SLICE_X57Y109        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094     4.289 r  cout[3]_INST_0/CO[1]
+                         net (fo=1, routed)           0.231     4.521    cout[3]
+    SLICE_X59Y109        LUT4 (Prop_lut4_I1_O)        0.152     4.673 r  sum[64]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     4.673    sum[64]_INST_0_i_4_n_0
+    SLICE_X59Y109        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313     4.986 r  sum[64]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.986    sum[64]_INST_0_n_0
+    SLICE_X59Y110        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     5.044 r  sum[67]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.044    sum[67]_INST_0_n_0
+    SLICE_X59Y111        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     5.102 r  sum[71]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.102    sum[71]_INST_0_n_0
+    SLICE_X59Y112        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     5.160 r  sum[75]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.160    sum[75]_INST_0_n_0
+    SLICE_X59Y113        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094     5.254 r  cout[4]_INST_0/CO[1]
+                         net (fo=1, routed)           0.282     5.535    cout[4]
+    SLICE_X58Y113        LUT5 (Prop_lut5_I1_O)        0.152     5.687 r  sum[80]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     5.687    sum[80]_INST_0_i_4_n_0
+    SLICE_X58Y113        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297     5.984 r  sum[80]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.984    sum[80]_INST_0_n_0
+    SLICE_X58Y114        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.044 r  sum[83]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.044    sum[83]_INST_0_n_0
+    SLICE_X58Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.104 r  sum[87]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.104    sum[87]_INST_0_n_0
+    SLICE_X58Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.164 r  sum[91]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.164    sum[91]_INST_0_n_0
+    SLICE_X58Y117        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     6.257 r  cout[5]_INST_0/CO[1]
+                         net (fo=1, routed)           0.276     6.533    cout[5]
+    SLICE_X59Y117        LUT4 (Prop_lut4_I1_O)        0.153     6.686 r  sum[96]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     6.686    sum[96]_INST_0_i_4_n_0
+    SLICE_X59Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313     6.999 r  sum[96]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.999    sum[96]_INST_0_n_0
+    SLICE_X59Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     7.057 r  sum[99]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.057    sum[99]_INST_0_n_0
+    SLICE_X59Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     7.115 r  sum[103]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.115    sum[103]_INST_0_n_0
+    SLICE_X59Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     7.173 r  sum[107]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.173    sum[107]_INST_0_n_0
+    SLICE_X59Y121        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094     7.267 r  cout[6]_INST_0/CO[1]
+                         net (fo=1, routed)           0.282     7.549    cout[6]
+    SLICE_X58Y121        LUT5 (Prop_lut5_I1_O)        0.152     7.701 r  sum[112]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     7.701    sum[112]_INST_0_i_4_n_0
+    SLICE_X58Y121        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297     7.998 r  sum[112]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.998    sum[112]_INST_0_n_0
+    SLICE_X58Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     8.058 r  sum[115]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     8.058    sum[115]_INST_0_n_0
+    SLICE_X58Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     8.118 r  sum[119]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     8.118    sum[119]_INST_0_n_0
+    SLICE_X58Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     8.178 r  sum[123]_INST_0/CO[3]
+                         net (fo=1, routed)           0.008     8.186    sum[123]_INST_0_n_0
+    SLICE_X58Y125        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     8.279 r  cout[7]_INST_0/CO[1]
+                         net (fo=1, routed)           0.240     8.519    cout[7]
+    SLICE_X58Y126        LUT4 (Prop_lut4_I1_O)        0.153     8.672 r  sum[128]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     8.672    sum[128]_INST_0_i_4_n_0
+    SLICE_X58Y126        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297     8.969 r  sum[128]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     8.969    sum[128]_INST_0_n_0
+    SLICE_X58Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     9.029 r  sum[131]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     9.029    sum[131]_INST_0_n_0
+    SLICE_X58Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     9.089 r  sum[135]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     9.089    sum[135]_INST_0_n_0
+    SLICE_X58Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     9.149 r  sum[139]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     9.149    sum[139]_INST_0_n_0
+    SLICE_X58Y130        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     9.242 r  cout[8]_INST_0/CO[1]
+                         net (fo=1, routed)           0.357     9.598    cout[8]
+    SLICE_X59Y129        LUT5 (Prop_lut5_I1_O)        0.153     9.751 r  sum[144]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     9.751    sum[144]_INST_0_i_4_n_0
+    SLICE_X59Y129        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313    10.064 r  sum[144]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.064    sum[144]_INST_0_n_0
+    SLICE_X59Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.122 r  sum[147]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.122    sum[147]_INST_0_n_0
+    SLICE_X59Y131        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.180 r  sum[151]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.180    sum[151]_INST_0_n_0
+    SLICE_X59Y132        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.238 r  sum[155]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.238    sum[155]_INST_0_n_0
+    SLICE_X59Y133        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094    10.332 r  cout[9]_INST_0/CO[1]
+                         net (fo=1, routed)           0.282    10.614    cout[9]
+    SLICE_X58Y133        LUT4 (Prop_lut4_I1_O)        0.152    10.766 r  sum[160]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    10.766    sum[160]_INST_0_i_4_n_0
+    SLICE_X58Y133        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297    11.063 r  sum[160]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.063    sum[160]_INST_0_n_0
+    SLICE_X58Y134        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.123 r  sum[163]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.123    sum[163]_INST_0_n_0
+    SLICE_X58Y135        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.183 r  sum[167]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.183    sum[167]_INST_0_n_0
+    SLICE_X58Y136        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.243 r  sum[171]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.243    sum[171]_INST_0_n_0
+    SLICE_X58Y137        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093    11.336 r  cout[10]_INST_0/CO[1]
+                         net (fo=1, routed)           0.333    11.669    cout[10]
+    SLICE_X57Y136        LUT5 (Prop_lut5_I1_O)        0.153    11.822 r  sum[176]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    11.822    sum[176]_INST_0_i_4_n_0
+    SLICE_X57Y136        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313    12.135 r  sum[176]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.135    sum[176]_INST_0_n_0
+    SLICE_X57Y137        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    12.193 r  sum[179]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.193    sum[179]_INST_0_n_0
+    SLICE_X57Y138        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    12.251 r  sum[183]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.251    sum[183]_INST_0_n_0
+    SLICE_X57Y139        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    12.309 r  sum[187]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.309    sum[187]_INST_0_n_0
+    SLICE_X57Y140        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094    12.403 r  cout[11]_INST_0/CO[1]
+                         net (fo=1, routed)           0.237    12.640    cout[11]
+    SLICE_X58Y140        LUT4 (Prop_lut4_I1_O)        0.152    12.792 r  sum[192]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    12.792    sum[192]_INST_0_i_4_n_0
+    SLICE_X58Y140        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297    13.089 r  sum[192]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.089    sum[192]_INST_0_n_0
+    SLICE_X58Y141        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    13.149 r  sum[195]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.149    sum[195]_INST_0_n_0
+    SLICE_X58Y142        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    13.209 r  sum[199]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.209    sum[199]_INST_0_n_0
+    SLICE_X58Y143        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    13.269 r  sum[203]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.269    sum[203]_INST_0_n_0
+    SLICE_X58Y144        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093    13.362 r  cout[12]_INST_0/CO[1]
+                         net (fo=1, routed)           0.233    13.595    cout[12]
+    SLICE_X57Y144        LUT5 (Prop_lut5_I1_O)        0.153    13.748 r  sum[208]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    13.748    sum[208]_INST_0_i_4_n_0
+    SLICE_X57Y144        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313    14.061 r  sum[208]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.061    sum[208]_INST_0_n_0
+    SLICE_X57Y145        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    14.119 r  sum[211]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.119    sum[211]_INST_0_n_0
+    SLICE_X57Y146        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    14.177 r  sum[215]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.177    sum[215]_INST_0_n_0
+    SLICE_X57Y147        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    14.235 r  sum[219]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.235    sum[219]_INST_0_n_0
+    SLICE_X57Y148        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094    14.329 r  cout[13]_INST_0/CO[1]
+                         net (fo=1, routed)           0.355    14.684    cout[13]
+    SLICE_X57Y149        LUT4 (Prop_lut4_I1_O)        0.152    14.836 r  sum[224]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    14.836    sum[224]_INST_0_i_4_n_0
+    SLICE_X57Y149        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313    15.149 r  sum[224]_INST_0/CO[3]
+                         net (fo=1, routed)           0.001    15.149    sum[224]_INST_0_n_0
+    SLICE_X57Y150        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    15.207 r  sum[227]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    15.207    sum[227]_INST_0_n_0
+    SLICE_X57Y151        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    15.265 r  sum[231]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    15.265    sum[231]_INST_0_n_0
+    SLICE_X57Y152        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    15.323 r  sum[235]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    15.323    sum[235]_INST_0_n_0
+    SLICE_X57Y153        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094    15.417 r  cout[14]_INST_0/CO[1]
+                         net (fo=1, routed)           0.237    15.655    cout[14]
+    SLICE_X58Y153        LUT5 (Prop_lut5_I1_O)        0.152    15.807 r  sum[240]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    15.807    sum[240]_INST_0_i_4_n_0
+    SLICE_X58Y153        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297    16.104 r  sum[240]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    16.104    sum[240]_INST_0_n_0
+    SLICE_X58Y154        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    16.164 r  sum[243]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    16.164    sum[243]_INST_0_n_0
+    SLICE_X58Y155        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    16.224 r  sum[247]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    16.224    sum[247]_INST_0_n_0
+    SLICE_X58Y156        CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.212    16.436 r  sum[251]_INST_0/O[1]
+                         net (fo=0)                   0.672    17.108    sum[252]
+                                                                      r  sum[252] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   17.241    17.241    
+                         output delay                -0.000    17.241    
+  -------------------------------------------------------------------
+                         required time                         17.241    
+                         arrival time                         -17.108    
+  -------------------------------------------------------------------
+                         slack                                  0.133    
+
+
+
+
+

@@ -1,0 +1,7 @@
+name: buffer_bit
+Fmax: 260.0 MHz (3.8461538461538463 ns)
+slack: 0.109354
+required: 3.846154
+instances: 4744
+design_area: 31653
+utilization: 66

@@ -1,0 +1,111 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Fri Sep 19 16:01:57 2025
+| Host         : jadem4ci running 64-bit unknown
+| Command      : report_timing -file ../../../reports/FPGA-Vivado/otbn_bignum_mul/timing.txt
+| Design       : otbn_bignum_mul
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.062ns  (required time - arrival time)
+  Source:                 B[157]
+                            (input port)
+  Destination:            result[189]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            13.158ns  (MaxDelay Path 13.158ns)
+  Data Path Delay:        13.096ns  (logic 9.057ns (69.158%)  route 4.039ns (30.842%))
+  Logic Levels:           24  (CARRY4=15 DSP48E1=4 LUT3=1 LUT4=1 LUT5=1 LUT6=2)
+  Output Delay:           0.000ns
+  Timing Exception:       MaxDelay Path 13.158ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  B[157] (IN)
+                         net (fo=0)                   0.672     0.672    B[157]
+    SLICE_X52Y136        LUT6 (Prop_lut6_I5_O)        0.053     0.725 r  mul_res_i_18/O
+                         net (fo=4, routed)           0.727     1.452    mul_op_b[29]
+    DSP48_X3Y54          DSP48E1 (Prop_dsp48e1_B[12]_PCOUT[47])
+                                                      3.264     4.716 r  mul_res__3/PCOUT[47]
+                         net (fo=1, routed)           0.000     4.716    mul_res__3_n_106
+    DSP48_X3Y55          DSP48E1 (Prop_dsp48e1_PCIN[47]_PCOUT[47])
+                                                      1.452     6.168 r  mul_res__4/PCOUT[47]
+                         net (fo=1, routed)           0.000     6.168    mul_res__4_n_106
+    DSP48_X3Y56          DSP48E1 (Prop_dsp48e1_PCIN[47]_PCOUT[47])
+                                                      1.452     7.620 r  mul_res__5/PCOUT[47]
+                         net (fo=1, routed)           0.000     7.620    mul_res__5_n_106
+    DSP48_X3Y57          DSP48E1 (Prop_dsp48e1_PCIN[47]_P[1])
+                                                      1.286     8.906 r  mul_res__6/P[1]
+                         net (fo=3, routed)           0.732     9.639    p_1_in[69]
+    SLICE_X62Y134        LUT3 (Prop_lut3_I0_O)        0.053     9.692 r  result[200]_INST_0_i_12/O
+                         net (fo=3, routed)           0.354    10.046    result[200]_INST_0_i_12_n_0
+    SLICE_X63Y134        LUT5 (Prop_lut5_I1_O)        0.053    10.099 r  result[200]_INST_0_i_4/O
+                         net (fo=2, routed)           0.425    10.524    result[200]_INST_0_i_4_n_0
+    SLICE_X64Y134        LUT6 (Prop_lut6_I0_O)        0.053    10.577 r  result[200]_INST_0_i_8/O
+                         net (fo=1, routed)           0.000    10.577    result[200]_INST_0_i_8_n_0
+    SLICE_X64Y134        CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.310    10.887 r  result[200]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    10.887    result[200]_INST_0_i_1_n_0
+    SLICE_X64Y135        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.947 r  result[204]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    10.947    result[204]_INST_0_i_1_n_0
+    SLICE_X64Y136        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.007 r  result[208]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.007    result[208]_INST_0_i_1_n_0
+    SLICE_X64Y137        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.067 r  result[212]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.067    result[212]_INST_0_i_1_n_0
+    SLICE_X64Y138        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.127 r  result[216]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.127    result[216]_INST_0_i_1_n_0
+    SLICE_X64Y139        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.187 r  result[220]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.187    result[220]_INST_0_i_1_n_0
+    SLICE_X64Y140        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.247 r  result[224]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.247    result[224]_INST_0_i_1_n_0
+    SLICE_X64Y141        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.307 r  result[228]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.307    result[228]_INST_0_i_1_n_0
+    SLICE_X64Y142        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.367 r  result[232]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.367    result[232]_INST_0_i_1_n_0
+    SLICE_X64Y143        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.427 r  result[236]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.427    result[236]_INST_0_i_1_n_0
+    SLICE_X64Y144        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.487 r  result[240]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.487    result[240]_INST_0_i_1_n_0
+    SLICE_X64Y145        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.547 r  result[244]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.547    result[244]_INST_0_i_1_n_0
+    SLICE_X64Y146        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.607 r  result[248]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.607    result[248]_INST_0_i_1_n_0
+    SLICE_X64Y147        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.667 r  result[252]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    11.667    result[252]_INST_0_i_1_n_0
+    SLICE_X64Y148        CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.135    11.802 r  result[255]_INST_0_i_1/O[0]
+                         net (fo=3, routed)           0.456    12.258    mul_res__15[125]
+    SLICE_X65Y148        LUT4 (Prop_lut4_I0_O)        0.166    12.424 r  result[189]_INST_0/O
+                         net (fo=0)                   0.672    13.096    result[189]
+                                                                      r  result[189] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   13.158    13.158    
+                         output delay                -0.000    13.158    
+  -------------------------------------------------------------------
+                         required time                         13.158    
+                         arrival time                         -13.096    
+  -------------------------------------------------------------------
+                         slack                                  0.062    
+
+
+
+
