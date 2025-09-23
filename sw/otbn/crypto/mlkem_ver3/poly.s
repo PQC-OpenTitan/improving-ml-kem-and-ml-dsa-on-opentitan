@@ -61,9 +61,9 @@ poly_frommsg:
       bn.rshi w1, w0, w1 >> 1
       bn.rshi w1, w31, w1 >> 15
       bn.rshi w0, w31, w0 >> 1
-    bn.subv.16H  w1, w31, w1 
-    bn.and       w1, w1, w3
-    bn.sid       x5, 0(x12++)
+    bn.subv.16H w1, w31, w1 
+    bn.and      w1, w1, w3
+    bn.sid      x5, 0(x12++)
 
   ret
 
@@ -159,10 +159,10 @@ poly_getnoise_eta_1:
   csrrw x0, KECCAK_CFG_REG, x5
 
   /* Send the message to the Keccak core. */
-  bn.lid x0, 0(x10)
+  bn.lid  x0, 0(x10)
   bn.wsrw 0x9, w0
-  add  x10, x3, x13
-  bn.lid x0, 0(x10)
+  add     x10, x3, x13
+  bn.lid  x0, 0(x10)
   bn.wsrw 0x9, w0
 
   li x5, 8
@@ -213,16 +213,16 @@ poly_getnoise_eta_2:
   sw   x6, 0(x2)
 
   /* Initialize a SHAKE256 operation. */
-  addi x5, x0, 33
-  slli x5, x5, 5
-  addi x5, x5, SHAKE256_CFG
+  addi  x5, x0, 33
+  slli  x5, x5, 5
+  addi  x5, x5, SHAKE256_CFG
   csrrw x0, KECCAK_CFG_REG, x5
 
   /* Send the message to the Keccak core. */
-  bn.lid x0, 0(x10)
+  bn.lid  x0, 0(x10)
   bn.wsrw 0x9, w0
-  add  x10, x3, x13
-  bn.lid x0, 0(x10)
+  add     x10, x3, x13
+  bn.lid  x0, 0(x10)
   bn.wsrw 0x9, w0
 
   li x5, 8
@@ -313,13 +313,13 @@ poly_sub:
 .globl poly_tomont
 poly_tomont:
   /* Load const_tomont */
-  li x4, 0
+  li     x4, 0
   bn.lid x4++, 0(x11)
 
   LOOPI 16, 5
-    bn.lid                 x4, 0(x10)
-    bn.mulv.16H.acc.z.lo   w1, w0, w1
-    bn.mulv.l.16H.lo       w1, w1, sw0.2
-    bn.mulv.l.16H.acc.hi   w1, w1, sw0.0
-    bn.sid                 x4, 0(x10++)
+    bn.lid               x4, 0(x10)
+    bn.mulv.16H.acc.z.lo w1, w0, w1
+    bn.mulv.l.16H.lo     w1, w1, sw0.2
+    bn.mulv.l.16H.acc.hi w1, w1, sw0.0
+    bn.sid               x4, 0(x10++)
   ret
