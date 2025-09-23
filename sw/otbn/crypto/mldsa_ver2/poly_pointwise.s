@@ -27,7 +27,7 @@ poly_pointwise:
     li x5, 3
     li x6, 4
 
-    LOOPI 32, 10
+    LOOPI 32, 9
         bn.lid x4, 0(x10++)
         bn.lid x5, 0(x11++)
         
@@ -37,7 +37,6 @@ poly_pointwise:
         bn.mulv.8S.odd.acc.z.lo  w2, w2, w3
         bn.mulv.l.8S.odd.lo      w2, w2, sw0.1
         bn.mulv.l.8S.odd.acc.hi  w2, w2, sw0.0
-        bn.addvm.8S              w2, w2, w31
         
         bn.sid x4, 0(x12++)
 
@@ -68,7 +67,7 @@ poly_pointwise_acc:
     li x5, 3
     li x6, 4
 
-    LOOPI 32, 12
+    LOOPI 32, 11
         bn.lid x4, 0(x10++)
         bn.lid x5, 0(x11++)
         
@@ -78,7 +77,6 @@ poly_pointwise_acc:
         bn.mulv.8S.odd.acc.z.lo  w2, w2, w3
         bn.mulv.l.8S.odd.lo      w2, w2, sw0.1
         bn.mulv.l.8S.odd.acc.hi  w2, w2, sw0.0
-        bn.addvm.8S              w2, w2, w31
         
         /* Accumulate onto output polynomial */
         bn.lid x5, 0(x12)

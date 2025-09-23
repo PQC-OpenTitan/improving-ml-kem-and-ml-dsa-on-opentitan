@@ -39,9 +39,6 @@ ntt:
         push \reg
     .endr
 
-    /* Emty w20 */
-    bn.xor w20, w20, w20
-
     /* Set up constants for input/state */
     li x4, 0
     li x5, 1
@@ -69,7 +66,7 @@ ntt:
     bn.lid x24, 32(x11) /* w18 */
     bn.mov w19, w17 /* Save first batch of Twiddle factors */
     
-    LOOPI 2, 324
+    LOOPI 2, 292
         /* Load input data */
         bn.lid x4, 0(x10)
         bn.lid x5, 64(x10)
@@ -107,7 +104,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w8, w0, w30
         bn.addvm.8S                w0, w0, w30
 
@@ -117,7 +113,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w9, w1, w30
         bn.addvm.8S                w1, w1, w30
 
@@ -127,7 +122,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w10, w2, w30
         bn.addvm.8S                w2, w2, w30
 
@@ -137,7 +131,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w11, w3, w30
         bn.addvm.8S                w3, w3, w30
 
@@ -147,7 +140,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w12, w4, w30
         bn.addvm.8S                w4, w4, w30
 
@@ -157,7 +149,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w13, w5, w30
         bn.addvm.8S                w5, w5, w30
 
@@ -167,7 +158,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w14, w6, w30
         bn.addvm.8S                w6, w6, w30
 
@@ -177,7 +167,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w15, w7, w30
         bn.addvm.8S                w7, w7, w30
         
@@ -189,7 +178,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.1
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w4, w0, w30
         bn.addvm.8S                w0, w0, w30
 
@@ -199,7 +187,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.1
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w5, w1, w30
         bn.addvm.8S                w1, w1, w30
 
@@ -209,7 +196,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.1
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w6, w2, w30
         bn.addvm.8S                w2, w2, w30
 
@@ -219,7 +205,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.1
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w7, w3, w30
         bn.addvm.8S                w3, w3, w30
 
@@ -229,7 +214,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.2
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w12, w8, w30
         bn.addvm.8S                w8, w8, w30
 
@@ -239,7 +223,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.2
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w13, w9, w30
         bn.addvm.8S                w9, w9, w30
 
@@ -249,7 +232,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.2
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w14, w10, w30
         bn.addvm.8S                w10, w10, w30
 
@@ -259,7 +241,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.2
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w15, w11, w30
         bn.addvm.8S                w11, w11, w30
 
@@ -271,7 +252,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.3
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w2, w0, w30
         bn.addvm.8S                w0, w0, w30
 
@@ -281,7 +261,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.3
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w3, w1, w30
         bn.addvm.8S                w1, w1, w30
 
@@ -291,7 +270,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.4
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w6, w4, w30
         bn.addvm.8S                w4, w4, w30
 
@@ -301,7 +279,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.4
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w7, w5, w30
         bn.addvm.8S                w5, w5, w30
 
@@ -311,7 +288,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.5
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w10, w8, w30
         bn.addvm.8S                w8, w8, w30
 
@@ -321,7 +297,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.5
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w11, w9, w30
         bn.addvm.8S                w9, w9, w30
 
@@ -331,7 +306,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.6
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w14, w12, w30
         bn.addvm.8S                w12, w12, w30
 
@@ -341,7 +315,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.6
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w15, w13, w30
         bn.addvm.8S                w13, w13, w30
 
@@ -353,7 +326,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.7
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w1, w0, w30
         bn.addvm.8S                w0, w0, w30
 
@@ -365,7 +337,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w3, w2, w30
         bn.addvm.8S                w2, w2, w30
 
@@ -375,7 +346,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.1
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w5, w4, w30
         bn.addvm.8S                w4, w4, w30
 
@@ -385,7 +355,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.2
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w7, w6, w30
         bn.addvm.8S                w6, w6, w30
 
@@ -395,7 +364,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.3
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w9, w8, w30
         bn.addvm.8S                w8, w8, w30
 
@@ -405,7 +373,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.4
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w11, w10, w30
         bn.addvm.8S                w10, w10, w30
 
@@ -415,7 +382,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.5
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w13, w12, w30
         bn.addvm.8S                w12, w12, w30
 
@@ -425,7 +391,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.6
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w15, w14, w30
         bn.addvm.8S                w14, w14, w30
 
@@ -461,7 +426,7 @@ ntt:
     addi x11, x11, 64
 
     /* w16--w23 are used for the twiddle factors on layers 5--8 */
-    LOOPI 2, 433
+    LOOPI 2, 401
         /* Load input data */
         bn.lid x4, 0(x12)
         bn.lid x5, 32(x12)
@@ -492,7 +457,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.0
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w1, w0, w30
         bn.addvm.8S                w0, w0, w30
 
@@ -502,7 +466,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.1
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w3, w2, w30
         bn.addvm.8S                w2, w2, w30
 
@@ -512,7 +475,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.2
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w5, w4, w30
         bn.addvm.8S                w4, w4, w30
 
@@ -522,7 +484,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.3
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w7, w6, w30
         bn.addvm.8S                w6, w6, w30
 
@@ -532,7 +493,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.4
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w9, w8, w30
         bn.addvm.8S                w8, w8, w30
 
@@ -542,7 +502,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.5
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w11, w10, w30
         bn.addvm.8S                w10, w10, w30
 
@@ -552,7 +511,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.6
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w13, w12, w30
         bn.addvm.8S                w12, w12, w30
 
@@ -562,7 +520,6 @@ ntt:
         bn.mulv.l.8S.odd.acc.z.lo  w30, w30, sw1.7
         bn.mulv.l.8S.odd.lo        w30, w30, sw0.1
         bn.mulv.l.8S.odd.acc.hi    w30, w30, sw0.0
-        bn.addvm.8S                w30, w30, w20
         bn.subvm.8S                w15, w14, w30
         bn.addvm.8S                w14, w14, w30
 
@@ -637,7 +594,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w28, w24, wtmp
         bn.addvm.8S                w24, w24, wtmp
 
@@ -647,7 +603,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w29, w25, wtmp
         bn.addvm.8S                w25, w25, wtmp
 
@@ -657,7 +612,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w30, w26, wtmp
         bn.addvm.8S                w26, w26, wtmp
 
@@ -667,7 +621,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w31, w27, wtmp
         bn.addvm.8S                w27, w27, wtmp
 
@@ -679,7 +632,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w4, w0, wtmp
         bn.addvm.8S                w0, w0, wtmp
 
@@ -689,7 +641,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w5, w1, wtmp
         bn.addvm.8S                w1, w1, wtmp
 
@@ -699,7 +650,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w6, w2, wtmp
         bn.addvm.8S                w2, w2, wtmp
 
@@ -709,7 +659,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w7, w3, wtmp
         bn.addvm.8S                w3, w3, wtmp
 
@@ -724,7 +673,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w26, w24, wtmp
         bn.addvm.8S                w24, w24, wtmp
 
@@ -734,7 +682,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w27, w25, wtmp
         bn.addvm.8S                w25, w25, wtmp
 
@@ -746,7 +693,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w30, w28, wtmp
         bn.addvm.8S                w28, w28, wtmp
 
@@ -756,7 +702,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w31, w29, wtmp
         bn.addvm.8S                w29, w29, wtmp
 
@@ -768,7 +713,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w2, w0, wtmp
         bn.addvm.8S                w0, w0, wtmp
 
@@ -778,7 +722,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w3, w1, wtmp
         bn.addvm.8S                w1, w1, wtmp
 
@@ -790,7 +733,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w6, w4, wtmp
         bn.addvm.8S                w4, w4, wtmp
 
@@ -800,7 +742,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w7, w5, wtmp
         bn.addvm.8S                w5, w5, wtmp
 
@@ -815,7 +756,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w25, w24, wtmp
         bn.addvm.8S                w24, w24, wtmp
 
@@ -827,7 +767,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w27, w26, wtmp
         bn.addvm.8S                w26, w26, wtmp
         
@@ -839,7 +778,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w29, w28, wtmp
         bn.addvm.8S                w28, w28, wtmp
 
@@ -851,7 +789,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w31, w30, wtmp
         bn.addvm.8S                w30, w30, wtmp
 
@@ -863,7 +800,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w1, w0, wtmp
         bn.addvm.8S                w0, w0, wtmp
 
@@ -875,7 +811,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w3, w2, wtmp
         bn.addvm.8S                w2, w2, wtmp
 
@@ -887,7 +822,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w5, w4, wtmp
         bn.addvm.8S                w4, w4, wtmp
 
@@ -899,7 +833,6 @@ ntt:
         bn.mulv.8S.odd.acc.z.lo    wtmp, wtmp, w17
         bn.mulv.l.8S.odd.lo        wtmp, wtmp, sw0.1
         bn.mulv.l.8S.odd.acc.hi    wtmp, wtmp, sw0.0
-        bn.addvm.8S                wtmp, wtmp, w20
         bn.subvm.8S                w7, w6, wtmp
         bn.addvm.8S                w6, w6, wtmp
 

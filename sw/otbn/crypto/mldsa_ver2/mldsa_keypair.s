@@ -321,7 +321,9 @@ crypto_sign_keypair:
         push \reg
     .endr
 
-    bn.wsrr w16, 0x0
+    bn.wsrr   w16, 0x0 /* w16 = R | Q */
+    bn.shv.8S w0, w16 << 1 /* w0 = 2*R | 2*Q */
+    bn.wsrw   0x0, w0 /* MOD = 2*R | 2*Q */
     LOOPI L, 2
         jal x1, ntt
         addi a1, a1, -1024
@@ -330,6 +332,7 @@ crypto_sign_keypair:
         pop \reg
     .endr
 
+    /* After NTT, w16 is still R | Q and MOD is still 2*R | 2*Q */
     /* Matrix-vector multiplication */
 
     /* Load source pointers */
@@ -345,7 +348,6 @@ crypto_sign_keypair:
     /* Load offset for resetting pointer */
     li s1, POLYVECL_BYTES
 
-    bn.wsrr w16, 0x0
     .rept K
         jal  x1, poly_pointwise
         addi a2, a2, -1024
@@ -359,6 +361,7 @@ crypto_sign_keypair:
         addi a2, a2, 1024 /* Write next output polynomial */
     .endr
 
+    /* After poly_pointwise, w16 is still R | Q and MOD is still 2*R | 2*Q */
     /* Inverse NTT on t1 */
     li  a0, STACK_T1
     add a0, fp, a0
@@ -368,11 +371,11 @@ crypto_sign_keypair:
         push \reg
     .endr
 
-    bn.wsrr w16, 0x0
     LOOPI K, 3
         jal  x1, intt
         addi a1, a1, -960 /* Reset the twiddle pointer */
         addi a0, a0, 1024 /* Go to next input polynomial */
+    bn.wsrw 0x0, w16 /* Restore MOD = R | Q */
 
     /* Restore caller-saved registers */
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0

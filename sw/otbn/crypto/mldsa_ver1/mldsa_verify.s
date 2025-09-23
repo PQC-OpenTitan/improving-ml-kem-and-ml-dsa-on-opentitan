@@ -335,7 +335,6 @@ crypto_sign_verify_internal:
     add a0, fp, a0
     li  a1, STACK_MAT /* Use as temporary buffer */
     add a1, fp, a1
-    bn.wsrr w16, 0x0
     LOOPI L, 2
         jal x1, poly_reduce32
         nop
@@ -554,6 +553,12 @@ crypto_sign_verify_internal:
         addi a2, a2, 256
         addi a2, a2, -L
 
+    /* Prepare modulus */
+    #define mod_x2 w22
+    bn.wsrr   w16, 0x0 /* w16 = R | Q */
+    bn.shv.8S mod_x2, w16 << 1 /* mod_x2 = 2*R | 2*Q */
+
+    bn.wsrw 0x0, mod_x2 /* MOD = 2*R | 2*Q */
     /* NTT(z) */
     li   a0, STACK_Z
     add  a0, fp, a0
@@ -564,7 +569,6 @@ crypto_sign_verify_internal:
         push \reg
     .endr
 
-    bn.wsrr w16, 0x0
     LOOPI L, 2
         jal  x1, ntt
         addi a1, a1, -1024
@@ -573,6 +577,7 @@ crypto_sign_verify_internal:
         pop \reg
     .endr
 
+    /* After NTT(z), w16 is still R | Q and MOD is still 2*R | 2*Q */
     /* NTT(c) */
     li   a0, STACK_CP
     add  a0, fp, a0
@@ -583,7 +588,6 @@ crypto_sign_verify_internal:
         push \reg
     .endr
 
-    bn.wsrr w16, 0x0
     jal x1, ntt
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
@@ -607,6 +611,7 @@ crypto_sign_verify_internal:
             bn.sid    t0, 0(a0++)
         nop /* Nested loops must not end on the same instruciton  */
 
+    /* After NTT(c), w16 is still R | Q and MOD is still 2*R | 2*Q */
     /* NTT(t1) */
     li   a0, STACK_T1
     add  a0, fp, a0
@@ -617,7 +622,6 @@ crypto_sign_verify_internal:
         push \reg
     .endr
 
-    bn.wsrr w16, 0x0
     LOOPI K, 2
         jal  x1, ntt
         addi a1, a1, -1024
@@ -626,6 +630,7 @@ crypto_sign_verify_internal:
         pop \reg
     .endr
 
+    /* After NTT(t1), w16 is still R | Q and MOD is still 2*R | 2*Q */
     /* Matrix-vector multiplication */
     /* Load source pointers */
     li  a0, STACK_Z
@@ -641,7 +646,6 @@ crypto_sign_verify_internal:
     /* Load offset for resetting pointer */
     li s1, POLYVECL_BYTES
 
-    bn.wsrr w16, 0x0
     .rept K
         jal  x1, poly_pointwise
         addi a2, a2, -1024
@@ -654,6 +658,7 @@ crypto_sign_verify_internal:
         addi a2, a2, 1024
     .endr
 
+    /* After poly_pointwise, w16 is still R | Q and MOD is still 2*R | 2*Q */
     /* t1 = cp * t1 */
     li  a0, STACK_CP
     add a0, fp, a0
@@ -662,11 +667,12 @@ crypto_sign_verify_internal:
     li  a2, STACK_T1
     add a2, fp, a2
 
-    bn.wsrr w16, 0x0
     LOOPI K, 2
         jal  x1, poly_pointwise
         addi a0, a0, -1024
 
+    /* MOD is still 2*R | 2*Q, but since w1 and t1 are both in [0,2q), w1 - t1 mod 2q is still in
+     * [0,2q), which is fine as input to INTT right after. So we don't need to switch MOD back to q */
     /* w1 = w1 - t1 */
     li  a0, STACK_W1
     add a0, fp, a0
@@ -679,6 +685,7 @@ crypto_sign_verify_internal:
         jal x1, poly_sub
         nop
 
+    /* After poly_sub, w16 is still R | Q and MOD is still 2*R | 2*Q */
     /* Inverse NTT on w1 */
     li  a0, STACK_W1
     add a0, fp, a0
@@ -688,13 +695,14 @@ crypto_sign_verify_internal:
         push \reg
     .endr
 
-    bn.wsrr w16, 0x0
     LOOPI K, 3
         jal  x1, intt
         /* Reset the twiddle pointer */
         addi a1, a1, -960
         /* Go to next input polynomial */
         addi a0, a0, 1024
+
+    bn.wsrw 0x0, w16 /* Restore MOD = R | Q */
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
