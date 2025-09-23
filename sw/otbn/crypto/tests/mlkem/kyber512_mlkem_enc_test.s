@@ -398,7 +398,49 @@ const_tomont:
   .word 0x05490549
   .word 0x05490549
   .word 0x05490549
-  
+
+.globl cbd2_const
+cbd2_const:
+  /* const1 */
+  .word 0x55555555
+  .word 0x55555555
+  .word 0x55555555
+  .word 0x55555555
+  .word 0x55555555
+  .word 0x55555555
+  .word 0x55555555
+  .word 0x55555555
+  /* const2 */ 
+  .word 0x33333333
+  .word 0x33333333
+  .word 0x33333333
+  .word 0x33333333
+  .word 0x33333333
+  .word 0x33333333
+  .word 0x33333333
+  .word 0x33333333
+
+.globl cbd3_const
+cbd3_const:
+  /* const1 */
+  .word 0x49249249
+  .word 0x92492492
+  .word 0x24924924
+  .word 0x49249249
+  .word 0x92492492
+  .word 0x24924924
+  .word 0x49249249
+  .word 0x12492492
+  /* const2 */
+  .word 0xc71c71c7
+  .word 0x71c71c71
+  .word 0x1c71c71c
+  .word 0xc71c71c7
+  .word 0x71c71c71
+  .word 0x1c71c71c
+  .word 0xc71c71c7
+  .word 0x71c71c71
+
 .globl twiddles_ntt
 twiddles_ntt:
     /* Layer 1--4 */ 
