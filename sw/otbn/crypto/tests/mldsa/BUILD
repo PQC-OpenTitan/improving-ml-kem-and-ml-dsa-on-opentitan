@@ -1588,55 +1588,55 @@ otbn_binary(
 
 otbn_sim_py_test(
     name = "mldsa44_keypair_bench",
-    deps = [":dilithium2_keypair_test"],
+    deps = [":mldsa44_keypair_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa44_sign_bench",
-    deps = [":dilithium2_sign_test"],
+    deps = [":mldsa44_sign_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa44_verify_bench",
-    deps = [":dilithium2_verify_test"],
+    deps = [":mldsa44_verify_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa65_keypair_bench",
-    deps = [":dilithium3_keypair_test"],
+    deps = [":mldsa65_keypair_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa65_sign_bench",
-    deps = [":dilithium3_sign_test"],
+    deps = [":mldsa65_sign_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa65_verify_bench",
-    deps = [":dilithium3_verify_test"],
+    deps = [":mldsa65_verify_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa87_keypair_bench",
-    deps = [":dilithium5_keypair_test"],
+    deps = [":mldsa87_keypair_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa87_sign_bench",
-    deps = [":dilithium5_sign_test"],
+    deps = [":mldsa87_sign_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
 otbn_sim_py_test(
     name = "mldsa87_verify_bench",
-    deps = [":dilithium5_verify_test"],
+    deps = [":mldsa87_verify_test_ver0"],
     sim_test_wrapper = "dilithiumpy_bench_otbn/run_dilithium.py",
 )
 
