@@ -8,7 +8,6 @@ set REPORT_DIR $env(OUTDIR)
 
 puts "top_module=$TOP_MODULE, start_freq=$start_f"
 
-
 ############################################
 #
 # TCL script for Synthesis with Genus
@@ -37,11 +36,37 @@ check_design -unresolved ${TOP_MODULE}
 check_design -combo_loops ${TOP_MODULE}
 check_design -multiple_driver ${TOP_MODULE}
 
+write_db ${REPORT_DIR}/test.db
+
+# reset_design
+# reset_db / .library
+# #reset_db init_lib_search_path
+# #reset_db lef_library
+# #
+# #read_db /tmp/test.db
+# 
+# set status [catch { read_db /tmp/test.db } result_variable]
+# set status [catch { read_db /tmp/test.db } result_variable]
+
+
 ############################################
 # Perform binary search for Fmax
 ############################################
 
 proc set_timing_paths {clk clk_period} {
+  global REPORT_DIR
+
+#  reset_db lef_library
+  reset_design
+
+  reset_db / .library
+#  reset_db lef_library
+
+#  read_db /tmp/test.db
+  catch { read_db ${REPORT_DIR}/test.db }
+  read_db ${REPORT_DIR}/test.db
+
+
   if {[llength [get_ports -quiet $clk]] > 0} {
     # Create clock to attach it to a clock buffer.
     create_clock -name $clk -period $clk_period [get_ports $clk]
