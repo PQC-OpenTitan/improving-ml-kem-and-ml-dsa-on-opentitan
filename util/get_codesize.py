@@ -5,13 +5,11 @@ import re
 import argparse
 import subprocess
 import time
-from datetime import datetime
-from pathlib import Path
-from itertools import islice
+import csv
 from tqdm import tqdm
+from tabulate import tabulate
 
-STACK_SIZE_MLKEM = 20000
-STACK_SIZE_MLDSA = 112000
+STACK_SIZE = 20000
 
 MLKEM512_CRYPTO_PUBLICKEYBYTES = 800
 MLKEM512_CRYPTO_SECRETKEYBYTES = 1632
@@ -90,83 +88,84 @@ def target_list(scheme, verbose):
         subprocess.run(query_cmd, stdout=subprocess.PIPE, text=True, shell=True, check=True)
     targets = results.stdout.strip().split('\n')
     targets = sorted(targets, key=lambda x: int(re.search(r'\d+', x).group()))
+    # In case we want NOLD codesize, uncomment the following lines
+    # for i in range(0, n, 7):
+    #     targets[i + 0], targets[i + 1] = targets[i + 1], targets[i + 0]
+    #     targets[i + 2], targets[i + 3] = targets[i + 3], targets[i + 2]
+    #     targets[i + 4], targets[i + 5] = targets[i + 5], targets[i + 4]
+
+    targets = [t for t in targets if 'nold' not in t]
+
+    # Sort so that ver0_base is before _ver0
+    n = len(targets)
+    for i in range(0, n, 5):
+        targets[i], targets[i + 1] = targets[i + 1], targets[i]
 
     return targets
 
 
-def dict_print(cs):
-    """Pretty-print a dictionary
-    """
-    max_len_keys = max(len(k) for k in cs.keys())
-    n = 20
-    for k, v in cs.items():
-        line = f'{k.ljust(max_len_keys)} :'
-        for vi in v:
-            line += f' {vi:<{n}}|'
-        print(line)
+def output_csv(cs, outdir, round_const):
+    filename = outdir + "/codesize.csv"
 
+    del cs[0]
+    cs_csv = [[
+        "Level", "Platform", "Text MLKEM", "Ratio MLKEM", "Const MLKEM", "IO MLKEM",
+        "Text MLDSA", "Ratio MLDSA", "Const MLDSA", "IO MLDSA"
+    ]]
+    n = len(cs)
+    # Change list to list of lists
+    for i in range(n):
+        if 'ver1' in cs[i][0]:
+            if 'nold' in cs[i][0]:
+                platform = "\\otbnmulvnold"
+            else:
+                platform = "\\otbnmulv"
+        elif 'ver2' in cs[i][0]:
+            if 'nold' in cs[i][0]:
+                platform = "\\otbnmulvacchnold"
+            else:
+                platform = "\\otbnmulvacch"
+        elif 'ver3' in cs[i][0]:
+            platform = "\\otbnmulvacchcond"
+        else:
+            if 'base' in cs[i][0]:
+                platform = "\\otbnbase"
+            else:
+                platform = "\\otbntw"
+        if 'mlkem512' in cs[i][0]:
+            level = "\\mlkemlow"
+        elif 'mlkem768' in cs[i][0]:
+            level = "\\mlkemmid"
+        elif 'mlkem1024' in cs[i][0]:
+            level = "\\mlkemhigh"
+        elif 'mldsa44' in cs[i][0]:
+            level = "\\mldsalow"
+        elif 'mldsa65' in cs[i][0]:
+            level = "\\mldsamid"
+        elif 'mldsa87' in cs[i][0]:
+            level = "\\mldsahigh"
+        cs[i][2] = f"$\\times${cs[i][2]:.{round_const}f}"
+        data = [level] + [platform] + cs[i][1:]
+        cs_csv.append(data)
 
-def latex_print(cs, filename):
-    """Export a .tex file including code size
-    """
-    # Check if file exists, otherwise create one in REPO_TOP
-    filepath = Path(filename)
-    if filepath.exists():
-        print_info(f'INFO: {filename} exists and new data will be appended')
-    else:
-        print_info(f'INFO: {filename} does not exist and will be created')
-        filepath.touch(exist_ok=True)
+    # Remove repeated Level
+    for i in range(1, n // 2, 5):
+        cs_csv[i] += cs_csv[i + 15][2:] # Append ML-DSA code size to ML-KEM code size
+        cs_csv[i + 1] += cs_csv[i + 16][2:] # Append ML-DSA code size to ML-KEM code size
+        cs_csv[i + 2] += cs_csv[i + 17][2:] # Append ML-DSA code size to ML-KEM code size
+        cs_csv[i + 3] += cs_csv[i + 18][2:] # Append ML-DSA code size to ML-KEM code size
+        cs_csv[i + 4] += cs_csv[i + 19][2:] # Append ML-DSA code size to ML-KEM code size
 
-    # Remove first item
-    del cs['TARGET']
+    cs_csv = cs_csv[:16]
 
-    # This is specific for only two schemes: ML-KEM and ML-DSA.
-    lines = (
-        "%------------------- W A R N I N G: A U T O - G E N E R A T E D   F I L E !! -------------------%\n"
-        "% PLEASE DO NOT HAND-EDIT THIS FILE. IT HAS BEEN AUTO-GENERATED WITH THE FOLLOWING COMMAND:\n"
-        "%\n"
-        "% util/get_codesize.py --mlkem --mldsa --output_latex --latex_filename = codesize.tex\n"
-        "%\n"
-        f"% Generated on {datetime.now().date()}.\n\n"
-    )
-    start = 0
-    cs_len = len(cs)
-    for i in range(start, start + cs_len, 4):
-        if 'mldsa44' in list(cs.keys())[i]:
-            scheme = 'ML-DSA-44'
-        elif 'mldsa65' in list(cs.keys())[i]:
-            scheme = 'ML-DSA-65'
-        elif 'mldsa87' in list(cs.keys())[i]:
-            scheme = 'ML-DSA-87'
-        elif 'mlkem512' in list(cs.keys())[i]:
-            scheme = 'ML-KEM-512'
-        elif 'mlkem768' in list(cs.keys())[i]:
-            scheme = 'ML-KEM-768'
-        else: # 'mlkem1024' in list(cs.keys())[i]:
-            scheme = 'ML-KEM-1024'
-        lines += f'% {scheme} code size %\n'
-        text_lines = ""
-        const_lines = ""
-        io_lines = ""
-        imp_lines = ""
-        for k, v in islice(cs.items(), i, i + 4):
-            k_split = k.rsplit(':', 1)
-            var_name = k_split[1].replace('_', '-')
-            text_name = var_name + '-textsize'
-            const_name = var_name + '-constsize'
-            io_name = var_name + '-iosize'
-            imp_name = var_name + '-spdup'
-            text_lines += f'\\DefineVar{{{text_name}}}{{{v[0]}}}\n'
-            const_lines += f'\\DefineVar{{{const_name}}}{{{v[2]}}}\n'
-            io_lines += f'\\DefineVar{{{io_name}}}{{{v[3]}}}\n'
-            imp_lines += f'\\DefineVar{{{imp_name}}}{{{v[1]}}}\n'
-        lines += text_lines + '\n' + const_lines + '\n' + io_lines + '\n'
-        lines += '% Text size improvement vs BNMULV_VER0: VERX/VER0 %\n'
-        lines += imp_lines + '\n'
-    start += 12
+    # Print to stdout
+    writer = csv.writer(sys.stdout)
+    writer.writerows(cs_csv)
 
-    with filepath.open("a") as f:
-        f.write(lines)
+    # Write to output file
+    with open(filename, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(cs_csv)
 
 
 def main() -> int:
@@ -182,17 +181,17 @@ def main() -> int:
     parser.add_argument(
         '--mlkem',
         action="store_true",
-        help=("Get code size for all ML-KEM targets. Not used with --build_target")
+        help=("Get code size for all ML-KEM targets")
     )
     parser.add_argument(
         '--mldsa',
         action="store_true",
-        help=("Get code size for all ML-DSA targets. Not used with --build_target")
+        help=("Get code size for all ML-DSA targets")
     )
     parser.add_argument(
         '--compare',
         action="store_true",
-        help=("Give code size improvement of BNMULV_VER{1,2,3} vs BNMULV_VER0")
+        help=("Give code size improvement of BNMULV_VER{0_BASE,1,2,3} vs BNMULV_VER0")
     )
     parser.add_argument(
         '-l', '--list_target',
@@ -200,16 +199,10 @@ def main() -> int:
         help=("List all supported build targets")
     )
     parser.add_argument(
-        '--output_latex',
-        action="store_true",
-        help=("If given, output code size in a LaTex-formatted variables\n"
-              "Must be used with --latex_filename")
-    )
-    parser.add_argument(
-        '--latex_filename',
+        '--csv_outdir',
         type=str,
-        metavar="LATEX_FILENAME",
-        help=("Output file of --output_latex option. If file does not exist, it will be created\n"
+        metavar="CSV_OUTDIR",
+        help=("Directory of output csv file. If file does not exist, it will be created\n"
               "Must be given with full path")
     )
 
@@ -223,11 +216,6 @@ def main() -> int:
     # If --mlkem or --mldsa is not given, abort
     if not args.mlkem and not args.mldsa:
         print_info('ERROR: Please provide at least one of --mlkem or --mldsa')
-        return 1
-
-    # Abort if --output_latex is given without --latex_filename
-    if args.output_latex and not args.latex_filename:
-        print_info('ERROR: --output_latex must be used with --latex_filename')
         return 1
 
     # List supported targets
@@ -258,7 +246,7 @@ def main() -> int:
 
     # Build a bazel otbn_binary target, then run "size" for the "elf" file located in bazel-bin to
     # get code size.
-    cs = {'TARGET': ['TEXT SIZE (bytes)', 'CONST_SIZE (bytes)', 'IO_SIZE (bytes)']}
+    cs = [['TARGET', 'TEXT SIZE (bytes)', 'CONST_SIZE (bytes)', 'IO_SIZE (bytes)']]
     for target in tqdm(targets):
         # Run bazel build to obtain elf file in bazel-bin
         print_info(f'INFO: Get code size for {target}')
@@ -280,59 +268,47 @@ def main() -> int:
         codesize = [cs.strip() for cs in codesize[0:2]]
 
         # DATA_SIZE = CONST_SIZE + IO_SIZE + STACK_SIZE
+        total = int(codesize[1]) - STACK_SIZE
         if 'mlkem512' in target:
             io_size = mlkem512_io_size
-            const_size = int(codesize[1]) - io_size - STACK_SIZE_MLKEM
         elif 'mlkem768' in target:
             io_size = mlkem768_io_size
-            const_size = int(codesize[1]) - io_size - STACK_SIZE_MLKEM
         elif 'mlkem1024' in target:
             io_size = mlkem1024_io_size
-            const_size = int(codesize[1]) - io_size - STACK_SIZE_MLKEM
         elif 'mldsa44' in target:
             io_size = mldsa44_io_size
-            const_size = int(codesize[1]) - io_size - STACK_SIZE_MLDSA
         elif 'mldsa65' in target:
             io_size = mldsa65_io_size
-            const_size = int(codesize[1]) - io_size - STACK_SIZE_MLDSA
         else: # 'mldsa87' in target:
             io_size = mldsa87_io_size
-            const_size = int(codesize[1]) - io_size - STACK_SIZE_MLDSA
+        const_size = total - io_size
 
         # Add code size to cs
-        cs[target] = [int(codesize[0]), const_size, io_size]
+        target_cs = [target, int(codesize[0]), const_size, io_size]
+        cs.append(target_cs)
 
-    # Once done, sort cs based on security level
-    value_hr = cs.pop('TARGET')
-    cs_sorted = {'TARGET': value_hr}
-
+    round_const = 2
     # Compare if given --compare
     if args.compare:
-        cs_sorted['TARGET'].insert(1, 'VERX/VER0')
-        cs_list = list(cs.items())
-        cs_len = len(cs_list)
-        for i in range(0, cs_len, 4):
-            ki, vi = cs_list[i]
-            vi.insert(1, 1.00)
-            # Update cs_sorted
-            cs[ki] = vi
-            for j in range(i + 1, i + 4):
-                kj, vj = cs_list[j]
-                cs_vji = round((vj[0] / vi[0]), 2)
-                vj.insert(1, cs_vji)
-                # Update cs_sorted
-                cs[kj] = vj
+        cs[0].insert(2, 'VERX/VER0')
+        cs_len = len(cs)
+        for i in range(1, cs_len, 5):
+            a = cs[i + 1][1]
+            cs[i + 1].insert(2, 1)
+            b = cs[i][1]
+            r = round((b / a), round_const)
+            cs[i].insert(2, r)
+            for j in range(i + 2, i + 5):
+                b = cs[j][1]
+                r = round((b / a), round_const)
+                cs[j].insert(2, r)
 
-    # Update cs_sorted
-    cs_sorted.update(cs)
+    cs_table = tabulate(cs, missingval="{---}", tablefmt="pipe")
+    print(cs_table)
 
-    # Print out cs_sorted
-    if not args.output_latex:
-        print_info('INFO: Print out code size')
-        dict_print(cs_sorted)
-    else:
-        print_info('INFO: Create LaTex file')
-        latex_print(cs_sorted, args.latex_filename)
+    if args.csv_outdir is not None:
+        print_info('INFO: Create CSV file')
+        output_csv(cs, args.csv_outdir, round_const)
 
     # End timer
     end_time = time.perf_counter()
