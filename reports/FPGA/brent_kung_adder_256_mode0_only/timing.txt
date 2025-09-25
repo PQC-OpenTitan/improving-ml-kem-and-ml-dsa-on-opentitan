@@ -1,0 +1,59 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
+| Date         : Tue Sep 16 11:47:12 2025
+| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_timing -file ../../../reports/FPGA/brent_kung_adder_256_mode0_only/timing.txt
+| Design       : brent_kung_adder_256_mode0_only
+| Device       : 7k160t-fbg676
+| Speed File   : -1  PRODUCTION 1.12 2017-02-17
+------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.182ns  (required time - arrival time)
+  Source:                 B[73]
+                            (input port)
+  Destination:            sum[211]
+  Path Group:             **default**
+  Path Type:              Max at Slow Process Corner
+  Requirement:            5.714ns  (MaxDelay Path 5.714ns)
+  Data Path Delay:        5.532ns  (logic 0.558ns (10.086%)  route 4.974ns (89.914%))
+  Logic Levels:           8  (LUT2=1 LUT5=3 LUT6=4)
+  Output Delay:           0.000ns
+  Timing Exception:       MaxDelay Path 5.714ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  B[73] (IN)
+                         net (fo=5, unset)            0.672     0.672    B[73]
+    SLICE_X12Y53         LUT2 (Prop_lut2_I1_O)        0.068     0.740 f  sum[97]_INST_0_i_11/O
+                         net (fo=1, routed)           0.558     1.298    sum[97]_INST_0_i_11_n_0
+    SLICE_X13Y52         LUT6 (Prop_lut6_I0_O)        0.172     1.470 r  sum[97]_INST_0_i_8/O
+                         net (fo=2, routed)           0.561     2.031    sum[97]_INST_0_i_8_n_0
+    SLICE_X13Y53         LUT6 (Prop_lut6_I3_O)        0.053     2.084 r  sum[81]_INST_0_i_2/O
+                         net (fo=3, routed)           0.591     2.675    sum[81]_INST_0_i_2_n_0
+    SLICE_X12Y58         LUT6 (Prop_lut6_I3_O)        0.053     2.728 f  sum[129]_INST_0_i_7/O
+                         net (fo=2, routed)           0.343     3.071    sum[129]_INST_0_i_7_n_0
+    SLICE_X14Y58         LUT6 (Prop_lut6_I5_O)        0.053     3.124 f  sum[129]_INST_0_i_1/O
+                         net (fo=18, routed)          0.531     3.655    sum[129]_INST_0_i_1_n_0
+    SLICE_X17Y59         LUT5 (Prop_lut5_I3_O)        0.053     3.708 r  sum[209]_INST_0_i_1/O
+                         net (fo=6, routed)           0.699     4.407    sum[209]_INST_0_i_1_n_0
+    SLICE_X21Y59         LUT5 (Prop_lut5_I0_O)        0.053     4.460 r  sum[211]_INST_0_i_1/O
+                         net (fo=2, routed)           0.347     4.807    sum[211]_INST_0_i_1_n_0
+    SLICE_X21Y61         LUT5 (Prop_lut5_I4_O)        0.053     4.860 r  sum[211]_INST_0/O
+                         net (fo=0)                   0.672     5.532    sum[211]
+                                                                      r  sum[211] (OUT)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                    5.714     5.714    
+                         output delay                -0.000     5.714    
+  -------------------------------------------------------------------
+                         required time                          5.714    
+                         arrival time                          -5.532    
+  -------------------------------------------------------------------
+                         slack                                  0.182    
+
+
+
+
