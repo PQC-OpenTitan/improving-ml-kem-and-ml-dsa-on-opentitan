@@ -4,7 +4,7 @@
 
 
 /**
- * Test for key_pair_dilithium
+ * Test for crypto_sign_keypair
 */
 
 .section .text.start

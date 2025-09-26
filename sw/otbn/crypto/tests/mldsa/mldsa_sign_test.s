@@ -4,7 +4,7 @@
 
 
 /**
- * Test for sign_dilithium
+ * Test for crypto_sign_signature_internal
 */
 
 .section .text.start

@@ -3,7 +3,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /**
- * Test for verify_dilithium
+ * Test for crypto_sign_verify_internal
 */
 
 .section .text.start
