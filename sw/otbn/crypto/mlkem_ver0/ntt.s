@@ -20,8 +20,8 @@
  * clobbered registers: x4-x30, w0-w31
  */
 
-.globl ntt_kyber
-ntt_kyber:
+.globl ntt
+ntt:
   /* Set up wide registers for input and intermediate states */
   li x4, 0
   li x5, 1

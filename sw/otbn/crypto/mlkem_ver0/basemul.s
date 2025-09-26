@@ -20,8 +20,8 @@
  * clobbered registers: x4-x30, w0-w23, w30
  */
 
-.globl basemul_kyber
-basemul_kyber:
+.globl basemul
+basemul:
   /* Set up wide registers for inputs*/
   li x4, 0
   li x5, 1 
@@ -180,7 +180,7 @@ basemul_kyber:
     
 
 /*
- * basemull_acc_kyber
+ * basemull_acc
  *
  * Returns: NTT(a)*NTT(b) 
  *
@@ -196,8 +196,8 @@ basemul_kyber:
  * clobbered registers: x4-x30, w0-w23, w30
  */
 
-.globl basemul_acc_kyber
-basemul_acc_kyber:
+.globl basemul_acc
+basemul_acc:
   /* Set up wide registers for inputs*/
   li x4, 0
   li x5, 1 

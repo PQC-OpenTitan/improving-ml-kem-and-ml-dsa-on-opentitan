@@ -22,8 +22,8 @@
  * clobbered registers: x4-x30, w0-w23, w30
  */
 
-.globl intt_kyber
-intt_kyber:
+.globl intt
+intt:
   /* Set up wide registers for input and intermediate states */
   li x4, 0
   li x5, 1 
