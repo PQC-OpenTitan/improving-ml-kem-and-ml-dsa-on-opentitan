@@ -100,32 +100,38 @@ async def run_unified_mul_test(dut):
 # === Pytest hook ===
 
 @pytest.mark.parametrize(
-    "wallace, acch, word_mode", 
+    "top, wallace, acch, word_mode", 
     [
-        (w, a, i) for w in [0, 1] for a in [0, 1]
+        ("unified_mul", w, a, i) for w in [0, 1] for a in [0, 1]
+        for i in [ModeMul.MODE_16, ModeMul.MODE_32, ModeMul.MODE_64]
+    ] +
+    [
+        ("mul_dsp", w, a, i) for w in [0] for a in [0, 1]
         for i in [ModeMul.MODE_16, ModeMul.MODE_32, ModeMul.MODE_64]
     ]
 )
 
-def test_unified_mul_sim(wallace, acch, word_mode):
+def test_unified_mul_sim(top, wallace, acch, word_mode):
     """Run different testcases on simulated design.
     """
     num_tests = 4096
-    extra_args = []
+    extra_args = ["--timing"]
     if wallace:
         extra_args.append("-DWALLACE")
     if acch:
         extra_args.append("-DBNMULV_ACCH")
 
+    vivado_prim = ["bn_vec_core/DSP48E1.v"]
+
     run(
-        toplevel="unified_mul",
+        toplevel=top,
         module="test_unified_mul_pytest",
         toplevel_lang="verilog",
         testcase="run_unified_mul_test",
         simulator="verilator",
         extra_args=extra_args,
-        sim_build="sim_build/unified_mul",
-        verilog_sources=["bn_vec_core/unified_mul.sv"],
+        sim_build=f"sim_build/{top}",
+        verilog_sources=vivado_prim + [f"bn_vec_core/{top}.sv"],
         extra_env={
             "NUM_TESTS": str(num_tests),
             "WORD_MODE": str(int(word_mode)),
