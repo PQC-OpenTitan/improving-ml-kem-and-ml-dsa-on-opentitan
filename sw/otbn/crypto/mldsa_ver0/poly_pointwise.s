@@ -20,8 +20,8 @@
  *
  * clobbered registers: x4-x6, w2-w4
  */
-.globl poly_pointwise_dilithium
-poly_pointwise_dilithium:
+.globl poly_pointwise
+poly_pointwise:
     /* Set up constants for input/state */
     li x4, 1
 
@@ -52,8 +52,8 @@ poly_pointwise_dilithium:
  *
  * clobbered registers: x4-x6, w2-w4
  */
-.globl poly_pointwise_acc_dilithium
-poly_pointwise_acc_dilithium:
+.globl poly_pointwise_acc
+poly_pointwise_acc:
     /* Set up constants for input/state */
     li x4, 1
 

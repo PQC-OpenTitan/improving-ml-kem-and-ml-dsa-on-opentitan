@@ -20,8 +20,8 @@
  *
  * clobbered registers: x4-x6, w2-w4
  */
-.global poly_add_dilithium
-poly_add_dilithium:
+.global poly_add
+poly_add:
     /* Set up constants for input/state */
     li x4, 1
 

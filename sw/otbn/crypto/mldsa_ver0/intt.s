@@ -31,8 +31,8 @@
  *
  * clobbered registers: x4-x30, w0-w23, w30
  */
-.global intt_dilithium
-intt_dilithium:
+.global intt
+intt:
 
     /* Save callee-saved registers */
     .irp reg,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11

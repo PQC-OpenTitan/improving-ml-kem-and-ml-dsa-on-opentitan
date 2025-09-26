@@ -143,7 +143,7 @@
 .endm
 
 /**
- * decompose_dilithium
+ * decompose
  *
  * For finite field element a, compute high and low bits a0, a1 such that a
  * mod^+ Q = a1*ALPHA + a0 with -ALPHA/2 < a0 <= ALPHA/2 except if a1 =
@@ -159,8 +159,8 @@
  *
  * clobbered registers: w1-w4, t0, t3-t4
  */
-.global decompose_dilithium
-decompose_dilithium:
+.global decompose
+decompose:
     /* "a", "a{0,1}" refer to the variable names from the reference code */ 
 
     /* Compute "a1" */

@@ -21,8 +21,8 @@
  * clobbered registers: x4 to x5
  *                      w2 to w3
  */
-.globl poly_sub_dilithium
-poly_sub_dilithium:
+.globl poly_sub
+poly_sub:
     /* Set up constants for input/state */
     li x4, 1
 

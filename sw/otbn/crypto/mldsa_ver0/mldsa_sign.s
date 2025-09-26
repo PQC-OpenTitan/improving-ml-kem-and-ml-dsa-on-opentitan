@@ -90,7 +90,6 @@
 #elif ETA == 4
 #define POLYETA_PACKEDBYTES 128
 #endif
-
 /* Register aliases */
 .equ x0, zero
 .equ x2, sp
@@ -153,7 +152,7 @@
     addi sp, sp, 4     /* Increment stack pointer by 4 bytes */
 .endm
 
-/**
+/*
  * Send a variable-length message to the Keccak core.
  *
  * Expects the Keccak core to have already received a `start` command matching
@@ -170,31 +169,43 @@
  */
 keccak_send_message:
   /* Compute the number of full 256-bit message chunks.
-       t0 <= x11 >> 5 = floor(len / 32) */
-  srli     t0, x11, 5
+  t0 <= x11 >> 5 = floor(len / 32) */
+  srli t0, x11, 5
 
   /* Write all full 256-bit sections of the test message. */
-  beq t0, zero, _no_full_wdr
-  loop     t0, 2
-    /* w0 <= dmem[x10..x10+32] = msg[32*i..32*i-1]
-       x10 <= x10 + 32 */
-    bn.lid   x0, 0(x10++)
-    /* Write to the KECCAK_MSG wide special register (index 8).
+  beq  t0, zero, _no_full_wdr
+
+#ifdef RTL_ISS_TEST
+  loop t0, 5
+#else
+  loop t0, 2
+#endif
+      /* w0 <= dmem[x10..x10+32] = msg[32*i..32*i-1]
+         x10 <= x10 + 32 */
+      bn.lid  x0, 0(x10++)
+      /* Write to the KECCAK_MSG wide special register (index 9).
          KECCAK_MSG <= w0 */
-    bn.wsrw  0x9, w0
+      bn.wsrw 0x9, w0
+#ifdef RTL_ISS_TEST
+      LOOPI 300, 1
+        NOP
+      NOP
+#endif
+
 _no_full_wdr:
   /* Compute the remaining message length.
-       t0 <= x10 & 31 = len mod 32 */
-  andi     t0, x11, 31
+       t0 <= x11 & 31 = len mod 32 */
+  andi t0, x11, 31
 
   /* If the remaining length is zero, return early. */
-  beq      t0, x0, _keccak_send_message_end
+  beq t0, x0, _keccak_send_message_end
 
-  bn.lid   x0, 0(x10)
-  bn.wsrw  0x9, w0
+  bn.lid  x0, 0(x10)
+  bn.wsrw 0x9, w0
 
   _keccak_send_message_end:
   ret
+
 /**
  * Dilithium Sign
  *
@@ -208,8 +219,8 @@ _no_full_wdr:
  * @param[out] x11: siglen
  *
  */
-.global sign_base_dilithium
-sign_base_dilithium:
+.global crypto_sign_signature_internal
+crypto_sign_signature_internal:
     /* Stack address mapping */
     #define STACK_SIG -4
     #define STACK_MSG -8
@@ -269,7 +280,6 @@ sign_base_dilithium:
         #define STACK_CTX -113828 /* Prev - 4 */
     #define SIGNATURE -118464 /* Prev - ((CRYPTO_BYTES>>5)+1)*32 */
 #endif
-
     /* Initialize the frame pointer */
     addi fp, sp, 0
 
@@ -342,7 +352,7 @@ sign_base_dilithium:
     addi a1, a3, 0
 
     LOOPI L, 2
-        jal x1, polyeta_unpack_base_dilithium
+        jal x1, polyeta_unpack
         nop
     
     /* Unpack s2 */
@@ -351,7 +361,7 @@ sign_base_dilithium:
     add a0, fp, a0
 
     LOOPI K, 2
-        jal x1, polyeta_unpack_base_dilithium
+        jal x1, polyeta_unpack
         nop
 
     /* Unpack t0 */
@@ -360,10 +370,11 @@ sign_base_dilithium:
     add a0, fp, a0
 
     LOOPI K, 2
-        jal x1, polyt0_unpack_base_dilithium
+        jal x1, polyt0_unpack
         nop
 
     /* CRH(tr, msg) */
+
     /* Initialize a SHAKE256 operation. */
     li a1, TRBYTES
     addi a1, a1, 2 /* Add len of ctxlen */
@@ -397,7 +408,7 @@ sign_base_dilithium:
     li t3, STACK_CP /* Re-use CP buffer for absorbing ctxlen and ctx */
     add t3, fp, t3
 
-    /* NOTE: Add support for non-4B multiple ctxlen */
+    /* Note: Add support for non-4B multiple ctxlen */
     /* Compute number of iterations */
     srli t4, t2, 2 /* Divide by 4 because of word-wise operation*/
 
@@ -523,7 +534,7 @@ sign_base_dilithium:
             /* Load parameters */
             addi a0, fp, STACK_RHO
             push a2
-            jal  x1, poly_uniform_base_dilithium
+            jal  x1, poly_uniform
             pop a2
             addi a2, a2, 1
         addi a2, a2, 256
@@ -588,12 +599,9 @@ sign_base_dilithium:
        push \reg
     .endr
 
-    LOOPI L, 4
-        jal x1, ntt_base_dilithium
-        addi a0, a0, 1024
-        /* Reset twiddle pointer */
-        addi a1, a1, -1152
-        addi a1, a1, -1024
+    LOOPI L, 2
+        jal x1, ntt
+        addi a1, a1, -1024 /* Reset twiddle pointer */
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
@@ -608,12 +616,9 @@ sign_base_dilithium:
        push \reg
     .endr
 
-    LOOPI K, 4
-        jal x1, ntt_base_dilithium
-        addi a0, a0, 1024
-        /* Reset twiddle pointer */
-        addi a1, a1, -1152
-        addi a1, a1, -1024
+    LOOPI K, 2
+      jal  x1, ntt
+      addi a1, a1, -1024 /* Reset twiddle pointer */
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
@@ -628,12 +633,9 @@ sign_base_dilithium:
        push \reg
     .endr
 
-    LOOPI K, 4
-        jal x1, ntt_base_dilithium
-        addi a0, a0, 1024
-        /* Reset twiddle pointer */
-        addi a1, a1, -1152
-        addi a1, a1, -1024
+    LOOPI K, 2
+        jal x1, ntt
+        addi a1, a1, -1024 /* Reset twiddle pointer */
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
@@ -641,7 +643,7 @@ sign_base_dilithium:
 
     li s11, 0 /* nonce */
 
-_rej_sign_dilithium:
+_rej_crypto_sign_signature_internal:
     /* Uniform GAMMA1 */
     li  a1, STACK_RHOPRIME
     add a1, fp, a1
@@ -653,7 +655,7 @@ _rej_sign_dilithium:
     la   a3, gamma1_vec_const
 
     LOOPI L, 2
-        jal  x1, poly_uniform_gamma1_base_dilithium
+        jal  x1, poly_uniform_gamma_1
         addi a2, a2, 1 /* a2 should be preserved after execution */
     
     addi s11, s11, L
@@ -669,11 +671,8 @@ _rej_sign_dilithium:
      push \reg
   .endr
 
-    LOOPI L, 4
-        jal x1, ntt_base_dilithium
-        addi a0, a0, 1024
-        /* Reset twiddle pointer */
-        addi a1, a1, -1152
+    LOOPI L, 2
+        jal x1, ntt
         addi a1, a1, -1024
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
@@ -696,25 +695,16 @@ _rej_sign_dilithium:
     li s0, POLYVECL_BYTES
 
     .rept K
-        jal  x1, poly_pointwise_base_dilithium
+        jal  x1, poly_pointwise
         addi a2, a2, -1024
         .rept L-1
-            jal  x1, poly_pointwise_acc_base_dilithium
+            jal  x1, poly_pointwise_acc
             addi a2, a2, -1024
         .endr
         /* Reset input vector pointer */
         sub  a0, a0, s0
         addi a2, a2, 1024
     .endr
-
-    /* reduce32 w1 */
-    li   a0, STACK_W1
-    add  a0, fp, a0
-    addi a1, a0, 0
-
-    LOOPI K, 2
-        jal x1, poly_reduce32_pos_dilithium
-        nop
 
     /* Inverse NTT on w1 */
     li  a0, STACK_W1
@@ -726,13 +716,17 @@ _rej_sign_dilithium:
     .endr
 
     LOOPI K, 3
-        jal  x1, intt_base_dilithium
-        addi a1, a1, -2048 /* Reset the twiddle pointer */
-        addi a0, a0, 960 /* Go to next input poly, +64 already to a0 in intt */
+        jal x1, intt
+        /* Reset the twiddle pointer */
+        addi a1, a1, -960
+        /* Go to next input polynomial */
+        addi a0, a0, 1024
     
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
     .endr
+
+    /* Load source pointers */
 
     /* Decompose */
     li   a2, STACK_W1 /* Input */
@@ -742,21 +736,13 @@ _rej_sign_dilithium:
     add  a0, fp, a0
     
     LOOPI K, 2
-        jal x1, poly_decompose_dilithium
-        nop
-
-    /* Move w0 to unsigned domain in [0, q-1] */
-    li   a0, STACK_W0
-    add  a0, fp, a0
-    LOOPI 4, 2
-        jal x1, poly_caddq_base_dilithium
+        jal x1, poly_decompose
         nop
 
     /* Pack w1 */
     li  a1, STACK_W1 /* Get *w1 */
     add a1, fp, a1
     /* Use an offset of 16 to accomodate for the alignment hack for CTILDE */
-
     li  a0, STACK_SIG
     add a0, fp, a0
     lw  a0, 0(a0) /* Get *sig */
@@ -765,11 +751,8 @@ _rej_sign_dilithium:
 #endif
 
     LOOPI K, 2
-        jal x1, polyw1_pack_dilithium
+        jal x1, polyw1_pack
         nop
-
-    /* Setup WDR */
-    li t1, 8
 
     /* Random oracle */
     /* Initialize a SHAKE256 operation. */
@@ -801,29 +784,34 @@ _rej_sign_dilithium:
 #endif
     jal  x1, keccak_send_message
 
+    /* Setup WDR */
+    li t1, 8
+
 #if CTILDEBYTES == 32
+    bn.wsrr w8, 0xA   /* KECCAK_DIGEST */
     addi    a0, s0, 0 /* restore a0 */
-
-    bn.wsrr w8, 0xA   /* KECCAK_DIGEST */
-    bn.sid  t1, 0(a0) /* Store CTILDE into STACK_SIG */
-
     /* Get temp buffer */
     li   t0, STACK_CP
     add  t0, fp, t0
-    bn.sid  t1, 0(t0) /* Store CTILDE into temp buffer */
-
-#elif CTILDEBYTES == 48
-    /* Get temp buffer */
-    li   t0, STACK_CP
-    add  t0, fp, t0
-    /* restore a0 */
-    addi a0, s0, 0
-
-    bn.wsrr w8, 0xA   /* KECCAK_DIGEST */
     bn.sid  t1, 0(t0) /* Store CTILDE into temp buffer */
     LOOPI 8, 4
         lw t2, 0(t0)
-        sw t2, 0(a0) /* Store CTILDE into STACK_SIG */
+        sw t2, 0(a0)
+        addi t0, t0, 4
+        addi a0, a0, 4
+    
+    addi a0, a0, -CTILDEBYTES
+#elif CTILDEBYTES == 48
+    bn.wsrr w8, 0xA   /* KECCAK_DIGEST */
+    addi    a0, s0, 0 /* restore a0 */
+
+    /* Get temp buffer */
+    li   t0, STACK_CP
+    add  t0, fp, t0
+    bn.sid  t1, 0(t0) /* Store CTILDE into temp buffer */
+    LOOPI 8, 4
+        lw t2, 0(t0)
+        sw t2, 0(a0)
         addi t0, t0, 4
         addi a0, a0, 4
 
@@ -832,25 +820,37 @@ _rej_sign_dilithium:
     bn.sid  t1, 0(t0) /* Store CTILDE into temp buffer */
     LOOPI 4, 4
         lw t2, 0(t0)
-        sw t2, 0(a0) /* Store CTILDE into STACK_SIG */
+        sw t2, 0(a0)
         addi t0, t0, 4
         addi a0, a0, 4
-
+    
+    addi a0, a0, -CTILDEBYTES
 #elif CTILDEBYTES == 64
+    bn.wsrr w8, 0xA   /* KECCAK_DIGEST */
+    addi    a0, s0, 0 /* restore a0 */
+
     /* Get temp buffer */
     li   t0, STACK_CP
     add  t0, fp, t0
-    /* Restore a0 */
-    addi a0, s0, 0
+    bn.sid  t1, 0(t0) /* Store CTILDE into temp buffer */
+    LOOPI 8, 4
+        lw t2, 0(t0)
+        sw t2, 0(a0)
+        addi t0, t0, 4
+        addi a0, a0, 4
 
     bn.wsrr w8, 0xA   /* KECCAK_DIGEST */
-    bn.sid  t1, 0(a0) /* Store CTILDE into STACK_SIG */
-    bn.sid  t1, 0(t0) /* Store CTILDE into temp buffer */
 
-    bn.wsrr w8, 0xA    /* KECCAK_DIGEST */
-    bn.sid  t1, 32(a0) /* Store CTILDE into STACK_SIG */
-    bn.sid  t1, 32(t0) /* Store CTILDE into temp buffer */
+    bn.sid  t1, 0(t0) /* Store CTILDE into temp buffer */
+    LOOPI 8, 4
+        lw t2, 0(t0)
+        sw t2, 0(a0)
+        addi t0, t0, 4
+        addi a0, a0, 4
+    
+    addi a0, a0, -CTILDEBYTES
 #endif
+
     /* Finish the SHAKE-256 operation. */
 
     /* Challenge */
@@ -872,7 +872,7 @@ _rej_sign_dilithium:
         push \reg
     .endr
 
-    jal x1, ntt_base_dilithium /* Only one polynomial */
+    jal x1, ntt /* Only one polynomial */
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
@@ -887,7 +887,7 @@ _rej_sign_dilithium:
     add a2, fp, a2
 
     LOOPI L, 2
-        jal  x1, poly_pointwise_base_dilithium
+        jal  x1, poly_pointwise
         addi a0, a0, -1024
 
     /* Inverse NTT on z */
@@ -900,9 +900,11 @@ _rej_sign_dilithium:
     .endr
 
     LOOPI L, 3
-        jal  x1, intt_base_dilithium
-        addi a1, a1, -2048 /* Reset the twiddle pointer */
-        addi a0, a0, 960 /* Go to next input poly, +64 already to a0 in intt */
+        jal  x1, intt
+        /* Reset the twiddle pointer */
+        addi a1, a1, -960
+        /* Go to next input polynomial */
+        addi a0, a0, 1024
     
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
@@ -915,18 +917,19 @@ _rej_sign_dilithium:
     add a1, fp, a1
     li  a2, STACK_Z
     add a2, fp, a2
-
-    LOOPI L, 2
-        jal x1, poly_add_pseudovec_base_dilithium
-        nop
     
-    /* reduce32 z */
-    li   a0, STACK_Z
-    add  a0, fp, a0
-    addi a1, a0, 0
-
     LOOPI L, 2
-        jal x1, poly_reduce32_dilithium
+        jal x1, poly_add
+        nop
+
+    /* reduce32(z) to move to mod^{+-} for bound check */
+    li  a0, STACK_Z
+    add a0, fp, a0
+    li  a1, STACK_Z
+    add a1, fp, a1
+    
+    LOOPI L, 2
+        jal x1, poly_reduce32
         nop
 
     /* chknorm */
@@ -936,15 +939,16 @@ _rej_sign_dilithium:
     li  s0, STACK_Z
     add s0, fp, s0
 
-    /* Cannot use hardware loop due to branch to _rej_sign_dilithium */
+    /* Cannot use hardware loop due to branch to _rej_crypto_sign_signature_internal */
     .rept L
         addi a0, s0, 0
-        jal x1, poly_chknorm_base_dilithium
+        jal x1, poly_chknorm
         addi s0, s0, 1024
         
         /* Reject */
-        bne a0, zero, _rej_sign_dilithium
+        bne a0, zero, _rej_crypto_sign_signature_internal
     .endr
+
     /* h = cp * s2 */
     li  a0, STACK_CP
     add a0, fp, a0
@@ -954,7 +958,7 @@ _rej_sign_dilithium:
     add a2, fp, a2
 
     LOOPI K, 2
-        jal  x1, poly_pointwise_base_dilithium
+        jal  x1, poly_pointwise
         addi a0, a0, -1024
 
     /* Inverse NTT on h */
@@ -967,15 +971,31 @@ _rej_sign_dilithium:
     .endr
 
     LOOPI K, 3
-        jal  x1, intt_base_dilithium
-        addi a1, a1, -2048 /* Reset the twiddle pointer */
-        addi a0, a0, 960 /* Go to next input poly, +64 already to a0 in intt */
+        jal  x1, intt
+        /* Reset the twiddle pointer */
+        addi a1, a1, -960
+        /* Go to next input polynomial */
+        addi a0, a0, 1024
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
     .endr
 
-    /* w0 = w0 - h = w0 - cs2 */
+    /* w0 = w0 + h */
+    li     x4, 0
+    li     t1, 1
+    li     a0, STACK_W0
+    add    a0, fp, a0
+    la     t0, modulus
+    bn.lid t1, 0(t0)
+    LOOPI K, 6
+        LOOPI 32, 4
+            bn.lid      x4, 0(a0)
+            bn.addv.8S  w0, w0, w1
+            bn.addvm.8S w0, bn0, w0
+            bn.sid      x4, 0(a0++)
+        NOP
+
     li  a0, STACK_W0
     add a0, fp, a0
     li  a1, STACK_H
@@ -984,33 +1004,34 @@ _rej_sign_dilithium:
     add a2, fp, a2
 
     LOOPI K, 2
-        jal x1, poly_sub_base_dilithium
+        jal x1, poly_sub
         nop 
 
-    /* reduce32 w0 */
-    li   a0, STACK_W0
-    add  a0, fp, a0
-    li a1, STACK_TMP_POLYVEC
-    add  a1, fp, a1
+    /* reduce32(z) to move to mod^{+-} for bound check */
+    li  a0, STACK_W0
+    add a0, fp, a0
+    li  a1, STACK_W0
+    add a1, fp, a1
+    
     LOOPI K, 2
-        jal x1, poly_reduce32_short_dilithium
+        jal x1, poly_reduce32
         nop
 
     /* chknorm */
     li  t0, GAMMA2
     li  t1, BETA
     sub a1, t0, t1
-    li  s0, STACK_TMP_POLYVEC /* reduce32(STACK_W0) */
+    li  s0, STACK_W0
     add s0, fp, s0
 
-    /* Cannot use hardware loop due to branch to _rej_sign_dilithium */
+    /* Cannot use hardware loop due to branch to _rej_crypto_sign_signature_internal */
     .rept K
         addi a0, s0, 0
-        jal  x1, poly_chknorm_base_dilithium
+        jal  x1, poly_chknorm
         /* reject */
-        bne  a0, zero, _rej_sign_dilithium
+        bne  a0, zero, _rej_crypto_sign_signature_internal
         addi s0, s0, 1024
-    .endr 
+    .endr
 
     /* h = cp * t0 */
     li  a0, STACK_CP
@@ -1021,7 +1042,7 @@ _rej_sign_dilithium:
     add a2, fp, a2
 
     LOOPI K, 2
-        jal  x1, poly_pointwise_base_dilithium
+        jal  x1, poly_pointwise
         addi a0, a0, -1024
 
     /* Inverse NTT on h */
@@ -1034,15 +1055,31 @@ _rej_sign_dilithium:
     .endr
 
     LOOPI K, 3
-        jal  x1, intt_base_dilithium
-        addi a1, a1, -2048 /* Reset the twiddle pointer */
-        addi a0, a0, 960 /* Go to next input poly, +64 already to a0 in intt */
+        jal  x1, intt
+        /* Reset the twiddle pointer */
+        addi a1, a1, -960
+        /* Go to next input polynomial */
+        addi a0, a0, 1024
 
     .irp reg,a7,a6,a5,a4,a3,a2,a1,a0,t6,t5,t4,t3,t2,t1,t0
         pop \reg
     .endr
 
     /* w0 = w0 + h */
+    li     x4, 0
+    li     t1, 1
+    li     a0, STACK_W0
+    add    a0, fp, a0
+    la     t0, modulus
+    bn.lid t1, 0(t0)
+    LOOPI K, 6
+        LOOPI 32, 4
+            bn.lid      x4, 0(a0)
+            bn.addv.8S  w0, w0, w1
+            bn.addvm.8S w0, bn0, w0
+            bn.sid      x4, 0(a0++)
+        NOP
+
     li  a0, STACK_W0
     add a0, fp, a0
     li  a1, STACK_H
@@ -1051,35 +1088,34 @@ _rej_sign_dilithium:
     add a2, fp, a2
 
     LOOPI K, 2
-        jal x1, poly_add_base_dilithium
+        jal x1, poly_add
         nop
 
-    /* reduce32 h = c*t0 */
-    li   a0, STACK_H
-    add  a0, fp, a0
-    li   a1, STACK_TMP_POLYVEC
-    add  a1, fp, a1
-
+    /* reduce32(z) to move to mod^{+-} for bound check */
+    li  a0, STACK_H
+    add a0, fp, a0
+    li  a1, STACK_H
+    add a1, fp, a1
+    
     LOOPI K, 2
-        jal x1, poly_reduce32_short_dilithium
+        jal x1, poly_reduce32
         nop
 
     /* chknorm */
     li  a1, GAMMA2
-    li  s0, STACK_TMP_POLYVEC /* reduce32(STACK_H) */
+    li  s0, STACK_H
     add s0, fp, s0
 
-    /* Cannot use hardware loop due to branch to _rej_sign_dilithium */
+    /* Cannot use hardware loop due to branch to _rej_crypto_sign_signature_internal */
     .rept K
         addi a0, s0, 0
-        jal  x1, poly_chknorm_base_dilithium
+        jal  x1, poly_chknorm
         /* reject */
-        bne  a0, zero, _rej_sign_dilithium
+        bne  a0, zero, _rej_crypto_sign_signature_internal
         addi s0, s0, 1024
     .endr
 
     /* make hint */
-    
     li  s0, 0
     li  s1, STACK_H
     add a0, fp, s1
@@ -1087,14 +1123,10 @@ _rej_sign_dilithium:
     add a1, fp, a1
     li  a2, STACK_W1
     add a2, fp, a2
-    
-    /* DEBUG */
-    li t0, 0
-    bn.movr t0, t0
 
     LOOPI K, 4
         add  a0, fp, s1
-        jal  x1, poly_make_hint_dilithium
+        jal  x1, poly_make_hint
         addi s1, s1, 1024
         add  s0, s0, a0
 
@@ -1104,7 +1136,7 @@ _rej_sign_dilithium:
     sub t2, t0, s0
     srli t2, t2, 31
     /* reject */
-    beq  t1, t2, _rej_sign_dilithium
+    beq  t1, t2, _rej_crypto_sign_signature_internal
 
     /* Pack sig */
     li   a0, STACK_SIG
@@ -1116,7 +1148,7 @@ _rej_sign_dilithium:
     li   a1, STACK_Z
     add  a1, fp, a1
     LOOPI L, 2
-        jal x1, polyz_pack_base_dilithium
+        jal x1, polyz_pack
         nop
 
     /* encode h */
@@ -1125,7 +1157,7 @@ _rej_sign_dilithium:
 
     /* Set rest of sig to 0 */
     li     t0, 31
-
+    
 #if OMEGA == 80
     bn.sid t0, 0(a0++)
     bn.sid t0, 0(a0++)
@@ -1160,7 +1192,7 @@ _rej_sign_dilithium:
     addi a0, s0, 0 /* reset *sig */
     li   a1, STACK_H
     add  a1, fp, a1
-    jal  x1, polyvec_encode_h_dilithium
+    jal  x1, polyvec_encode_h
 
     /* Return success and signature length */
     li a0, 0
