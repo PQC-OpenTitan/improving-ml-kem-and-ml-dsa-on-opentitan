@@ -17,7 +17,7 @@ CTX=b"\x00"*4+b"\x11"*4+b"\x22"*4+b"\x33"*4+b"\x44"*4+b"\x55"*4+b"\x66"*4+b"\x77
 CTXLEN = 32
 
 DATABASE_PATH = os.path.realpath(os.path.dirname(os.path.realpath(__file__)) +
-                                 '../../../../../../../dilithium_bench.db')
+                                 '../../../../../../../mldsa_bench.db')
 
 
 def bench_key_pair(operation, ref):

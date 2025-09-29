@@ -15,7 +15,7 @@ NPROC = 1
 ITERATIONS = 1
 
 DATABASE_PATH = os.path.realpath(os.path.dirname(os.path.realpath(__file__)) +
-                                 '../../../../../../../kyber_bench.db')
+                                 '../../../../../../../mlkem_bench.db')
 
 def bench_mlkem_keypair(operation, ref):
     d = os.urandom(32)
