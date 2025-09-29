@@ -56,7 +56,7 @@ poly_compress:
   LOOPI 3, 6
   /* Load 1st + 2nd + 3rd batch */
     bn.lid x0, 0(x11++)
-    jal    x1, _poly_compress_16
+    jal    x1, poly_compress_16
     /* Pack 80 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 5
@@ -64,7 +64,7 @@ poly_compress:
     NOP
   /* Load 4th batch */
   bn.lid x0, 0(x11++)
-  jal    x1, _poly_compress_16
+  jal    x1, poly_compress_16
   /* Pack 15 bits */
   LOOPI 3, 2
     bn.rshi w4, w1, w4 >> 5
@@ -82,7 +82,7 @@ poly_compress:
   LOOPI 2, 6
     /* Load 5th + 6th batch */
     bn.lid x0, 0(x11++)
-    jal    x1, _poly_compress_16
+    jal    x1, poly_compress_16
     /* Pack 80 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 5
@@ -90,7 +90,7 @@ poly_compress:
     NOP
   /* Load 7th batch */
   bn.lid x0, 0(x11++)
-  jal    x1, _poly_compress_16
+  jal    x1, poly_compress_16
   /* Pack 30 bits */
   LOOPI 6, 2
     bn.rshi w4, w1, w4 >> 5
@@ -108,7 +108,7 @@ poly_compress:
   LOOPI 2, 6
     /* Load 8th + 9th batch */
     bn.lid x0, 0(x11++)
-    jal    x1, _poly_compress_16
+    jal    x1, poly_compress_16
     /* Pack 80 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 5
@@ -116,7 +116,7 @@ poly_compress:
     NOP
   /* Load 10th batch */
   bn.lid x0, 0(x11++)
-  jal    x1, _poly_compress_16
+  jal    x1, poly_compress_16
   /* Pack 45 bits */
   LOOPI 9, 2
     bn.rshi w4, w1, w4 >> 5
@@ -134,7 +134,7 @@ poly_compress:
   LOOPI 2, 6
     /* Load 11th + 12th batch */
     bn.lid x0, 0(x11++)
-    jal    x1, _poly_compress_16
+    jal    x1, poly_compress_16
     /* Pack 80 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 5
@@ -142,7 +142,7 @@ poly_compress:
     NOP
   /* Load 13th batch */
   bn.lid x0, 0(x11++)
-  jal    x1, _poly_compress_16
+  jal    x1, poly_compress_16
   /* Pack 60 bits */
   LOOPI 12, 2
     bn.rshi w4, w1, w4 >> 5
@@ -160,7 +160,7 @@ poly_compress:
   LOOPI 3, 6
   /* Load 14th + 15th + 16th batch */
     bn.lid x0, 0(x11++)
-    jal    x1, _poly_compress_16
+    jal    x1, poly_compress_16
     /* Pack 80 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 5
@@ -171,7 +171,7 @@ poly_compress:
   ret
 
 /*
- * Name:        _poly_compress_16 
+ * Name:        poly_compress_16 
  *
  * Description: Subroutine of poly_compress for compressing 16 coefficients
  *
@@ -184,7 +184,7 @@ poly_compress:
  * clobbered registers:
  */
 
-_poly_compress_16:
+poly_compress_16:
 LOOPI 16, 7
   bn.rshi         w5, w0, w31 >> 16 /* Shift one coeff on w5 */
   bn.rshi         w0, w31, w0 >> 16 /* Shift out used coeff of w0 */
@@ -220,14 +220,14 @@ polyvec_compress:
     /* First WDR: 160 bits (16 coeffs) + (Reload) 90 bits (9 coeffs) + 6 bits */
     /* Load 1st batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 160 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 10
       bn.rshi w1, w31, w1 >> 16
     /* Load 2nd batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 90 bits */
     LOOPI 9, 2
       bn.rshi w4, w1, w4 >> 10
@@ -244,14 +244,14 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load 3rd batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 160 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 10
       bn.rshi w1, w31, w1 >> 16
     /* Load 4th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 30 bits */
     LOOPI 3, 2
       bn.rshi w4, w1, w4 >> 10
@@ -267,7 +267,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load 5th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 120 bits */
     LOOPI 12, 2
       bn.rshi w4, w1, w4 >> 10
@@ -284,14 +284,14 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load 6th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 160 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 10
       bn.rshi w1, w31, w1 >> 16
     /* Load 7th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 60 bits */
     LOOPI 6, 2
       bn.rshi w4, w1, w4 >> 10
@@ -307,7 +307,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load 8th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 160 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 10
@@ -322,14 +322,14 @@ polyvec_compress:
     /* 1st WDR: 176 bits (16 bits) + (Reload) 77 bits + 3 bits */
     /* Load the 1st batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 176 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 11
       bn.rshi w1, w31, w1 >> 16
     /* Load the 2nd batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 77 bits */
     LOOPI 7, 2
       bn.rshi w4, w1, w4 >> 11
@@ -345,7 +345,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 3rd batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 154 bits */
     LOOPI 14, 2
       bn.rshi w4, w1, w4 >> 11
@@ -361,14 +361,14 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 4th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 176 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 11
       bn.rshi w1, w31, w1 >> 16
     /* Load the 5th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 55 bits */
     LOOPI 5, 2
       bn.rshi w4, w1, w4 >> 11
@@ -384,7 +384,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 6th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 143 bits */
     LOOPI 13, 2
       bn.rshi w4, w1, w4 >> 11
@@ -401,14 +401,14 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 7th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 176 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 11
       bn.rshi w1, w31, w1 >> 16
     /* Load the 8th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 44 bits */
     LOOPI 4, 2
       bn.rshi w4, w1, w4 >> 11
@@ -424,7 +424,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 9th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 121 bits */
     LOOPI 11, 2
       bn.rshi w4, w1, w4 >> 11
@@ -441,14 +441,14 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 10th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 176 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 11
       bn.rshi w1, w31, w1 >> 16
     /* Load the 11th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 22 bits */
     LOOPI 2, 2
       bn.rshi w4, w1, w4 >> 11
@@ -464,7 +464,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 12th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 110 bits */
     LOOPI 10, 2
       bn.rshi w4, w1, w4 >> 11
@@ -481,14 +481,14 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 13th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 176 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 11
       bn.rshi w1, w31, w1 >> 16
     /* Load the 14th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 11 bits */
     bn.rshi w4, w1, w4 >> 11
     bn.rshi w1, w31, w1 >> 16
@@ -503,7 +503,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 15th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 88 bits */
     LOOPI 8, 2
       bn.rshi w4, w1, w4 >> 11
@@ -519,7 +519,7 @@ polyvec_compress:
       bn.rshi w1, w31, w1 >> 16
     /* Load the 16th batch */
     bn.lid x0, 0(x10++)
-    jal    x1, _polyvec_compress_16
+    jal    x1, polyvec_compress_16
     /* Pack 176 bits */
     LOOPI 16, 2
       bn.rshi w4, w1, w4 >> 11
@@ -542,7 +542,7 @@ polyvec_compress:
  * clobbered registers:
  */
 
-_polyvec_compress_16:
+polyvec_compress_16:
 LOOPI 16, 7
   bn.rshi         w5, w0, w5 >> 16 /* shift one coeff on w5 */
   bn.rshi         w0, w31, w0 >> 16 /* shift out used coeff */
@@ -646,7 +646,7 @@ poly_decompress:
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 5
-    jal    x1, _poly_decompress_16
+    jal    x1, poly_decompress_16
     bn.sid x4, 0(x12++)
 
   /* 4th WDR: 15 bits + 1 bit + (Reload) 4 bits + 60 bits*/
@@ -660,7 +660,7 @@ poly_decompress:
   LOOPI 12, 2
     bn.rshi w1, w0, w1 >> 16
     bn.rshi w0, w31, w0 >> 5
-  jal    x1, _poly_decompress_16
+  jal    x1, poly_decompress_16
   bn.sid x4, 0(x12++)
 
   /* 5th+6th WDR: 2*80 bits */
@@ -668,7 +668,7 @@ poly_decompress:
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 5
-    jal    x1, _poly_decompress_16
+    jal    x1, poly_decompress_16
     bn.sid x4, 0(x12++)
   
   /* 7th WDR: 30 bits + 2 bits + (Reload) 3 bits + 45 bits */
@@ -682,7 +682,7 @@ poly_decompress:
   LOOPI 9, 2
     bn.rshi w1, w0, w1 >> 16
     bn.rshi w0, w31, w0 >> 5
-  jal    x1, _poly_decompress_16
+  jal    x1, poly_decompress_16
   bn.sid x4, 0(x12++)
 
   /* 8th+9th WDR: 2*80 bits */
@@ -690,7 +690,7 @@ poly_decompress:
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 5
-    jal    x1, _poly_decompress_16
+    jal    x1, poly_decompress_16
     bn.sid x4, 0(x12++)
 
   /* 10th WDR: 45 bits + 3 bits + (Reload) 2 bits + 30 bits */
@@ -704,7 +704,7 @@ poly_decompress:
   LOOPI 6, 2
     bn.rshi w1, w0, w1 >> 16
     bn.rshi w0, w31, w0 >> 5
-  jal    x1, _poly_decompress_16
+  jal    x1, poly_decompress_16
   bn.sid x4, 0(x12++)
 
   /* 11th+12th WDR: 2*80 bits */
@@ -712,7 +712,7 @@ poly_decompress:
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 5
-    jal    x1, _poly_decompress_16
+    jal    x1, poly_decompress_16
     bn.sid x4, 0(x12++)
   
   /* 13th WDR: 60 bits + 4 bits + (Reload) 1 bit + 15 bits */
@@ -726,7 +726,7 @@ poly_decompress:
   LOOPI 3, 2
     bn.rshi w1, w0, w1 >> 16
     bn.rshi w0, w31, w0 >> 5
-  jal    x1, _poly_decompress_16
+  jal    x1, poly_decompress_16
   bn.sid x4, 0(x12++)
 
   /* 14th+15th+16th WDRs: 3*80 bits */
@@ -734,13 +734,13 @@ poly_decompress:
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 5
-    jal    x1, _poly_decompress_16
+    jal    x1, poly_decompress_16
     bn.sid x4, 0(x12++)
 #endif 
   ret
 
 /*
- * Name:        _poly_decompress_16 
+ * Name:        poly_decompress_16 
  *
  * Description: Subroutine of poly_decompress for decompressing 16 coefficients
  *
@@ -753,7 +753,7 @@ poly_decompress:
  *
  * clobbered registers:
  */
-_poly_decompress_16:
+poly_decompress_16:
 LOOPI 16, 6
   bn.and          w5, w1, w2 /* Mask out one coeff on w5 */
   bn.rshi         w1, w31, w1 >> 16 /* Shift out used coeff of w1 */
@@ -791,7 +791,7 @@ polyvec_decompress:
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16  /* Extract 10 bit from input to a 16-bit vector slot */
       bn.rshi w0, w31, w0 >> 10 /* Shift out used bits */
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Second WDR: 90 bits + 6 bits + (Reload) 4 bits + 60 bits */
@@ -805,14 +805,14 @@ polyvec_decompress:
     LOOPI 6, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 10
-    jal x1, _polyvec_decompress_16
+    jal x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Third WDR: 160 bits */
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 10
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Fourth WDR: 30 bits + 2 bits + (Reload) 8 bits + 120 bits */
@@ -826,7 +826,7 @@ polyvec_decompress:
     LOOPI 12, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 10
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Fifth WDR: 120 bits + 8 bits + (Reload) 2 bits + 30 bits */
@@ -840,14 +840,14 @@ polyvec_decompress:
     LOOPI 3, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 10
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Sixth WDR: 160 bits */
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 10
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Seventh WDR: 60 bits + 4 bits + (Reload) 6 bits + 90 bits */
@@ -861,14 +861,14 @@ polyvec_decompress:
     LOOPI 9, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 10
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Eigth WDR: 160 bits */
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 10
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 #elif (KYBER_K == 4)
   bn.rshi w5, w31, w2 >> 241 /* 0x7ff */
@@ -879,7 +879,7 @@ polyvec_decompress:
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 2nd WDR: 77 bits + 3 bits + (Reload) 8 bits + 88 bits */
@@ -893,7 +893,7 @@ polyvec_decompress:
     LOOPI 8, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* Third WDR: 154 bits + 6 bits + (Reload) 5 bits + 11 bits */
@@ -906,14 +906,14 @@ polyvec_decompress:
     bn.rshi              w0, w31, w0 >> 5
     bn.rshi              w1, w0, w1 >> 16
     bn.rshi              w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 4th WDR: 176 bits */
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 5th WDR: 55 bits + 9 bits + (Reload) 2 bits + 110 bits*/
@@ -927,7 +927,7 @@ polyvec_decompress:
     LOOPI 10, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 6th WDR:  143 bits + 1 bits + (Reload) 10 bits + 22 bits */
@@ -941,14 +941,14 @@ polyvec_decompress:
     LOOPI 2, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 7th WDR: 176 bits */
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 8th WDR: 44 bits + 4 bits + (Reload) 7 bits + 121 bits */
@@ -962,7 +962,7 @@ polyvec_decompress:
     LOOPI 11, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 9th WDR: 121 bits + 7 bits + (Reload) 4 bits + 44 bits */
@@ -976,14 +976,14 @@ polyvec_decompress:
     LOOPI 4, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 10th WDR: 176 bits */
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 11th WDR: 22 bits + 10 bits + (Reload) 1 bits + 143 bits */
@@ -997,7 +997,7 @@ polyvec_decompress:
     LOOPI 13, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 12th WDR: 110 bits + 2 bits + (Reload) 9 bits + 55 bits */
@@ -1011,14 +1011,14 @@ polyvec_decompress:
     LOOPI 5, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 13th WDR: 176 bits*/
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 14th WDR: 11 bits + 5 bits + (Reload) 6 bits + 154 bits */
@@ -1031,7 +1031,7 @@ polyvec_decompress:
     LOOPI 14, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 15th WDR: 88 bits + 8 bits + (Reload) 3 bits + 77 bits */
@@ -1045,20 +1045,20 @@ polyvec_decompress:
     LOOPI 7, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 
     /* 16th WDR: 176 bits */
     LOOPI 16, 2
       bn.rshi w1, w0, w1 >> 16
       bn.rshi w0, w31, w0 >> 11
-    jal    x1, _polyvec_decompress_16
+    jal    x1, polyvec_decompress_16
     bn.sid x4, 0(x12++)
 #endif 
   ret
 
 /*
- * Name:        _polyvec_decompress_16 
+ * Name:        polyvec_decompress_16 
  *
  * Description: Subroutine of polyvec_decompress for decompressing 16 coefficients
  *
@@ -1070,7 +1070,7 @@ polyvec_decompress:
  *
  * clobbered registers:
  */
-_polyvec_decompress_16:
+polyvec_decompress_16:
 LOOPI 16, 6
   bn.and          w8, w1, w5 /* Mask out one coeff on w8 */
   bn.rshi         w1, w31, w1 >> 16 /* Shift out used coeff of w1 */
