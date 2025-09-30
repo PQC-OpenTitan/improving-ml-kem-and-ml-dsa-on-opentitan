@@ -1,0 +1,7 @@
+name: towards_alu_adder
+Fmax: 190.0 MHz (5.2631578947368425 ns)
+slack: 0.022181
+required: 5.263158
+instances: 4022
+design_area: 22047
+utilization: 68

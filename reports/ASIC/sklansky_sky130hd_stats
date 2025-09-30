@@ -1,7 +1,7 @@
 name: sklansky
-Fmax: 275.0 MHz (3.6363636363636362 ns)
-slack: 0.153728
-required: 3.636364
-instances: 2898
-design_area: 17607
-utilization: 63
+Fmax: 290.0 MHz (3.4482758620689653 ns)
+slack: 0.087229
+required: 3.448276
+instances: 2980
+design_area: 19067
+utilization: 66

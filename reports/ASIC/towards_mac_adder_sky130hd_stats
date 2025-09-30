@@ -1,0 +1,7 @@
+name: towards_mac_adder
+Fmax: 63.0 MHz (15.873015873015873 ns)
+slack: 0.142425
+required: 15.873015
+instances: 4330
+design_area: 24356
+utilization: 61

@@ -1,0 +1,7 @@
+name: sklansky_256
+Fmax: 240.0 MHz (4.166666666666667 ns)
+slack: 0.138049
+required: 4.166667
+instances: 2581
+design_area: 15307
+utilization: 61

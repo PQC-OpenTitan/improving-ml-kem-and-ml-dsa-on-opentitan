@@ -1,0 +1,26 @@
+set clk: 50.0
+setup: 0.0
+hold:  0.0
+set clk: 25.0
+setup: 0.0
+hold:  0.0
+set clk: 12.5
+first setup failed
+set clk: 18.867924528301888
+setup: 0.0
+hold:  0.0
+set clk: 15.625
+first setup failed
+set clk: 17.24137931034483
+setup: 0.0
+hold:  0.0
+set clk: 16.39344262295082
+setup: 0.0
+hold:  0.0
+set clk: 16.129032258064516
+setup: 0.0
+hold:  0.0
+set clk: 15.873015873015873
+setup: 0.0
+hold:  0.0
+set clk: 15.873015873015873

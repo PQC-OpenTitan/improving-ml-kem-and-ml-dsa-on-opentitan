@@ -1,0 +1,7 @@
+name: kogge_stone_adder_256_mode0_only
+Fmax: 230.0 MHz (4.3478260869565215 ns)
+slack: 0.128066
+required: 4.347826
+instances: 4260
+design_area: 26701
+utilization: 61

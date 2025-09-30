@@ -1,0 +1,7 @@
+name: sklansky_adder_256_mode0_only
+Fmax: 240.0 MHz (4.166666666666667 ns)
+slack: 0.138043
+required: 4.166667
+instances: 2572
+design_area: 15252
+utilization: 61

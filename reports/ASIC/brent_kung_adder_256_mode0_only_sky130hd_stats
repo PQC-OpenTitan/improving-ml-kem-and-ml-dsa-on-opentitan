@@ -1,0 +1,7 @@
+name: brent_kung_adder_256_mode0_only
+Fmax: 300.0 MHz (3.3333333333333335 ns)
+slack: 0.017798
+required: 3.333333
+instances: 2570
+design_area: 16124
+utilization: 58

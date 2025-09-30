@@ -1,0 +1,7 @@
+name: brent_kung_256
+Fmax: 260.0 MHz (3.8461538461538463 ns)
+slack: 0.126636
+required: 3.846154
+instances: 2609
+design_area: 16304
+utilization: 58
