@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Wed Aug 20 11:37:47 2025
+| Date         : Mon Sep 29 18:55:25 2025
 | Host         : jadem4ci running 64-bit unknown
 | Command      : report_utilization -file chip_earlgrey_cw310_utilization_synth.rpt -pb chip_earlgrey_cw310_utilization_synth.pb
 | Design       : chip_earlgrey_cw310
@@ -31,13 +31,13 @@ Table of Contents
 +----------------------------+--------+-------+------------+-----------+-------+
 |          Site Type         |  Used  | Fixed | Prohibited | Available | Util% |
 +----------------------------+--------+-------+------------+-----------+-------+
-| Slice LUTs*                | 228449 |     0 |          0 |    254200 | 89.87 |
-|   LUT as Logic             | 227777 |     0 |          0 |    254200 | 89.61 |
+| Slice LUTs*                | 227053 |     0 |          0 |    254200 | 89.32 |
+|   LUT as Logic             | 226381 |     0 |          0 |    254200 | 89.06 |
 |   LUT as Memory            |    672 |     0 |          0 |     90600 |  0.74 |
 |     LUT as Distributed RAM |    672 |     0 |            |           |       |
 |     LUT as Shift Register  |      0 |     0 |            |           |       |
-| Slice Registers            | 121211 |     0 |          0 |    508400 | 23.84 |
-|   Register as Flip Flop    | 121211 |     0 |          0 |    508400 | 23.84 |
+| Slice Registers            | 121192 |     0 |          0 |    508400 | 23.84 |
+|   Register as Flip Flop    | 121192 |     0 |          0 |    508400 | 23.84 |
 |   Register as Latch        |      0 |     0 |          0 |    508400 |  0.00 |
 | F7 Muxes                   |   7128 |     0 |          0 |    127100 |  5.61 |
 | F8 Muxes                   |   1516 |     0 |          0 |     63550 |  2.39 |
@@ -59,8 +59,8 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 | 0     |            _ |         Set |            - |
 | 0     |            _ |       Reset |            - |
 | 0     |          Yes |           - |            - |
-| 11446 |          Yes |           - |          Set |
-| 71382 |          Yes |           - |        Reset |
+| 11447 |          Yes |           - |          Set |
+| 71362 |          Yes |           - |        Reset |
 | 180   |          Yes |         Set |            - |
 | 38203 |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
@@ -159,17 +159,17 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +--------------+--------+---------------------+
 |   Ref Name   |  Used  | Functional Category |
 +--------------+--------+---------------------+
-| LUT6         | 117358 |                 LUT |
-| FDCE         |  71382 |        Flop & Latch |
-| LUT5         |  45897 |                 LUT |
-| LUT4         |  38941 |                 LUT |
+| LUT6         | 116994 |                 LUT |
+| FDCE         |  71362 |        Flop & Latch |
+| LUT5         |  45216 |                 LUT |
 | FDRE         |  38203 |        Flop & Latch |
-| LUT3         |  30849 |                 LUT |
-| LUT2         |  27232 |                 LUT |
-| FDPE         |  11446 |        Flop & Latch |
+| LUT4         |  38032 |                 LUT |
+| LUT3         |  31583 |                 LUT |
+| LUT2         |  26752 |                 LUT |
+| FDPE         |  11447 |        Flop & Latch |
 | MUXF7        |   7128 |               MuxFx |
-| CARRY4       |   6128 |          CarryLogic |
-| LUT1         |   3410 |                 LUT |
+| CARRY4       |   6298 |          CarryLogic |
+| LUT1         |   3422 |                 LUT |
 | MUXF8        |   1516 |               MuxFx |
 | RAMD32       |    998 |  Distributed Memory |
 | RAMB36E1     |    447 |        Block Memory |
