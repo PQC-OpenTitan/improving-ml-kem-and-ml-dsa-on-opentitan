@@ -595,8 +595,9 @@ pack_ciphertext:
   bn.lid x5++, 0(x15) /* w2 = modulus_over_2 = (0x681)^16 */
   bn.lid x5, 0(x13) /* w3 = const_1290167 */
 
-  /* Zeroize w31 */
+  /* Zeroize w31 and w5 */
   bn.xor w31, w31, w31
+  bn.xor w5, w5, w5
   jal    x1, polyvec_compress
   jal    x1, poly_compress
 
