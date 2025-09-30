@@ -1,5 +1,7 @@
 source $::env(SCRIPTS_DIR)/open.tcl
 
+set f_search [open $::env(FSEARCH) w]
+
 # Helper procedure to write to both file and console
 proc write_both {file_handle message} {
     puts $file_handle $message
@@ -8,6 +10,9 @@ proc write_both {file_handle message} {
 
 proc set_timing_paths {clk clk_period} {
 #  read_db $::env(CHECKPOINT)
+  global f_search
+
+  write_both $f_search "set clk: $clk_period"
 
   if {[llength [get_ports -quiet $clk]] > 0} {
     # Create clock to attach it to a clock buffer.
@@ -46,12 +51,20 @@ proc place_and_route {} {
 #  global_route
 #  detailed_route
 
+  global f_search
+
+  repair_timing -setup
   repair_timing -setup
 
   repair_timing -hold
 
+  repair_timing -setup
+
   set tns_setup [get_tns -max]
   set tns_hold  [get_tns -min]
+
+  write_both $f_search "setup: $tns_setup"
+  write_both $f_search "hold:  $tns_hold"
  
 #  # Setup repair loop
 #  set max_buf 20
@@ -137,6 +150,8 @@ set clk "clk_i"
 set max_f [timing::get_max_freq $clk $start_f $scale_factor]
 
 set_timing_paths $clk [ expr {$scale_factor/$max_f} ]
+
+close $f_search
 
 
 # Open output file

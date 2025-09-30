@@ -189,8 +189,8 @@ FASTER = {
 }
 
 OTHER_ARGS = {
-    "SETUP_SLACK_MARGIN":  "0.05",
-    "SETUP_HOLD_MARGIN":  "-0.05",
+    #"SETUP_SLACK_MARGIN":  "0.05",
+    #"HOLD_SLACK_MARGIN":   "0.05",
     "SYNTH_HIERARCHICAL": "1",
     "PLACE_DENSITY": "0.5",
     "CORE_MARGIN": "1",
@@ -243,11 +243,13 @@ STAGE_ARGS = {
         outs = [
             "{}_{}_stats".format(core.name, pdk),
             "{}_{}_reports".format(core.name, pdk),
+            "{}_{}_fsearch".format(core.name, pdk),
 	    #"{}_{}_checkpoint.db".format(core.name, pdk),
         ],
         arguments = {
             "OUTPUT": "$(location :{}_{}_stats)".format(core.name, pdk),
             "REPORTS": "$(location :{}_{}_reports)".format(core.name, pdk),
+            "FSEARCH": "$(location :{}_{}_fsearch)".format(core.name, pdk),
 	    #"CHECKPOINT": "$(location :{}_{}_checkpoint.db)".format(core.name, pdk),
         },
         script = "//hw/ip/otbn/sta:openroad_combined_tcl",
@@ -277,6 +279,14 @@ filegroup(
     srcs = [
         ":" + "{}_{}_results".format("_".join(["otbn", variant]) if variant else "otbn", pdk)
         for pdk in PDKS for variant, defines in VARIANT
+    ],
+)
+
+filegroup(
+    name = "all_otbn_sub",
+    srcs = [
+        ":" + "{}_{}_results".format("_".join([sub, variant]) if variant else sub, pdk)
+        for pdk in PDKS for variant, defines in VARIANT for sub in ["otbn_mac_bignum", "otbn_alu_bignum"]
     ],
 )
 

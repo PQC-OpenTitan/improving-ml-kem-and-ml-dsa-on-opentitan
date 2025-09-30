@@ -1,7 +1,7 @@
 name: otbn_alu_bignum
-in2out_slack: 4.080517
-in2out_required: 25.400000
-shortest_slack: 4.080517
-instances: 74836
-design_area: 637872
-utilization: 59
+Fmax: 55.0 MHz (18.181818181818183 ns)
+slack: 0.102325
+required: 18.181818
+instances: 57780
+design_area: 491610
+utilization: 63
