@@ -1,14 +1,13 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 16:06:24 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing_summary -file ../../../reports/FPGA-Vivado/otbn_mul/timing_summary.txt
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
+| Date         : Thu Sep 11 15:53:33 2025
+| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_timing_summary -file ../../../reports/FPGA/otbn_mul/timing_summary.txt
 | Design       : otbn_mul
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 
 Timing Summary Report
 
@@ -27,7 +26,6 @@ Timing Summary Report
   Timing Early Launch at Borrowing Latches   :  No
   Borrow Time for Max Delay Exceptions       :  Yes
   Merge Timing Exceptions                    :  Yes
-  Inter-SLR Compensation                     :  Conservative
 
   Corner  Analyze    Analyze    
   Name    Max Paths  Min Paths  
@@ -138,7 +136,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      0.139        0.000                      0                  128           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
+      0.157        0.000                      0                  128           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
 
 
 All user specified timing constraints are met.
@@ -175,7 +173,7 @@ From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS
 
 Path Group        From Clock        To Clock              WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
 ----------        ----------        --------              -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
-**default**       input port clock                          0.139        0.000                      0                  128                                                                        
+**default**       input port clock                          0.157        0.000                      0                  128                                                                        
 
 
 ------------------------------------------------------------------------------------------------
@@ -189,111 +187,115 @@ Path Group:  **default**
 From Clock:  input port clock
   To Clock:  
 
-Setup :            0  Failing Endpoints,  Worst Slack        0.139ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        0.157ns,  Total Violation        0.000ns
 Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.139ns  (required time - arrival time)
-  Source:                 multiplier_op_a_i[31]
+Slack (MET) :             0.157ns  (required time - arrival time)
+  Source:                 multiplier_op_a_i[15]
                             (input port)
   Destination:            multiplier_res_o[124]
   Path Group:             **default**
   Path Type:              Max at Slow Process Corner
   Requirement:            12.346ns  (MaxDelay Path 12.346ns)
-  Data Path Delay:        12.207ns  (logic 5.265ns (43.132%)  route 6.942ns (56.868%))
-  Logic Levels:           30  (CARRY4=21 DSP48E1=1 LUT2=2 LUT5=2 LUT6=4)
+  Data Path Delay:        12.189ns  (logic 5.359ns (43.967%)  route 6.830ns (56.033%))
+  Logic Levels:           31  (CARRY4=23 DSP48E1=1 LUT2=1 LUT4=1 LUT5=1 LUT6=4)
   Output Delay:           0.000ns
   Timing Exception:       MaxDelay Path 12.346ns -datapath_only
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
-                                                      0.000     0.000 r  multiplier_op_a_i[31] (IN)
-                         net (fo=3, unset)            0.672     0.672    multiplier_op_a_i[31]
-    DSP48_X1Y38          DSP48E1 (Prop_dsp48e1_A[15]_P[24])
-                                                      3.255     3.927 r  partialproduct0__0/P[24]
-                         net (fo=4, routed)           0.971     4.898    partialproduct0__0_n_81
-    SLICE_X22Y100        LUT5 (Prop_lut5_I3_O)        0.053     4.951 r  multiplier_res_o[47]_INST_0_i_106/O
-                         net (fo=2, routed)           0.510     5.460    p_0_in5745_in
-    SLICE_X20Y99         LUT5 (Prop_lut5_I1_O)        0.053     5.513 r  multiplier_res_o[47]_INST_0_i_97/O
-                         net (fo=6, routed)           0.746     6.259    p_0_in5241_in
-    SLICE_X21Y102        LUT6 (Prop_lut6_I1_O)        0.053     6.312 r  multiplier_res_o[47]_INST_0_i_80/O
-                         net (fo=2, routed)           0.563     6.875    multiplier_res_o[47]_INST_0_i_80_n_0
-    SLICE_X12Y102        LUT2 (Prop_lut2_I0_O)        0.053     6.928 r  multiplier_res_o[47]_INST_0_i_54/O
-                         net (fo=6, routed)           0.568     7.495    multiplier_res_o[47]_INST_0_i_54_n_0
-    SLICE_X18Y101        LUT6 (Prop_lut6_I2_O)        0.053     7.548 r  multiplier_res_o[47]_INST_0_i_57/O
-                         net (fo=9, routed)           0.595     8.143    multiplier_res_o[47]_INST_0_i_57_n_0
-    SLICE_X21Y97         LUT6 (Prop_lut6_I4_O)        0.053     8.196 r  multiplier_res_o[43]_INST_0_i_35/O
-                         net (fo=2, routed)           0.841     9.037    p_0_in1689_in
-    SLICE_X19Y100        LUT6 (Prop_lut6_I0_O)        0.053     9.090 r  multiplier_res_o[43]_INST_0_i_10/O
-                         net (fo=1, routed)           0.326     9.416    multiplier_res_o[43]_INST_0_i_10_n_0
-    SLICE_X14Y100        LUT2 (Prop_lut2_I1_O)        0.053     9.469 r  multiplier_res_o[43]_INST_0_i_1/O
-                         net (fo=1, routed)           0.479     9.948    csa12_return0180_out[0]
-    SLICE_X16Y99         CARRY4 (Prop_carry4_DI[3]_CO[3])
-                                                      0.234    10.182 r  multiplier_res_o[43]_INST_0/CO[3]
-                         net (fo=1, routed)           0.001    10.183    multiplier_res_o[43]_INST_0_n_0
-    SLICE_X16Y100        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.243 r  multiplier_res_o[47]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.243    multiplier_res_o[47]_INST_0_n_0
-    SLICE_X16Y101        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.303 r  multiplier_res_o[51]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.303    multiplier_res_o[51]_INST_0_n_0
-    SLICE_X16Y102        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.363 r  multiplier_res_o[55]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.363    multiplier_res_o[55]_INST_0_n_0
-    SLICE_X16Y103        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.423 r  multiplier_res_o[59]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.423    multiplier_res_o[59]_INST_0_n_0
-    SLICE_X16Y104        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.483 r  multiplier_res_o[63]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.483    multiplier_res_o[63]_INST_0_n_0
-    SLICE_X16Y105        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.543 r  multiplier_res_o[67]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.543    multiplier_res_o[67]_INST_0_n_0
-    SLICE_X16Y106        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.603 r  multiplier_res_o[71]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.603    multiplier_res_o[71]_INST_0_n_0
-    SLICE_X16Y107        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.663 r  multiplier_res_o[75]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.663    multiplier_res_o[75]_INST_0_n_0
-    SLICE_X16Y108        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.723 r  multiplier_res_o[79]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.723    multiplier_res_o[79]_INST_0_n_0
-    SLICE_X16Y109        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.783 r  multiplier_res_o[83]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.783    multiplier_res_o[83]_INST_0_n_0
-    SLICE_X16Y110        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.843 r  multiplier_res_o[87]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.843    multiplier_res_o[87]_INST_0_n_0
-    SLICE_X16Y111        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.903 r  multiplier_res_o[91]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.903    multiplier_res_o[91]_INST_0_n_0
-    SLICE_X16Y112        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    10.963 r  multiplier_res_o[95]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.963    multiplier_res_o[95]_INST_0_n_0
-    SLICE_X16Y113        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.023 r  multiplier_res_o[99]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.023    multiplier_res_o[99]_INST_0_n_0
-    SLICE_X16Y114        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.083 r  multiplier_res_o[103]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.083    multiplier_res_o[103]_INST_0_n_0
-    SLICE_X16Y115        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.143 r  multiplier_res_o[107]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.143    multiplier_res_o[107]_INST_0_n_0
-    SLICE_X16Y116        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.203 r  multiplier_res_o[111]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.203    multiplier_res_o[111]_INST_0_n_0
-    SLICE_X16Y117        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.263 r  multiplier_res_o[115]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.263    multiplier_res_o[115]_INST_0_n_0
-    SLICE_X16Y118        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.323 r  multiplier_res_o[119]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.323    multiplier_res_o[119]_INST_0_n_0
-    SLICE_X16Y119        CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.212    11.535 r  multiplier_res_o[123]_INST_0/O[1]
-                         net (fo=0)                   0.672    12.207    multiplier_res_o[124]
+                                                      0.000     0.000 r  multiplier_op_a_i[15] (IN)
+                         net (fo=3, unset)            0.672     0.672    multiplier_op_a_i[15]
+    DSP48_X1Y38          DSP48E1 (Prop_dsp48e1_A[15]_P[29])
+                                                      3.255     3.927 r  mul2csa[0]0/P[29]
+                         net (fo=4, routed)           1.150     5.077    p_1_in6716_in
+    SLICE_X21Y99         LUT6 (Prop_lut6_I0_O)        0.053     5.130 r  multiplier_res_o[35]_INST_0_i_118/O
+                         net (fo=3, routed)           0.477     5.607    p_0_in5706_in
+    SLICE_X20Y99         LUT5 (Prop_lut5_I1_O)        0.053     5.660 r  multiplier_res_o[35]_INST_0_i_90/O
+                         net (fo=4, routed)           0.856     6.516    multiplier_res_o[35]_INST_0_i_90_n_0
+    SLICE_X20Y100        LUT6 (Prop_lut6_I1_O)        0.053     6.569 r  multiplier_res_o[35]_INST_0_i_64/O
+                         net (fo=9, routed)           0.858     7.427    multiplier_res_o[35]_INST_0_i_64_n_0
+    SLICE_X17Y95         LUT4 (Prop_lut4_I0_O)        0.053     7.480 r  multiplier_res_o[35]_INST_0_i_51/O
+                         net (fo=7, routed)           0.598     8.078    p_0_in3174_in
+    SLICE_X14Y92         LUT6 (Prop_lut6_I0_O)        0.053     8.131 r  multiplier_res_o[39]_INST_0_i_52/O
+                         net (fo=7, routed)           0.719     8.850    p_0_in2166_in
+    SLICE_X13Y92         LUT6 (Prop_lut6_I1_O)        0.053     8.903 r  multiplier_res_o[35]_INST_0_i_12/O
+                         net (fo=1, routed)           0.343     9.246    multiplier_res_o[35]_INST_0_i_12_n_0
+    SLICE_X12Y94         LUT2 (Prop_lut2_I0_O)        0.053     9.299 r  multiplier_res_o[35]_INST_0_i_3/O
+                         net (fo=1, routed)           0.484     9.783    csa12_return0141_out[0]
+    SLICE_X13Y96         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.302    10.085 r  multiplier_res_o[35]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.085    multiplier_res_o[35]_INST_0_n_0
+    SLICE_X13Y97         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.143 r  multiplier_res_o[39]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.143    multiplier_res_o[39]_INST_0_n_0
+    SLICE_X13Y98         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.201 r  multiplier_res_o[43]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.201    multiplier_res_o[43]_INST_0_n_0
+    SLICE_X13Y99         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.259 r  multiplier_res_o[47]_INST_0/CO[3]
+                         net (fo=1, routed)           0.001    10.260    multiplier_res_o[47]_INST_0_n_0
+    SLICE_X13Y100        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.318 r  multiplier_res_o[51]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.318    multiplier_res_o[51]_INST_0_n_0
+    SLICE_X13Y101        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.376 r  multiplier_res_o[55]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.376    multiplier_res_o[55]_INST_0_n_0
+    SLICE_X13Y102        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.434 r  multiplier_res_o[59]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.434    multiplier_res_o[59]_INST_0_n_0
+    SLICE_X13Y103        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.492 r  multiplier_res_o[63]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.492    multiplier_res_o[63]_INST_0_n_0
+    SLICE_X13Y104        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.550 r  multiplier_res_o[67]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.550    multiplier_res_o[67]_INST_0_n_0
+    SLICE_X13Y105        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.608 r  multiplier_res_o[71]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.608    multiplier_res_o[71]_INST_0_n_0
+    SLICE_X13Y106        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.666 r  multiplier_res_o[75]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.666    multiplier_res_o[75]_INST_0_n_0
+    SLICE_X13Y107        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.724 r  multiplier_res_o[79]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.724    multiplier_res_o[79]_INST_0_n_0
+    SLICE_X13Y108        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.782 r  multiplier_res_o[83]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.782    multiplier_res_o[83]_INST_0_n_0
+    SLICE_X13Y109        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.840 r  multiplier_res_o[87]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.840    multiplier_res_o[87]_INST_0_n_0
+    SLICE_X13Y110        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.898 r  multiplier_res_o[91]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.898    multiplier_res_o[91]_INST_0_n_0
+    SLICE_X13Y111        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    10.956 r  multiplier_res_o[95]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.956    multiplier_res_o[95]_INST_0_n_0
+    SLICE_X13Y112        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    11.014 r  multiplier_res_o[99]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.014    multiplier_res_o[99]_INST_0_n_0
+    SLICE_X13Y113        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    11.072 r  multiplier_res_o[103]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.072    multiplier_res_o[103]_INST_0_n_0
+    SLICE_X13Y114        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    11.130 r  multiplier_res_o[107]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.130    multiplier_res_o[107]_INST_0_n_0
+    SLICE_X13Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    11.188 r  multiplier_res_o[111]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.188    multiplier_res_o[111]_INST_0_n_0
+    SLICE_X13Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    11.246 r  multiplier_res_o[115]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.246    multiplier_res_o[115]_INST_0_n_0
+    SLICE_X13Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058    11.304 r  multiplier_res_o[119]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.304    multiplier_res_o[119]_INST_0_n_0
+    SLICE_X13Y118        CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.213    11.517 r  multiplier_res_o[123]_INST_0/O[1]
+                         net (fo=0)                   0.672    12.189    multiplier_res_o[124]
                                                                       r  multiplier_res_o[124] (OUT)
   -------------------------------------------------------------------    -------------------
 
@@ -301,9 +303,9 @@ Slack (MET) :             0.139ns  (required time - arrival time)
                          output delay                -0.000    12.346    
   -------------------------------------------------------------------
                          required time                         12.346    
-                         arrival time                         -12.207    
+                         arrival time                         -12.189    
   -------------------------------------------------------------------
-                         slack                                  0.139    
+                         slack                                  0.157    
 
 
 

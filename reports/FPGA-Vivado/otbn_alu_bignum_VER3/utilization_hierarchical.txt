@@ -1,14 +1,13 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
--------------------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 17:40:52 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA-Vivado/otbn_alu_bignum_VER3/utilization_hierarchical.txt
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 10:29:14 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA/otbn_alu_bignum_VER3/utilization_hierarchical.txt
 | Design       : otbn_alu_bignum
-| Device       : xc7k160tfbg676-1
-| Speed File   : -1
+| Device       : 7k160tfbg676-1
 | Design State : Routed
--------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Utilization Design Information
 
@@ -22,36 +21,36 @@ Table of Contents
 +------------------------------------+--------------------------------+------------+------------+---------+------+------+--------+--------+------------+
 |              Instance              |             Module             | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs | RAMB36 | RAMB18 | DSP Blocks |
 +------------------------------------+--------------------------------+------------+------------+---------+------+------+--------+--------+------------+
-| otbn_alu_bignum                    |                          (top) |      13101 |      13101 |       0 |    0 | 1286 |      0 |      0 |          0 |
-|   (otbn_alu_bignum)                |                          (top) |       3362 |       3362 |       0 |    0 |  998 |      0 |      0 |          0 |
+| otbn_alu_bignum                    |                          (top) |      13098 |      13098 |       0 |    0 | 1286 |      0 |      0 |          0 |
+|   (otbn_alu_bignum)                |                          (top) |       4581 |       4581 |       0 |    0 |  998 |      0 |      0 |          0 |
 |   adder_w                          |                     buffer_bit |        605 |        605 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   adder_x                          |                   buffer_bit_0 |       1043 |       1043 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   adder_y                          |                   buffer_bit_1 |       2580 |       2580 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_adder_w_op_a_blanked           |   prim_blanker__parameterized1 |        256 |        256 |       0 |    0 |    0 |      0 |      0 |          0 |
-|     u_blank_and                    |   prim_and2__parameterized6_16 |        256 |        256 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   adder_x                          |                   buffer_bit_0 |       1086 |       1086 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   adder_y                          |                   buffer_bit_1 |       2548 |       2548 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_adder_w_op_a_blanked           |   prim_blanker__parameterized1 |        257 |        257 |       0 |    0 |    0 |      0 |      0 |          0 |
+|     u_blank_and                    |   prim_and2__parameterized6_16 |        257 |        257 |       0 |    0 |    0 |      0 |      0 |          0 |
 |   u_adder_w_op_b_blanked           | prim_blanker__parameterized1_2 |          1 |          1 |       0 |    0 |    0 |      0 |      0 |          0 |
 |     u_blank_and                    |   prim_and2__parameterized6_15 |          1 |          1 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_adder_x_op_a_blanked           | prim_blanker__parameterized1_3 |        984 |        984 |       0 |    0 |    0 |      0 |      0 |          0 |
-|     u_blank_and                    |   prim_and2__parameterized6_14 |        984 |        984 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_adder_x_op_a_blanked           | prim_blanker__parameterized1_3 |        165 |        165 |       0 |    0 |    0 |      0 |      0 |          0 |
+|     u_blank_and                    |   prim_and2__parameterized6_14 |        165 |        165 |       0 |    0 |    0 |      0 |      0 |          0 |
 |   u_adder_x_op_b_blanked           | prim_blanker__parameterized1_4 |         65 |         65 |       0 |    0 |    0 |      0 |      0 |          0 |
 |     u_blank_and                    |   prim_and2__parameterized6_13 |         65 |         65 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_expected_ispr_rd_en_enc        |                prim_onehot_enc |         11 |         11 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_expected_ispr_wr_en_enc        |              prim_onehot_enc_5 |         11 |         11 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_ispr_mod_bignum_wdata_blanker  |   prim_blanker__parameterized0 |        337 |        337 |       0 |    0 |    0 |      0 |      0 |          0 |
-|     u_blank_and                    |      prim_and2__parameterized3 |        337 |        337 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_kmac_msg_ctr                   |                     prim_count |         82 |         82 |       0 |    0 |   25 |      0 |      0 |          0 |
-|     (u_kmac_msg_ctr)               |                     prim_count |          2 |          2 |       0 |    0 |    1 |      0 |      0 |          0 |
-|     gen_cnts[0].u_cnt_flop         |                      prim_flop |         55 |         55 |       0 |    0 |   12 |      0 |      0 |          0 |
+|   u_expected_ispr_rd_en_enc        |                prim_onehot_enc |          7 |          7 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_expected_ispr_wr_en_enc        |              prim_onehot_enc_5 |         12 |         12 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_ispr_mod_bignum_wdata_blanker  |   prim_blanker__parameterized0 |        385 |        385 |       0 |    0 |    0 |      0 |      0 |          0 |
+|     u_blank_and                    |      prim_and2__parameterized3 |        385 |        385 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_kmac_msg_ctr                   |                     prim_count |         78 |         78 |       0 |    0 |   25 |      0 |      0 |          0 |
+|     (u_kmac_msg_ctr)               |                     prim_count |          6 |          6 |       0 |    0 |    1 |      0 |      0 |          0 |
+|     gen_cnts[0].u_cnt_flop         |                      prim_flop |         46 |         46 |       0 |    0 |   12 |      0 |      0 |          0 |
 |     gen_cnts[1].u_cnt_flop         |      prim_flop__parameterized0 |         26 |         26 |       0 |    0 |   12 |      0 |      0 |          0 |
-|   u_kmac_msg_fifo                  |               prim_packer_fifo |        289 |        289 |       0 |    0 |  263 |      0 |      0 |          0 |
+|   u_kmac_msg_fifo                  |               prim_packer_fifo |        281 |        281 |       0 |    0 |  263 |      0 |      0 |          0 |
 |   u_logical_op_a_blanker           | prim_blanker__parameterized1_6 |        128 |        128 |       0 |    0 |    0 |      0 |      0 |          0 |
 |     u_blank_and                    |   prim_and2__parameterized6_12 |        128 |        128 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_logical_op_shifter_res_blanker | prim_blanker__parameterized1_7 |        960 |        960 |       0 |    0 |    0 |      0 |      0 |          0 |
-|     u_blank_and                    |   prim_and2__parameterized6_11 |        960 |        960 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_shifter_operand_a_blanker      | prim_blanker__parameterized1_8 |       2442 |       2442 |       0 |    0 |    0 |      0 |      0 |          0 |
-|     u_blank_and                    |   prim_and2__parameterized6_10 |       2442 |       2442 |       0 |    0 |    0 |      0 |      0 |          0 |
-|   u_shifter_operand_b_blanker      | prim_blanker__parameterized1_9 |        246 |        246 |       0 |    0 |    0 |      0 |      0 |          0 |
-|     u_blank_and                    |      prim_and2__parameterized6 |        246 |        246 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_logical_op_shifter_res_blanker | prim_blanker__parameterized1_7 |        984 |        984 |       0 |    0 |    0 |      0 |      0 |          0 |
+|     u_blank_and                    |   prim_and2__parameterized6_11 |        984 |        984 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_shifter_operand_a_blanker      | prim_blanker__parameterized1_8 |       1997 |       1997 |       0 |    0 |    0 |      0 |      0 |          0 |
+|     u_blank_and                    |   prim_and2__parameterized6_10 |       1997 |       1997 |       0 |    0 |    0 |      0 |      0 |          0 |
+|   u_shifter_operand_b_blanker      | prim_blanker__parameterized1_9 |        214 |        214 |       0 |    0 |    0 |      0 |      0 |          0 |
+|     u_blank_and                    |      prim_and2__parameterized6 |        214 |        214 |       0 |    0 |    0 |      0 |      0 |          0 |
 +------------------------------------+--------------------------------+------------+------------+---------+------+------+--------+--------+------------+
 * Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
 

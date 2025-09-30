@@ -1,14 +1,13 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:57:05 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_clocks -file ../../../reports/FPGA-Vivado/sklansky/clocks.txt
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 07:38:04 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_clocks -file ../../../reports/FPGA/sklansky/clocks.txt
 | Design       : sklansky
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
 
 Clock Report
 

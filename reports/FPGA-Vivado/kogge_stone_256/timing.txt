@@ -1,55 +1,54 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:47:58 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing -file ../../../reports/FPGA-Vivado/kogge_stone_256/timing.txt
-| Design       : kogge_stone_256
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
+| Date         : Tue Sep 16 11:43:52 2025
+| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_timing -file ../../../reports/FPGA/kogge_stone_adder_256_mode0_only/timing.txt
+| Design       : kogge_stone_adder_256_mode0_only
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
 
 Timing Report
 
-Slack (MET) :             0.000ns  (required time - arrival time)
-  Source:                 B[186]
+Slack (MET) :             0.046ns  (required time - arrival time)
+  Source:                 A[52]
                             (input port)
-  Destination:            cout
+  Destination:            sum[219]
   Path Group:             **default**
   Path Type:              Max at Slow Process Corner
-  Requirement:            5.263ns  (MaxDelay Path 5.263ns)
-  Data Path Delay:        5.263ns  (logic 0.711ns (13.509%)  route 4.552ns (86.491%))
-  Logic Levels:           6  (LUT2=1 LUT4=2 LUT6=3)
+  Requirement:            5.000ns  (MaxDelay Path 5.000ns)
+  Data Path Delay:        4.954ns  (logic 0.449ns (9.064%)  route 4.505ns (90.936%))
+  Logic Levels:           6  (LUT3=1 LUT4=1 LUT5=1 LUT6=3)
   Output Delay:           0.000ns
-  Timing Exception:       MaxDelay Path 5.263ns -datapath_only
+  Timing Exception:       MaxDelay Path 5.000ns -datapath_only
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
-                                                      0.000     0.000 r  B[186] (IN)
-                         net (fo=8, unset)            0.672     0.672    B[186]
-    SLICE_X48Y38         LUT4 (Prop_lut4_I2_O)        0.070     0.742 f  res[239]_INST_0_i_19/O
-                         net (fo=8, routed)           0.984     1.726    res[239]_INST_0_i_19_n_0
-    SLICE_X48Y43         LUT6 (Prop_lut6_I0_O)        0.169     1.895 f  res[239]_INST_0_i_8/O
-                         net (fo=6, routed)           0.737     2.632    res[239]_INST_0_i_8_n_0
-    SLICE_X49Y44         LUT4 (Prop_lut4_I0_O)        0.063     2.695 f  res[191]_INST_0_i_3/O
-                         net (fo=4, routed)           0.483     3.178    res[191]_INST_0_i_3_n_0
-    SLICE_X49Y44         LUT2 (Prop_lut2_I0_O)        0.187     3.365 f  res[255]_INST_0_i_4/O
-                         net (fo=2, routed)           0.619     3.984    res[255]_INST_0_i_4_n_0
-    SLICE_X48Y51         LUT6 (Prop_lut6_I5_O)        0.169     4.153 r  cout_INST_0_i_1/O
-                         net (fo=1, routed)           0.385     4.538    cout_INST_0_i_1_n_0
-    SLICE_X49Y44         LUT6 (Prop_lut6_I3_O)        0.053     4.591 r  cout_INST_0/O
-                         net (fo=0)                   0.672     5.263    cout
-                                                                      r  cout (OUT)
+                                                      0.000     0.000 r  A[52] (IN)
+                         net (fo=9, unset)            0.672     0.672    A[52]
+    SLICE_X13Y106        LUT4 (Prop_lut4_I2_O)        0.067     0.739 f  sum[227]_INST_0_i_22/O
+                         net (fo=3, routed)           0.710     1.449    sum[227]_INST_0_i_22_n_0
+    SLICE_X13Y107        LUT5 (Prop_lut5_I0_O)        0.170     1.619 r  sum[127]_INST_0_i_28/O
+                         net (fo=4, routed)           0.704     2.323    sum[127]_INST_0_i_28_n_0
+    SLICE_X14Y105        LUT6 (Prop_lut6_I4_O)        0.053     2.376 r  sum[91]_INST_0_i_13/O
+                         net (fo=5, routed)           0.579     2.955    sum[91]_INST_0_i_13_n_0
+    SLICE_X14Y108        LUT3 (Prop_lut3_I2_O)        0.053     3.008 r  sum[251]_INST_0_i_14/O
+                         net (fo=1, routed)           0.723     3.731    sum[251]_INST_0_i_14_n_0
+    SLICE_X10Y112        LUT6 (Prop_lut6_I1_O)        0.053     3.784 r  sum[251]_INST_0_i_3/O
+                         net (fo=5, routed)           0.444     4.229    sum[251]_INST_0_i_3_n_0
+    SLICE_X11Y109        LUT6 (Prop_lut6_I2_O)        0.053     4.282 r  sum[219]_INST_0/O
+                         net (fo=0)                   0.672     4.954    sum[219]
+                                                                      r  sum[219] (OUT)
   -------------------------------------------------------------------    -------------------
 
-                         max delay                    5.263     5.263    
-                         output delay                -0.000     5.263    
+                         max delay                    5.000     5.000    
+                         output delay                -0.000     5.000    
   -------------------------------------------------------------------
-                         required time                          5.263    
-                         arrival time                          -5.263    
+                         required time                          5.000    
+                         arrival time                          -4.954    
   -------------------------------------------------------------------
-                         slack                                  0.000    
+                         slack                                  0.046    
 
 
 

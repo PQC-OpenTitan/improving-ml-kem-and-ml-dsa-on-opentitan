@@ -1,57 +1,56 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:54:32 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing -file ../../../reports/FPGA-Vivado/sklansky_256/timing.txt
-| Design       : sklansky_256
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
+| Date         : Tue Sep 16 11:50:45 2025
+| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_timing -file ../../../reports/FPGA/sklansky_adder_256_mode0_only/timing.txt
+| Design       : sklansky_adder_256_mode0_only
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 Timing Report
 
-Slack (MET) :             0.013ns  (required time - arrival time)
-  Source:                 B[178]
+Slack (MET) :             0.162ns  (required time - arrival time)
+  Source:                 B[166]
                             (input port)
-  Destination:            res[234]
+  Destination:            sum[224]
   Path Group:             **default**
   Path Type:              Max at Slow Process Corner
-  Requirement:            5.000ns  (MaxDelay Path 5.000ns)
-  Data Path Delay:        4.987ns  (logic 0.499ns (10.006%)  route 4.488ns (89.994%))
-  Logic Levels:           7  (LUT3=1 LUT5=2 LUT6=4)
+  Requirement:            5.263ns  (MaxDelay Path 5.263ns)
+  Data Path Delay:        5.101ns  (logic 0.371ns (7.273%)  route 4.730ns (92.727%))
+  Logic Levels:           7  (LUT5=3 LUT6=4)
   Output Delay:           0.000ns
-  Timing Exception:       MaxDelay Path 5.000ns -datapath_only
+  Timing Exception:       MaxDelay Path 5.263ns -datapath_only
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
-                                                      0.000     0.000 f  B[178] (IN)
-                         net (fo=2, unset)            0.672     0.672    B[178]
-    SLICE_X32Y50         LUT6 (Prop_lut6_I5_O)        0.053     0.725 f  res[179]_INST_0_i_4/O
-                         net (fo=2, routed)           0.590     1.315    res[179]_INST_0_i_4_n_0
-    SLICE_X32Y50         LUT3 (Prop_lut3_I2_O)        0.053     1.368 r  res[180]_INST_0_i_1/O
-                         net (fo=3, routed)           0.389     1.757    res[180]_INST_0_i_1_n_0
-    SLICE_X32Y50         LUT5 (Prop_lut5_I0_O)        0.053     1.810 r  res[183]_INST_0_i_2/O
-                         net (fo=4, routed)           0.555     2.365    res[183]_INST_0_i_2_n_0
-    SLICE_X32Y51         LUT5 (Prop_lut5_I2_O)        0.064     2.429 r  res[189]_INST_0_i_1/O
-                         net (fo=3, routed)           0.360     2.789    res[189]_INST_0_i_1_n_0
-    SLICE_X36Y51         LUT6 (Prop_lut6_I5_O)        0.170     2.959 r  res[208]_INST_0_i_1/O
-                         net (fo=9, routed)           0.687     3.647    res[208]_INST_0_i_1_n_0
-    SLICE_X33Y52         LUT6 (Prop_lut6_I0_O)        0.053     3.700 r  res[254]_INST_0_i_5/O
-                         net (fo=27, routed)          0.562     4.262    res[254]_INST_0_i_5_n_0
-    SLICE_X32Y52         LUT6 (Prop_lut6_I4_O)        0.053     4.315 r  res[234]_INST_0/O
-                         net (fo=0)                   0.672     4.987    res[234]
-                                                                      r  res[234] (OUT)
+                                                      0.000     0.000 r  B[166] (IN)
+                         net (fo=2, unset)            0.672     0.672    B[166]
+    SLICE_X36Y48         LUT6 (Prop_lut6_I5_O)        0.053     0.725 f  sum[171]_INST_0_i_6/O
+                         net (fo=4, routed)           0.436     1.161    sum[171]_INST_0_i_6_n_0
+    SLICE_X37Y49         LUT6 (Prop_lut6_I3_O)        0.053     1.214 f  sum[171]_INST_0_i_2/O
+                         net (fo=8, routed)           0.716     1.930    sum[171]_INST_0_i_2_n_0
+    SLICE_X37Y51         LUT5 (Prop_lut5_I2_O)        0.053     1.983 r  sum[179]_INST_0_i_3/O
+                         net (fo=8, routed)           0.559     2.542    sum[179]_INST_0_i_3_n_0
+    SLICE_X36Y51         LUT6 (Prop_lut6_I1_O)        0.053     2.595 r  sum[184]_INST_0_i_1/O
+                         net (fo=4, routed)           0.668     3.263    sum[184]_INST_0_i_1_n_0
+    SLICE_X37Y53         LUT6 (Prop_lut6_I2_O)        0.053     3.316 r  sum[222]_INST_0_i_4/O
+                         net (fo=12, routed)          0.370     3.686    sum[222]_INST_0_i_4_n_0
+    SLICE_X37Y56         LUT5 (Prop_lut5_I2_O)        0.053     3.739 r  sum[255]_INST_0_i_2/O
+                         net (fo=12, routed)          0.637     4.376    sum[255]_INST_0_i_2_n_0
+    SLICE_X35Y56         LUT5 (Prop_lut5_I0_O)        0.053     4.429 r  sum[224]_INST_0/O
+                         net (fo=0)                   0.672     5.101    sum[224]
+                                                                      r  sum[224] (OUT)
   -------------------------------------------------------------------    -------------------
 
-                         max delay                    5.000     5.000    
-                         output delay                -0.000     5.000    
+                         max delay                    5.263     5.263    
+                         output delay                -0.000     5.263    
   -------------------------------------------------------------------
-                         required time                          5.000    
-                         arrival time                          -4.987    
+                         required time                          5.263    
+                         arrival time                          -5.101    
   -------------------------------------------------------------------
-                         slack                                  0.013    
+                         slack                                  0.162    
 
 
 

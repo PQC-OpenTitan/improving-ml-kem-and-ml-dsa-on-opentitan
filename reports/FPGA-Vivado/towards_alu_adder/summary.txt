@@ -1,1 +1,1 @@
-Fmax: 58.0 MHz
+Fmax: 57.0 MHz

@@ -1,9 +1,9 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:39:58 2025
+| Date         : Wed Sep 17 14:20:57 2025
 | Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing_summary -file ../../../reports/FPGA-Vivado/csa_carry4/timing_summary.txt
+| Command      : report_timing_summary -file ../../../reports/FPGA/csa_carry4_carry4/timing_summary.txt
 | Design       : csa_carry4
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
@@ -58,7 +58,7 @@ Table of Contents
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
 9. checking loops (0)
-10. checking partial_input_delay (515)
+10. checking partial_input_delay (516)
 11. checking partial_output_delay (0)
 12. checking latch_loops (0)
 
@@ -115,9 +115,9 @@ Table of Contents
  There are 0 combinational loops in the design.
 
 
-10. checking partial_input_delay (515)
+10. checking partial_input_delay (516)
 --------------------------------------
- There are 515 input ports with partial input delay specified. (HIGH)
+ There are 516 input ports with partial input delay specified. (HIGH)
 
 
 11. checking partial_output_delay (0)

@@ -1,14 +1,13 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:38:15 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA-Vivado/buffer_bit/utilization_hierarchical.txt
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 07:11:05 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_utilization -hierarchical -hierarchical_depth 6 -file ../../../reports/FPGA/buffer_bit/utilization_hierarchical.txt
 | Design       : buffer_bit
-| Device       : xc7k160tfbg676-1
-| Speed File   : -1
+| Device       : 7k160tfbg676-1
 | Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 Utilization Design Information
 
@@ -22,7 +21,7 @@ Table of Contents
 +------------+--------+------------+------------+---------+------+-----+--------+--------+------------+
 |  Instance  | Module | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP Blocks |
 +------------+--------+------------+------------+---------+------+-----+--------+--------+------------+
-| buffer_bit |  (top) |        474 |        474 |       0 |    0 |   0 |      0 |      0 |          0 |
+| buffer_bit |  (top) |        476 |        476 |       0 |    0 |   0 |      0 |      0 |          0 |
 +------------+--------+------------+------------+---------+------+-----+--------+--------+------------+
 * Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
 

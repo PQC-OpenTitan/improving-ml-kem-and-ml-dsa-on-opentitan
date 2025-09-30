@@ -1,28 +1,27 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:35:10 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing -file ../../../reports/FPGA-Vivado/towards_alu_adder/timing.txt
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 06:58:15 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_timing -file ../../../reports/FPGA/towards_alu_adder/timing.txt
 | Design       : towards_alu_adder
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 Timing Report
 
-Slack (MET) :             0.133ns  (required time - arrival time)
+Slack (MET) :             0.155ns  (required time - arrival time)
   Source:                 B[0][1]
                             (input port)
   Destination:            sum[252]
   Path Group:             **default**
   Path Type:              Max at Slow Process Corner
-  Requirement:            17.241ns  (MaxDelay Path 17.241ns)
-  Data Path Delay:        17.108ns  (logic 11.620ns (67.922%)  route 5.488ns (32.078%))
+  Requirement:            17.544ns  (MaxDelay Path 17.544ns)
+  Data Path Delay:        17.389ns  (logic 11.620ns (66.825%)  route 5.769ns (33.175%))
   Logic Levels:           95  (CARRY4=79 LUT2=1 LUT4=7 LUT5=8)
   Output Delay:           0.000ns
-  Timing Exception:       MaxDelay Path 17.241ns -datapath_only
+  Timing Exception:       MaxDelay Path 17.544ns -datapath_only
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
@@ -44,269 +43,269 @@ Slack (MET) :             0.133ns  (required time - arrival time)
                          net (fo=1, routed)           0.000     1.215    sum[11]_INST_0_n_0
     SLICE_X58Y97         CARRY4 (Prop_carry4_CI_CO[1])
                                                       0.093     1.308 r  cout[0]_INST_0/CO[1]
-                         net (fo=1, routed)           0.276     1.584    cout[0]
-    SLICE_X59Y97         LUT5 (Prop_lut5_I1_O)        0.153     1.737 r  sum[16]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     1.737    sum[16]_INST_0_i_4_n_0
-    SLICE_X59Y97         CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313     2.050 r  sum[16]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     2.050    sum[16]_INST_0_n_0
-    SLICE_X59Y98         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     2.108 r  sum[19]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     2.108    sum[19]_INST_0_n_0
-    SLICE_X59Y99         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     2.166 r  sum[23]_INST_0/CO[3]
-                         net (fo=1, routed)           0.001     2.167    sum[23]_INST_0_n_0
-    SLICE_X59Y100        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     2.225 r  sum[27]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     2.225    sum[27]_INST_0_n_0
-    SLICE_X59Y101        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094     2.319 r  cout[1]_INST_0/CO[1]
-                         net (fo=1, routed)           0.282     2.600    cout[1]
-    SLICE_X58Y101        LUT4 (Prop_lut4_I1_O)        0.152     2.752 r  sum[32]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     2.752    sum[32]_INST_0_i_4_n_0
-    SLICE_X58Y101        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.297     3.049 r  sum[32]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     3.049    sum[32]_INST_0_n_0
-    SLICE_X58Y102        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.109 r  sum[35]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     3.109    sum[35]_INST_0_n_0
-    SLICE_X58Y103        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.169 r  sum[39]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     3.169    sum[39]_INST_0_n_0
-    SLICE_X58Y104        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.229 r  sum[43]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     3.229    sum[43]_INST_0_n_0
-    SLICE_X58Y105        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.093     3.322 r  cout[2]_INST_0/CO[1]
-                         net (fo=1, routed)           0.233     3.555    cout[2]
-    SLICE_X57Y105        LUT5 (Prop_lut5_I1_O)        0.153     3.708 r  sum[48]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     3.708    sum[48]_INST_0_i_4_n_0
-    SLICE_X57Y105        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313     4.021 r  sum[48]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     4.021    sum[48]_INST_0_n_0
-    SLICE_X57Y106        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     4.079 r  sum[51]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     4.079    sum[51]_INST_0_n_0
-    SLICE_X57Y107        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     4.137 r  sum[55]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     4.137    sum[55]_INST_0_n_0
-    SLICE_X57Y108        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     4.195 r  sum[59]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     4.195    sum[59]_INST_0_n_0
-    SLICE_X57Y109        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094     4.289 r  cout[3]_INST_0/CO[1]
-                         net (fo=1, routed)           0.231     4.521    cout[3]
-    SLICE_X59Y109        LUT4 (Prop_lut4_I1_O)        0.152     4.673 r  sum[64]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     4.673    sum[64]_INST_0_i_4_n_0
+                         net (fo=1, routed)           0.240     1.548    cout[0]
+    SLICE_X58Y98         LUT5 (Prop_lut5_I1_O)        0.153     1.701 r  sum[16]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     1.701    sum[16]_INST_0_i_4_n_0
+    SLICE_X58Y98         CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297     1.998 r  sum[16]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     1.998    sum[16]_INST_0_n_0
+    SLICE_X58Y99         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     2.058 r  sum[19]_INST_0/CO[3]
+                         net (fo=1, routed)           0.001     2.059    sum[19]_INST_0_n_0
+    SLICE_X58Y100        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     2.119 r  sum[23]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     2.119    sum[23]_INST_0_n_0
+    SLICE_X58Y101        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     2.179 r  sum[27]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     2.179    sum[27]_INST_0_n_0
+    SLICE_X58Y102        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     2.272 r  cout[1]_INST_0/CO[1]
+                         net (fo=1, routed)           0.388     2.660    cout[1]
+    SLICE_X59Y100        LUT4 (Prop_lut4_I1_O)        0.153     2.813 r  sum[32]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     2.813    sum[32]_INST_0_i_4_n_0
+    SLICE_X59Y100        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313     3.126 r  sum[32]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.126    sum[32]_INST_0_n_0
+    SLICE_X59Y101        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.184 r  sum[35]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.184    sum[35]_INST_0_n_0
+    SLICE_X59Y102        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.242 r  sum[39]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.242    sum[39]_INST_0_n_0
+    SLICE_X59Y103        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.300 r  sum[43]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     3.300    sum[43]_INST_0_n_0
+    SLICE_X59Y104        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094     3.394 r  cout[2]_INST_0/CO[1]
+                         net (fo=1, routed)           0.282     3.675    cout[2]
+    SLICE_X58Y104        LUT5 (Prop_lut5_I1_O)        0.152     3.827 r  sum[48]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     3.827    sum[48]_INST_0_i_4_n_0
+    SLICE_X58Y104        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297     4.124 r  sum[48]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.124    sum[48]_INST_0_n_0
+    SLICE_X58Y105        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     4.184 r  sum[51]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.184    sum[51]_INST_0_n_0
+    SLICE_X58Y106        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     4.244 r  sum[55]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.244    sum[55]_INST_0_n_0
+    SLICE_X58Y107        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     4.304 r  sum[59]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     4.304    sum[59]_INST_0_n_0
+    SLICE_X58Y108        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     4.397 r  cout[3]_INST_0/CO[1]
+                         net (fo=1, routed)           0.346     4.744    cout[3]
+    SLICE_X59Y109        LUT4 (Prop_lut4_I1_O)        0.153     4.897 r  sum[64]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     4.897    sum[64]_INST_0_i_4_n_0
     SLICE_X59Y109        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313     4.986 r  sum[64]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     4.986    sum[64]_INST_0_n_0
+                                                      0.313     5.210 r  sum[64]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.210    sum[64]_INST_0_n_0
     SLICE_X59Y110        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     5.044 r  sum[67]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     5.044    sum[67]_INST_0_n_0
+                                                      0.058     5.268 r  sum[67]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.268    sum[67]_INST_0_n_0
     SLICE_X59Y111        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     5.102 r  sum[71]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     5.102    sum[71]_INST_0_n_0
+                                                      0.058     5.326 r  sum[71]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.326    sum[71]_INST_0_n_0
     SLICE_X59Y112        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     5.160 r  sum[75]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     5.160    sum[75]_INST_0_n_0
+                                                      0.058     5.384 r  sum[75]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     5.384    sum[75]_INST_0_n_0
     SLICE_X59Y113        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094     5.254 r  cout[4]_INST_0/CO[1]
-                         net (fo=1, routed)           0.282     5.535    cout[4]
-    SLICE_X58Y113        LUT5 (Prop_lut5_I1_O)        0.152     5.687 r  sum[80]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     5.687    sum[80]_INST_0_i_4_n_0
+                                                      0.094     5.478 r  cout[4]_INST_0/CO[1]
+                         net (fo=1, routed)           0.282     5.759    cout[4]
+    SLICE_X58Y113        LUT5 (Prop_lut5_I1_O)        0.152     5.911 r  sum[80]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     5.911    sum[80]_INST_0_i_4_n_0
     SLICE_X58Y113        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.297     5.984 r  sum[80]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     5.984    sum[80]_INST_0_n_0
+                                                      0.297     6.208 r  sum[80]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.208    sum[80]_INST_0_n_0
     SLICE_X58Y114        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     6.044 r  sum[83]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     6.044    sum[83]_INST_0_n_0
+                                                      0.060     6.268 r  sum[83]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.268    sum[83]_INST_0_n_0
     SLICE_X58Y115        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     6.104 r  sum[87]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     6.104    sum[87]_INST_0_n_0
+                                                      0.060     6.328 r  sum[87]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.328    sum[87]_INST_0_n_0
     SLICE_X58Y116        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     6.164 r  sum[91]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     6.164    sum[91]_INST_0_n_0
+                                                      0.060     6.388 r  sum[91]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     6.388    sum[91]_INST_0_n_0
     SLICE_X58Y117        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.093     6.257 r  cout[5]_INST_0/CO[1]
-                         net (fo=1, routed)           0.276     6.533    cout[5]
-    SLICE_X59Y117        LUT4 (Prop_lut4_I1_O)        0.153     6.686 r  sum[96]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     6.686    sum[96]_INST_0_i_4_n_0
-    SLICE_X59Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313     6.999 r  sum[96]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     6.999    sum[96]_INST_0_n_0
-    SLICE_X59Y118        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     7.057 r  sum[99]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     7.057    sum[99]_INST_0_n_0
-    SLICE_X59Y119        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     7.115 r  sum[103]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     7.115    sum[103]_INST_0_n_0
-    SLICE_X59Y120        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058     7.173 r  sum[107]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     7.173    sum[107]_INST_0_n_0
-    SLICE_X59Y121        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094     7.267 r  cout[6]_INST_0/CO[1]
-                         net (fo=1, routed)           0.282     7.549    cout[6]
-    SLICE_X58Y121        LUT5 (Prop_lut5_I1_O)        0.152     7.701 r  sum[112]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     7.701    sum[112]_INST_0_i_4_n_0
-    SLICE_X58Y121        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.297     7.998 r  sum[112]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     7.998    sum[112]_INST_0_n_0
-    SLICE_X58Y122        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     8.058 r  sum[115]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     8.058    sum[115]_INST_0_n_0
-    SLICE_X58Y123        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     8.118 r  sum[119]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     8.118    sum[119]_INST_0_n_0
-    SLICE_X58Y124        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     8.178 r  sum[123]_INST_0/CO[3]
-                         net (fo=1, routed)           0.008     8.186    sum[123]_INST_0_n_0
-    SLICE_X58Y125        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.093     8.279 r  cout[7]_INST_0/CO[1]
-                         net (fo=1, routed)           0.240     8.519    cout[7]
-    SLICE_X58Y126        LUT4 (Prop_lut4_I1_O)        0.153     8.672 r  sum[128]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     8.672    sum[128]_INST_0_i_4_n_0
-    SLICE_X58Y126        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.297     8.969 r  sum[128]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     8.969    sum[128]_INST_0_n_0
+                                                      0.093     6.481 r  cout[5]_INST_0/CO[1]
+                         net (fo=1, routed)           0.233     6.714    cout[5]
+    SLICE_X57Y117        LUT4 (Prop_lut4_I1_O)        0.153     6.867 r  sum[96]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     6.867    sum[96]_INST_0_i_4_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313     7.180 r  sum[96]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.180    sum[96]_INST_0_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     7.238 r  sum[99]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.238    sum[99]_INST_0_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     7.296 r  sum[103]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.296    sum[103]_INST_0_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     7.354 r  sum[107]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     7.354    sum[107]_INST_0_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094     7.448 r  cout[6]_INST_0/CO[1]
+                         net (fo=1, routed)           0.355     7.803    cout[6]
+    SLICE_X57Y122        LUT5 (Prop_lut5_I1_O)        0.152     7.955 r  sum[112]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     7.955    sum[112]_INST_0_i_4_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.313     8.268 r  sum[112]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     8.268    sum[112]_INST_0_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     8.326 r  sum[115]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     8.326    sum[115]_INST_0_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     8.384 r  sum[119]_INST_0/CO[3]
+                         net (fo=1, routed)           0.008     8.392    sum[119]_INST_0_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     8.450 r  sum[123]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     8.450    sum[123]_INST_0_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.094     8.544 r  cout[7]_INST_0/CO[1]
+                         net (fo=1, routed)           0.337     8.881    cout[7]
+    SLICE_X58Y125        LUT4 (Prop_lut4_I1_O)        0.152     9.033 r  sum[128]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000     9.033    sum[128]_INST_0_i_4_n_0
+    SLICE_X58Y125        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.297     9.330 r  sum[128]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     9.330    sum[128]_INST_0_n_0
+    SLICE_X58Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     9.390 r  sum[131]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     9.390    sum[131]_INST_0_n_0
     SLICE_X58Y127        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     9.029 r  sum[131]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     9.029    sum[131]_INST_0_n_0
+                                                      0.060     9.450 r  sum[135]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     9.450    sum[135]_INST_0_n_0
     SLICE_X58Y128        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     9.089 r  sum[135]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     9.089    sum[135]_INST_0_n_0
-    SLICE_X58Y129        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     9.149 r  sum[139]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000     9.149    sum[139]_INST_0_n_0
-    SLICE_X58Y130        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.093     9.242 r  cout[8]_INST_0/CO[1]
-                         net (fo=1, routed)           0.357     9.598    cout[8]
-    SLICE_X59Y129        LUT5 (Prop_lut5_I1_O)        0.153     9.751 r  sum[144]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000     9.751    sum[144]_INST_0_i_4_n_0
+                                                      0.060     9.510 r  sum[139]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000     9.510    sum[139]_INST_0_n_0
+    SLICE_X58Y129        CARRY4 (Prop_carry4_CI_CO[1])
+                                                      0.093     9.603 r  cout[8]_INST_0/CO[1]
+                         net (fo=1, routed)           0.276     9.879    cout[8]
+    SLICE_X59Y129        LUT5 (Prop_lut5_I1_O)        0.153    10.032 r  sum[144]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    10.032    sum[144]_INST_0_i_4_n_0
     SLICE_X59Y129        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313    10.064 r  sum[144]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.064    sum[144]_INST_0_n_0
+                                                      0.313    10.345 r  sum[144]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.345    sum[144]_INST_0_n_0
     SLICE_X59Y130        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.122 r  sum[147]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.122    sum[147]_INST_0_n_0
+                                                      0.058    10.403 r  sum[147]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.403    sum[147]_INST_0_n_0
     SLICE_X59Y131        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.180 r  sum[151]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.180    sum[151]_INST_0_n_0
+                                                      0.058    10.461 r  sum[151]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.461    sum[151]_INST_0_n_0
     SLICE_X59Y132        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.238 r  sum[155]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    10.238    sum[155]_INST_0_n_0
+                                                      0.058    10.519 r  sum[155]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    10.519    sum[155]_INST_0_n_0
     SLICE_X59Y133        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094    10.332 r  cout[9]_INST_0/CO[1]
-                         net (fo=1, routed)           0.282    10.614    cout[9]
-    SLICE_X58Y133        LUT4 (Prop_lut4_I1_O)        0.152    10.766 r  sum[160]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000    10.766    sum[160]_INST_0_i_4_n_0
+                                                      0.094    10.613 r  cout[9]_INST_0/CO[1]
+                         net (fo=1, routed)           0.282    10.895    cout[9]
+    SLICE_X58Y133        LUT4 (Prop_lut4_I1_O)        0.152    11.047 r  sum[160]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    11.047    sum[160]_INST_0_i_4_n_0
     SLICE_X58Y133        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.297    11.063 r  sum[160]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.063    sum[160]_INST_0_n_0
+                                                      0.297    11.344 r  sum[160]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.344    sum[160]_INST_0_n_0
     SLICE_X58Y134        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.123 r  sum[163]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.123    sum[163]_INST_0_n_0
+                                                      0.060    11.404 r  sum[163]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.404    sum[163]_INST_0_n_0
     SLICE_X58Y135        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.183 r  sum[167]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.183    sum[167]_INST_0_n_0
+                                                      0.060    11.464 r  sum[167]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.464    sum[167]_INST_0_n_0
     SLICE_X58Y136        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    11.243 r  sum[171]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    11.243    sum[171]_INST_0_n_0
+                                                      0.060    11.524 r  sum[171]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    11.524    sum[171]_INST_0_n_0
     SLICE_X58Y137        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.093    11.336 r  cout[10]_INST_0/CO[1]
-                         net (fo=1, routed)           0.333    11.669    cout[10]
-    SLICE_X57Y136        LUT5 (Prop_lut5_I1_O)        0.153    11.822 r  sum[176]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000    11.822    sum[176]_INST_0_i_4_n_0
+                                                      0.093    11.617 r  cout[10]_INST_0/CO[1]
+                         net (fo=1, routed)           0.333    11.950    cout[10]
+    SLICE_X57Y136        LUT5 (Prop_lut5_I1_O)        0.153    12.103 r  sum[176]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    12.103    sum[176]_INST_0_i_4_n_0
     SLICE_X57Y136        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313    12.135 r  sum[176]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    12.135    sum[176]_INST_0_n_0
+                                                      0.313    12.416 r  sum[176]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.416    sum[176]_INST_0_n_0
     SLICE_X57Y137        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    12.193 r  sum[179]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    12.193    sum[179]_INST_0_n_0
+                                                      0.058    12.474 r  sum[179]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.474    sum[179]_INST_0_n_0
     SLICE_X57Y138        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    12.251 r  sum[183]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    12.251    sum[183]_INST_0_n_0
+                                                      0.058    12.532 r  sum[183]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.532    sum[183]_INST_0_n_0
     SLICE_X57Y139        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    12.309 r  sum[187]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    12.309    sum[187]_INST_0_n_0
+                                                      0.058    12.590 r  sum[187]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    12.590    sum[187]_INST_0_n_0
     SLICE_X57Y140        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094    12.403 r  cout[11]_INST_0/CO[1]
-                         net (fo=1, routed)           0.237    12.640    cout[11]
-    SLICE_X58Y140        LUT4 (Prop_lut4_I1_O)        0.152    12.792 r  sum[192]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000    12.792    sum[192]_INST_0_i_4_n_0
+                                                      0.094    12.684 r  cout[11]_INST_0/CO[1]
+                         net (fo=1, routed)           0.237    12.921    cout[11]
+    SLICE_X58Y140        LUT4 (Prop_lut4_I1_O)        0.152    13.073 r  sum[192]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    13.073    sum[192]_INST_0_i_4_n_0
     SLICE_X58Y140        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.297    13.089 r  sum[192]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    13.089    sum[192]_INST_0_n_0
+                                                      0.297    13.370 r  sum[192]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.370    sum[192]_INST_0_n_0
     SLICE_X58Y141        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    13.149 r  sum[195]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    13.149    sum[195]_INST_0_n_0
+                                                      0.060    13.430 r  sum[195]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.430    sum[195]_INST_0_n_0
     SLICE_X58Y142        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    13.209 r  sum[199]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    13.209    sum[199]_INST_0_n_0
+                                                      0.060    13.490 r  sum[199]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.490    sum[199]_INST_0_n_0
     SLICE_X58Y143        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    13.269 r  sum[203]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    13.269    sum[203]_INST_0_n_0
+                                                      0.060    13.550 r  sum[203]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    13.550    sum[203]_INST_0_n_0
     SLICE_X58Y144        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.093    13.362 r  cout[12]_INST_0/CO[1]
-                         net (fo=1, routed)           0.233    13.595    cout[12]
-    SLICE_X57Y144        LUT5 (Prop_lut5_I1_O)        0.153    13.748 r  sum[208]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000    13.748    sum[208]_INST_0_i_4_n_0
+                                                      0.093    13.643 r  cout[12]_INST_0/CO[1]
+                         net (fo=1, routed)           0.233    13.876    cout[12]
+    SLICE_X57Y144        LUT5 (Prop_lut5_I1_O)        0.153    14.029 r  sum[208]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    14.029    sum[208]_INST_0_i_4_n_0
     SLICE_X57Y144        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313    14.061 r  sum[208]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    14.061    sum[208]_INST_0_n_0
+                                                      0.313    14.342 r  sum[208]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.342    sum[208]_INST_0_n_0
     SLICE_X57Y145        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    14.119 r  sum[211]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    14.119    sum[211]_INST_0_n_0
+                                                      0.058    14.400 r  sum[211]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.400    sum[211]_INST_0_n_0
     SLICE_X57Y146        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    14.177 r  sum[215]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    14.177    sum[215]_INST_0_n_0
+                                                      0.058    14.458 r  sum[215]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.458    sum[215]_INST_0_n_0
     SLICE_X57Y147        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    14.235 r  sum[219]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    14.235    sum[219]_INST_0_n_0
+                                                      0.058    14.516 r  sum[219]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    14.516    sum[219]_INST_0_n_0
     SLICE_X57Y148        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094    14.329 r  cout[13]_INST_0/CO[1]
-                         net (fo=1, routed)           0.355    14.684    cout[13]
-    SLICE_X57Y149        LUT4 (Prop_lut4_I1_O)        0.152    14.836 r  sum[224]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000    14.836    sum[224]_INST_0_i_4_n_0
+                                                      0.094    14.610 r  cout[13]_INST_0/CO[1]
+                         net (fo=1, routed)           0.355    14.965    cout[13]
+    SLICE_X57Y149        LUT4 (Prop_lut4_I1_O)        0.152    15.117 r  sum[224]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    15.117    sum[224]_INST_0_i_4_n_0
     SLICE_X57Y149        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.313    15.149 r  sum[224]_INST_0/CO[3]
-                         net (fo=1, routed)           0.001    15.149    sum[224]_INST_0_n_0
+                                                      0.313    15.430 r  sum[224]_INST_0/CO[3]
+                         net (fo=1, routed)           0.001    15.430    sum[224]_INST_0_n_0
     SLICE_X57Y150        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    15.207 r  sum[227]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    15.207    sum[227]_INST_0_n_0
+                                                      0.058    15.488 r  sum[227]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    15.488    sum[227]_INST_0_n_0
     SLICE_X57Y151        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    15.265 r  sum[231]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    15.265    sum[231]_INST_0_n_0
+                                                      0.058    15.546 r  sum[231]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    15.546    sum[231]_INST_0_n_0
     SLICE_X57Y152        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    15.323 r  sum[235]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    15.323    sum[235]_INST_0_n_0
+                                                      0.058    15.604 r  sum[235]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    15.604    sum[235]_INST_0_n_0
     SLICE_X57Y153        CARRY4 (Prop_carry4_CI_CO[1])
-                                                      0.094    15.417 r  cout[14]_INST_0/CO[1]
-                         net (fo=1, routed)           0.237    15.655    cout[14]
-    SLICE_X58Y153        LUT5 (Prop_lut5_I1_O)        0.152    15.807 r  sum[240]_INST_0_i_4/O
-                         net (fo=1, routed)           0.000    15.807    sum[240]_INST_0_i_4_n_0
+                                                      0.094    15.698 r  cout[14]_INST_0/CO[1]
+                         net (fo=1, routed)           0.237    15.936    cout[14]
+    SLICE_X58Y153        LUT5 (Prop_lut5_I1_O)        0.152    16.088 r  sum[240]_INST_0_i_4/O
+                         net (fo=1, routed)           0.000    16.088    sum[240]_INST_0_i_4_n_0
     SLICE_X58Y153        CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.297    16.104 r  sum[240]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    16.104    sum[240]_INST_0_n_0
+                                                      0.297    16.385 r  sum[240]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    16.385    sum[240]_INST_0_n_0
     SLICE_X58Y154        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    16.164 r  sum[243]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    16.164    sum[243]_INST_0_n_0
+                                                      0.060    16.445 r  sum[243]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    16.445    sum[243]_INST_0_n_0
     SLICE_X58Y155        CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060    16.224 r  sum[247]_INST_0/CO[3]
-                         net (fo=1, routed)           0.000    16.224    sum[247]_INST_0_n_0
+                                                      0.060    16.505 r  sum[247]_INST_0/CO[3]
+                         net (fo=1, routed)           0.000    16.505    sum[247]_INST_0_n_0
     SLICE_X58Y156        CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.212    16.436 r  sum[251]_INST_0/O[1]
-                         net (fo=0)                   0.672    17.108    sum[252]
+                                                      0.212    16.717 r  sum[251]_INST_0/O[1]
+                         net (fo=0)                   0.672    17.389    sum[252]
                                                                       r  sum[252] (OUT)
   -------------------------------------------------------------------    -------------------
 
-                         max delay                   17.241    17.241    
-                         output delay                -0.000    17.241    
+                         max delay                   17.544    17.544    
+                         output delay                -0.000    17.544    
   -------------------------------------------------------------------
-                         required time                         17.241    
-                         arrival time                         -17.108    
+                         required time                         17.544    
+                         arrival time                         -17.389    
   -------------------------------------------------------------------
-                         slack                                  0.133    
+                         slack                                  0.155    
 
 
 

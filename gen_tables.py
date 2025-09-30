@@ -2,6 +2,7 @@
 
 import subprocess, re
 from tabulate import tabulate
+import csv, sys
 import argparse
 
 def extract_utilization_FPGA(file_path):
@@ -121,14 +122,14 @@ def extract(top_module, flag_group, tool):
   data = [top_module.replace("_", "\_") + (" " + flag_group if flag_group else "")]
 
   if tool in ["all", "Vivado"]:
-    result = extract_utilization_FPGA(f"reports/FPGA/{outdir}")
+    result = extract_utilization_FPGA(f"reports/FPGA-Vivado/{outdir}")
     data += list(result.values())
 
-  #asap7 = extract_ORFS(f"reports/ASIC/{top_module}{'_' + flag_group if flag_group else ''}_asap7_stats")
+  #asap7 = extract_ORFS(f"reports/ASIC-ORFS/{top_module}{'_' + flag_group if flag_group else ''}_asap7_stats")
           #[1000/timing if timing else 0] + list(asap7.values()) + \
 
   if tool in ["all", "ORFS"]:
-    sky130hd = extract_ORFS(f"reports/ASIC/{top_module}{'_' + flag_group if flag_group else ''}_sky130hd_stats")
+    sky130hd = extract_ORFS(f"reports/ASIC-ORFS/{top_module}{'_' + flag_group if flag_group else ''}_sky130hd_stats")
     data += list(sky130hd.values())
 
   if tool in ["all", "Genus"]:
@@ -167,6 +168,8 @@ def report(data, tool):
   print("\\end{document}")
   print()
 
+  writer = csv.writer(sys.stdout)
+  writer.writerows([headers]+data)
 
 def synthesize_ORFS(top_module, outdir, flags = []):
 #  command = f"bazel build //hw/ip/otbn:{top_module}{'_' + flags if flags else ''}_asap7{'_all' if flags else ''}_results; mkdir -p {outdir}; cp bazel-bin/hw/ip/otbn/{top_module}{'_' + flags if flags else ''}_asap7_stats {outdir}/"
@@ -177,8 +180,8 @@ def synthesize_ORFS(top_module, outdir, flags = []):
 #
 #  result = subprocess.run(command, shell=True) #, capture_output=True, text=True)
 
-  command = f"bazel build //hw/ip/otbn:{top_module}{'_' + flags if flags else ''}_sky130hd_results; mkdir -p {outdir}; chmod u+w reports/ASIC/*; cp bazel-bin/hw/ip/otbn/{top_module}{'_' + flags if flags else ''}_sky130hd_* {outdir}"
-  #command = f"mkdir -p {outdir}; chmod u+w reports/ASIC/*; cp bazel-bin/hw/ip/otbn/{top_module}{'_' + flags if flags else ''}_sky130hd_* {outdir}"
+  command = f"bazel build //hw/ip/otbn:{top_module}{'_' + flags if flags else ''}_sky130hd_results; mkdir -p {outdir}; chmod u+w reports/ASIC-ORFS/*; cp bazel-bin/hw/ip/otbn/{top_module}{'_' + flags if flags else ''}_sky130hd_* {outdir}"
+  #command = f"mkdir -p {outdir}; chmod u+w reports/ASIC-ORFS/*; cp bazel-bin/hw/ip/otbn/{top_module}{'_' + flags if flags else ''}_sky130hd_* {outdir}"
 
   print(f"Command: {command}")
 
@@ -323,9 +326,9 @@ if __name__ == "__main__":
       if args.run_synthesis and (args.tool in ["all", "Genus"]):
         synthesize_Genus(top_module, "reports/ASIC-Genus/"+ top_module + ("_" + flag_group if flag_group else ""), flag)
       if args.run_synthesis and (args.tool in ["all", "ORFS"]):
-        synthesize_ORFS(top_module, "reports/ASIC/", flag_group)
+        synthesize_ORFS(top_module, "reports/ASIC-ORFS/", flag_group)
       if args.run_synthesis and (args.tool in ["all", "Vivado"]):
-        synthesize(top_module, "reports/FPGA/" + top_module + ("_" + flag_group if flag_group else ""), flag)
+        synthesize(top_module, "reports/FPGA-Vivado/" + top_module + ("_" + flag_group if flag_group else ""), flag)
 
   data = [extract(top_module, flag_group, args.tool) for top_module, flag_group, flag in modules]
 

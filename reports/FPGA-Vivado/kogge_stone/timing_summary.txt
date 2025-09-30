@@ -1,14 +1,13 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:52:15 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing_summary -file ../../../reports/FPGA-Vivado/kogge_stone/timing_summary.txt
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 07:29:38 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_timing_summary -file ../../../reports/FPGA/kogge_stone/timing_summary.txt
 | Design       : kogge_stone
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
 Timing Summary Report
 
@@ -27,21 +26,12 @@ Timing Summary Report
   Timing Early Launch at Borrowing Latches   :  No
   Borrow Time for Max Delay Exceptions       :  Yes
   Merge Timing Exceptions                    :  Yes
-  Inter-SLR Compensation                     :  Conservative
 
   Corner  Analyze    Analyze    
   Name    Max Paths  Min Paths  
   ------  ---------  ---------  
   Slow    Yes        Yes        
   Fast    Yes        Yes        
-
-
-------------------------------------------------------------------------------------------------
-| Report Methodology
-| ------------------
-------------------------------------------------------------------------------------------------
-
-No report available as report_methodology has not been run prior. Run report_methodology on the current design for the summary of methodology violations.
 
 
 
@@ -58,7 +48,7 @@ Table of Contents
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
 9. checking loops (0)
-10. checking partial_input_delay (515)
+10. checking partial_input_delay (516)
 11. checking partial_output_delay (0)
 12. checking latch_loops (0)
 
@@ -115,9 +105,9 @@ Table of Contents
  There are 0 combinational loops in the design.
 
 
-10. checking partial_input_delay (515)
+10. checking partial_input_delay (516)
 --------------------------------------
- There are 515 input ports with partial input delay specified. (HIGH)
+ There are 516 input ports with partial input delay specified. (HIGH)
 
 
 11. checking partial_output_delay (0)
@@ -138,7 +128,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      0.110        0.000                      0                  272           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
+      0.069        0.000                      0                  272           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
 
 
 All user specified timing constraints are met.
@@ -175,7 +165,7 @@ From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS
 
 Path Group        From Clock        To Clock              WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
 ----------        ----------        --------              -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
-**default**       input port clock                          0.110        0.000                      0                  272                                                                        
+**default**       input port clock                          0.069        0.000                      0                  272                                                                        
 
 
 ------------------------------------------------------------------------------------------------
@@ -189,55 +179,53 @@ Path Group:  **default**
 From Clock:  input port clock
   To Clock:  
 
-Setup :            0  Failing Endpoints,  Worst Slack        0.110ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        0.069ns,  Total Violation        0.000ns
 Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.110ns  (required time - arrival time)
+Slack (MET) :             0.069ns  (required time - arrival time)
   Source:                 word_mode[0]
                             (input port)
-  Destination:            res[188]
+  Destination:            res[235]
   Path Group:             **default**
   Path Type:              Max at Slow Process Corner
-  Requirement:            6.250ns  (MaxDelay Path 6.250ns)
-  Data Path Delay:        6.140ns  (logic 0.424ns (6.905%)  route 5.716ns (93.095%))
-  Logic Levels:           8  (LUT2=2 LUT3=1 LUT4=1 LUT5=1 LUT6=3)
+  Requirement:            5.714ns  (MaxDelay Path 5.714ns)
+  Data Path Delay:        5.645ns  (logic 0.371ns (6.572%)  route 5.274ns (93.428%))
+  Logic Levels:           7  (LUT2=1 LUT5=1 LUT6=5)
   Output Delay:           0.000ns
-  Timing Exception:       MaxDelay Path 6.250ns -datapath_only
+  Timing Exception:       MaxDelay Path 5.714ns -datapath_only
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
-                                                      0.000     0.000 f  word_mode[0] (IN)
-                         net (fo=14, unset)           0.672     0.672    word_mode[0]
-    SLICE_X28Y47         LUT2 (Prop_lut2_I1_O)        0.053     0.725 f  res[152]_INST_0_i_4/O
-                         net (fo=111, routed)         1.325     2.050    res[152]_INST_0_i_4_n_0
-    SLICE_X30Y22         LUT6 (Prop_lut6_I1_O)        0.053     2.103 r  res[216]_INST_0_i_24/O
-                         net (fo=2, routed)           0.497     2.599    res[216]_INST_0_i_24_n_0
-    SLICE_X23Y20         LUT4 (Prop_lut4_I3_O)        0.053     2.652 f  res[196]_INST_0_i_16/O
-                         net (fo=4, routed)           0.447     3.099    res[196]_INST_0_i_16_n_0
-    SLICE_X21Y21         LUT3 (Prop_lut3_I1_O)        0.053     3.152 f  res[220]_INST_0_i_20/O
-                         net (fo=2, routed)           0.531     3.683    res[220]_INST_0_i_20_n_0
-    SLICE_X19Y20         LUT5 (Prop_lut5_I3_O)        0.053     3.736 f  res[220]_INST_0_i_12/O
-                         net (fo=3, routed)           0.678     4.414    res[220]_INST_0_i_12_n_0
-    SLICE_X17Y22         LUT6 (Prop_lut6_I2_O)        0.053     4.467 r  res[252]_INST_0_i_13/O
-                         net (fo=2, routed)           0.481     4.948    res[252]_INST_0_i_13_n_0
-    SLICE_X21Y26         LUT2 (Prop_lut2_I0_O)        0.053     5.001 r  res[188]_INST_0_i_2/O
-                         net (fo=1, routed)           0.414     5.415    res[188]_INST_0_i_2_n_0
-    SLICE_X23Y26         LUT6 (Prop_lut6_I2_O)        0.053     5.468 r  res[188]_INST_0/O
-                         net (fo=0)                   0.672     6.140    res[188]
-                                                                      r  res[188] (OUT)
+                                                      0.000     0.000 r  word_mode[0] (IN)
+                         net (fo=202, unset)          0.672     0.672    word_mode[0]
+    SLICE_X26Y46         LUT2 (Prop_lut2_I1_O)        0.053     0.725 r  res[69]_INST_0_i_16/O
+                         net (fo=107, routed)         1.057     1.782    res[69]_INST_0_i_16_n_0
+    SLICE_X13Y45         LUT6 (Prop_lut6_I2_O)        0.053     1.835 r  res[31]_INST_0_i_6/O
+                         net (fo=7, routed)           0.324     2.159    res[31]_INST_0_i_6_n_0
+    SLICE_X12Y45         LUT6 (Prop_lut6_I3_O)        0.053     2.212 f  res[139]_INST_0_i_10/O
+                         net (fo=1, routed)           0.802     3.014    res[139]_INST_0_i_10_n_0
+    SLICE_X20Y46         LUT6 (Prop_lut6_I1_O)        0.053     3.067 f  res[139]_INST_0_i_6/O
+                         net (fo=2, routed)           0.469     3.537    res[139]_INST_0_i_6_n_0
+    SLICE_X20Y47         LUT5 (Prop_lut5_I0_O)        0.053     3.590 f  res[43]_INST_0_i_1/O
+                         net (fo=3, routed)           0.706     4.296    res[43]_INST_0_i_1_n_0
+    SLICE_X24Y45         LUT6 (Prop_lut6_I1_O)        0.053     4.349 r  res[235]_INST_0_i_5/O
+                         net (fo=2, routed)           0.572     4.920    res[235]_INST_0_i_5_n_0
+    SLICE_X34Y47         LUT6 (Prop_lut6_I4_O)        0.053     4.973 r  res[235]_INST_0/O
+                         net (fo=0)                   0.672     5.645    res[235]
+                                                                      r  res[235] (OUT)
   -------------------------------------------------------------------    -------------------
 
-                         max delay                    6.250     6.250    
-                         output delay                -0.000     6.250    
+                         max delay                    5.714     5.714    
+                         output delay                -0.000     5.714    
   -------------------------------------------------------------------
-                         required time                          6.250    
-                         arrival time                          -6.140    
+                         required time                          5.714    
+                         arrival time                          -5.645    
   -------------------------------------------------------------------
-                         slack                                  0.110    
+                         slack                                  0.069    
 
 
 

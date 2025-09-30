@@ -1,264 +1,300 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 17:40:52 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing -file ../../../reports/FPGA-Vivado/otbn_alu_bignum_VER3/timing.txt
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1.1 (lin64) Build 2960000 Wed Aug  5 22:57:21 MDT 2020
+| Date         : Thu Sep 11 10:29:16 2025
+| Host         : unicorn1 running 64-bit Ubuntu 22.04.4 LTS
+| Command      : report_timing -file ../../../reports/FPGA/otbn_alu_bignum_VER3/timing.txt
 | Design       : otbn_alu_bignum
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 
 Timing Report
 
-Slack (MET) :             0.009ns  (required time - arrival time)
+Slack (MET) :             0.014ns  (required time - arrival time)
   Source:                 g_mod_words[0].mod_intg_q_reg[0]/C
-                            (rising edge-triggered cell FDRE clocked by clk_i  {rise@0.000ns fall@8.064ns period=16.129ns})
-  Destination:            operation_result_o[28]
+                            (rising edge-triggered cell FDRE clocked by clk_i  {rise@0.000ns fall@7.937ns period=15.873ns})
+  Destination:            operation_result_o[32]
   Path Group:             **default**
   Path Type:              Max at Slow Process Corner
-  Requirement:            16.129ns  (MaxDelay Path 16.129ns)
-  Data Path Delay:        14.331ns  (logic 5.580ns (38.935%)  route 8.751ns (61.065%))
-  Logic Levels:           73  (CARRY4=65 LUT2=1 LUT3=1 LUT4=1 LUT5=1 LUT6=4)
+  Requirement:            15.873ns  (MaxDelay Path 15.873ns)
+  Data Path Delay:        14.031ns  (logic 6.462ns (46.056%)  route 7.569ns (53.944%))
+  Logic Levels:           85  (CARRY4=78 LUT2=1 LUT4=1 LUT5=1 LUT6=4)
   Output Delay:           0.000ns
-  Clock Path Skew:        -1.789ns (DCD - SCD + CPR)
+  Clock Path Skew:        -1.828ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    0.000ns
-    Source Clock Delay      (SCD):    1.789ns
+    Source Clock Delay      (SCD):    1.828ns
     Clock Pessimism Removal (CPR):    0.000ns
-  Timing Exception:       MaxDelay Path 16.129ns
+  Timing Exception:       MaxDelay Path 15.873ns
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk_i rise edge)      0.000     0.000 r  
                                                       0.000     0.000 r  clk_i (IN)
-                         net (fo=1285, unset)         1.789     1.789    clk_i
-    SLICE_X45Y35         FDRE                                         r  g_mod_words[0].mod_intg_q_reg[0]/C
+                         net (fo=1285, unset)         1.828     1.828    clk_i
+    SLICE_X19Y24         FDRE                                         r  g_mod_words[0].mod_intg_q_reg[0]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X45Y35         FDRE (Prop_fdre_C_Q)         0.269     2.058 f  g_mod_words[0].mod_intg_q_reg[0]/Q
-                         net (fo=38, routed)          0.327     2.385    u_adder_w_op_b_blanked/u_blank_and/Q[0]
-    SLICE_X45Y34         LUT2 (Prop_lut2_I0_O)        0.053     2.438 r  u_adder_w_op_b_blanked/u_blank_and/out_o/O
-                         net (fo=1, routed)           0.262     2.700    adder_w/B_buffed[0]
-    SLICE_X42Y34         CARRY4 (Prop_carry4_CYINIT_CO[3])
-                                                      0.359     3.059 r  adder_w/operation_result_o[3]_INST_0_i_34/CO[3]
-                         net (fo=1, routed)           0.000     3.059    adder_w/operation_result_o[3]_INST_0_i_34_n_0
-    SLICE_X42Y35         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.119 r  adder_w/operation_result_o[7]_INST_0_i_42/CO[3]
-                         net (fo=1, routed)           0.000     3.119    adder_w/operation_result_o[7]_INST_0_i_42_n_0
-    SLICE_X42Y36         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.179 r  adder_w/operation_result_o[11]_INST_0_i_44/CO[3]
-                         net (fo=1, routed)           0.000     3.179    adder_w/operation_result_o[11]_INST_0_i_44_n_0
-    SLICE_X42Y37         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.239 r  adder_w/operation_result_o[15]_INST_0_i_44/CO[3]
-                         net (fo=1, routed)           0.000     3.239    adder_w/operation_result_o[15]_INST_0_i_44_n_0
-    SLICE_X42Y38         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.299 r  adder_w/operation_result_o[18]_INST_0_i_38/CO[3]
-                         net (fo=1, routed)           0.000     3.299    adder_w/operation_result_o[18]_INST_0_i_38_n_0
-    SLICE_X42Y39         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.359 r  adder_w/operation_result_o[22]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     3.359    adder_w/operation_result_o[22]_INST_0_i_41_n_0
-    SLICE_X42Y40         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.419 r  adder_w/operation_result_o[26]_INST_0_i_42/CO[3]
-                         net (fo=1, routed)           0.000     3.419    adder_w/operation_result_o[26]_INST_0_i_42_n_0
-    SLICE_X42Y41         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.479 r  adder_w/operation_result_o[30]_INST_0_i_44/CO[3]
-                         net (fo=1, routed)           0.000     3.479    adder_w/operation_result_o[30]_INST_0_i_44_n_0
-    SLICE_X42Y42         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.539 r  adder_w/operation_result_o[33]_INST_0_i_39/CO[3]
-                         net (fo=1, routed)           0.000     3.539    adder_w/operation_result_o[33]_INST_0_i_39_n_0
-    SLICE_X42Y43         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.599 r  adder_w/operation_result_o[37]_INST_0_i_47/CO[3]
-                         net (fo=1, routed)           0.000     3.599    adder_w/operation_result_o[37]_INST_0_i_47_n_0
-    SLICE_X42Y44         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.659 r  adder_w/operation_result_o[41]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     3.659    adder_w/operation_result_o[41]_INST_0_i_41_n_0
-    SLICE_X42Y45         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.719 r  adder_w/operation_result_o[45]_INST_0_i_46/CO[3]
-                         net (fo=1, routed)           0.000     3.719    adder_w/operation_result_o[45]_INST_0_i_46_n_0
-    SLICE_X42Y46         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.779 r  adder_w/operation_result_o[48]_INST_0_i_38/CO[3]
-                         net (fo=1, routed)           0.000     3.779    adder_w/operation_result_o[48]_INST_0_i_38_n_0
-    SLICE_X42Y47         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.839 r  adder_w/operation_result_o[52]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     3.839    adder_w/operation_result_o[52]_INST_0_i_41_n_0
-    SLICE_X42Y48         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.899 r  adder_w/operation_result_o[56]_INST_0_i_40/CO[3]
-                         net (fo=1, routed)           0.000     3.899    adder_w/operation_result_o[56]_INST_0_i_40_n_0
-    SLICE_X42Y49         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     3.959 r  adder_w/operation_result_o[60]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.001     3.960    adder_w/operation_result_o[60]_INST_0_i_41_n_0
-    SLICE_X42Y50         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.020 r  adder_w/operation_result_o[63]_INST_0_i_39/CO[3]
-                         net (fo=1, routed)           0.000     4.020    adder_w/operation_result_o[63]_INST_0_i_39_n_0
-    SLICE_X42Y51         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.080 r  adder_w/operation_result_o[67]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     4.080    adder_w/operation_result_o[67]_INST_0_i_41_n_0
-    SLICE_X42Y52         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.140 r  adder_w/operation_result_o[71]_INST_0_i_49/CO[3]
-                         net (fo=1, routed)           0.000     4.140    adder_w/operation_result_o[71]_INST_0_i_49_n_0
-    SLICE_X42Y53         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.200 r  adder_w/operation_result_o[75]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     4.200    adder_w/operation_result_o[75]_INST_0_i_41_n_0
-    SLICE_X42Y54         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.260 r  adder_w/operation_result_o[79]_INST_0_i_45/CO[3]
-                         net (fo=1, routed)           0.000     4.260    adder_w/operation_result_o[79]_INST_0_i_45_n_0
-    SLICE_X42Y55         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.320 r  adder_w/operation_result_o[82]_INST_0_i_38/CO[3]
-                         net (fo=1, routed)           0.000     4.320    adder_w/operation_result_o[82]_INST_0_i_38_n_0
-    SLICE_X42Y56         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.380 r  adder_w/operation_result_o[86]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     4.380    adder_w/operation_result_o[86]_INST_0_i_41_n_0
-    SLICE_X42Y57         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.440 r  adder_w/operation_result_o[90]_INST_0_i_40/CO[3]
-                         net (fo=1, routed)           0.000     4.440    adder_w/operation_result_o[90]_INST_0_i_40_n_0
-    SLICE_X42Y58         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.500 r  adder_w/operation_result_o[94]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     4.500    adder_w/operation_result_o[94]_INST_0_i_41_n_0
-    SLICE_X42Y59         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.560 r  adder_w/operation_result_o[97]_INST_0_i_38/CO[3]
-                         net (fo=1, routed)           0.000     4.560    adder_w/operation_result_o[97]_INST_0_i_38_n_0
-    SLICE_X42Y60         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.620 r  adder_w/operation_result_o[101]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     4.620    adder_w/operation_result_o[101]_INST_0_i_41_n_0
-    SLICE_X42Y61         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.680 r  adder_w/operation_result_o[105]_INST_0_i_40/CO[3]
-                         net (fo=1, routed)           0.000     4.680    adder_w/operation_result_o[105]_INST_0_i_40_n_0
-    SLICE_X42Y62         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.740 r  adder_w/operation_result_o[109]_INST_0_i_41/CO[3]
-                         net (fo=1, routed)           0.000     4.740    adder_w/operation_result_o[109]_INST_0_i_41_n_0
-    SLICE_X42Y63         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.800 r  adder_w/operation_result_o[112]_INST_0_i_39/CO[3]
-                         net (fo=1, routed)           0.000     4.800    adder_w/operation_result_o[112]_INST_0_i_39_n_0
-    SLICE_X42Y64         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.860 r  adder_w/operation_result_o[116]_INST_0_i_47/CO[3]
-                         net (fo=1, routed)           0.000     4.860    adder_w/operation_result_o[116]_INST_0_i_47_n_0
-    SLICE_X42Y65         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.920 r  adder_w/operation_result_o[120]_INST_0_i_46/CO[3]
-                         net (fo=1, routed)           0.000     4.920    adder_w/operation_result_o[120]_INST_0_i_46_n_0
-    SLICE_X42Y66         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     4.980 r  adder_w/operation_result_o[124]_INST_0_i_50/CO[3]
-                         net (fo=1, routed)           0.000     4.980    adder_w/operation_result_o[124]_INST_0_i_50_n_0
-    SLICE_X42Y67         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.060     5.040 r  adder_w/operation_result_o[127]_INST_0_i_58/CO[3]
-                         net (fo=1, routed)           0.000     5.040    adder_w/operation_result_o[127]_INST_0_i_58_n_0
-    SLICE_X42Y68         CARRY4 (Prop_carry4_CI_CO[0])
-                                                      0.173     5.213 r  adder_w/operation_result_o[255]_INST_0_i_56/CO[0]
-                         net (fo=136, routed)         0.968     6.181    adder_w/operation_result_o[255]_INST_0_i_56_n_3
-    SLICE_X41Y52         LUT3 (Prop_lut3_I1_O)        0.153     6.334 r  adder_w/operation_result_o[161]_INST_0_i_59/O
-                         net (fo=16, routed)          0.906     7.241    adder_w/adder_w_carry_out[9]
-    SLICE_X44Y45         LUT6 (Prop_lut6_I3_O)        0.053     7.294 r  adder_w/operation_result_o[150]_INST_0_i_50/O
-                         net (fo=2, routed)           0.793     8.086    adder_x/adder_w_res_mux_out[84]
-    SLICE_X43Y54         LUT6 (Prop_lut6_I2_O)        0.053     8.139 r  adder_x/operation_result_o[150]_INST_0_i_35/O
-                         net (fo=1, routed)           0.000     8.139    adder_x/operation_result_o[150]_INST_0_i_35_n_0
-    SLICE_X43Y54         CARRY4 (Prop_carry4_S[2]_CO[3])
-                                                      0.235     8.374 r  adder_x/operation_result_o[150]_INST_0_i_13/CO[3]
-                         net (fo=1, routed)           0.000     8.374    adder_x/operation_result_o[150]_INST_0_i_13_n_0
-    SLICE_X43Y55         CARRY4 (Prop_carry4_CI_O[2])
-                                                      0.136     8.510 r  adder_x/operation_result_o[154]_INST_0_i_13/O[2]
-                         net (fo=2, routed)           0.956     9.466    adder_x/operation_result_o[154]_INST_0_i_13_n_5
-    SLICE_X45Y48         LUT6 (Prop_lut6_I0_O)        0.152     9.618 r  adder_x/operation_result_o[154]_INST_0_i_19/O
-                         net (fo=2, routed)           0.761    10.380    adder_y/A_buffed[153]
-    SLICE_X49Y55         CARRY4 (Prop_carry4_DI[2]_CO[3])
-                                                      0.239    10.619 r  adder_y/operation_result_o[154]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    10.619    adder_y/operation_result_o[154]_INST_0_i_12_n_0
-    SLICE_X49Y56         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.677 r  adder_y/operation_result_o[158]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    10.677    adder_y/operation_result_o[158]_INST_0_i_12_n_0
-    SLICE_X49Y57         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.735 r  adder_y/operation_result_o[161]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    10.735    adder_y/operation_result_o[161]_INST_0_i_12_n_0
-    SLICE_X49Y58         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.793 r  adder_y/operation_result_o[165]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    10.793    adder_y/operation_result_o[165]_INST_0_i_12_n_0
-    SLICE_X49Y59         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.851 r  adder_y/operation_result_o[169]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    10.851    adder_y/operation_result_o[169]_INST_0_i_12_n_0
-    SLICE_X49Y60         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.909 r  adder_y/operation_result_o[173]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    10.909    adder_y/operation_result_o[173]_INST_0_i_12_n_0
-    SLICE_X49Y61         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    10.967 r  adder_y/operation_result_o[176]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    10.967    adder_y/operation_result_o[176]_INST_0_i_15_n_0
-    SLICE_X49Y62         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.025 r  adder_y/operation_result_o[180]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.025    adder_y/operation_result_o[180]_INST_0_i_15_n_0
-    SLICE_X49Y63         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.083 r  adder_y/operation_result_o[184]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.083    adder_y/operation_result_o[184]_INST_0_i_15_n_0
-    SLICE_X49Y64         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.141 r  adder_y/operation_result_o[188]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.141    adder_y/operation_result_o[188]_INST_0_i_15_n_0
-    SLICE_X49Y65         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.199 r  adder_y/operation_result_o[191]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.199    adder_y/operation_result_o[191]_INST_0_i_15_n_0
-    SLICE_X49Y66         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.257 r  adder_y/operation_result_o[195]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    11.257    adder_y/operation_result_o[195]_INST_0_i_12_n_0
-    SLICE_X49Y67         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.315 r  adder_y/operation_result_o[199]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    11.315    adder_y/operation_result_o[199]_INST_0_i_12_n_0
-    SLICE_X49Y68         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.373 r  adder_y/operation_result_o[203]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    11.373    adder_y/operation_result_o[203]_INST_0_i_12_n_0
-    SLICE_X49Y69         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.431 r  adder_y/operation_result_o[207]_INST_0_i_12/CO[3]
-                         net (fo=1, routed)           0.000    11.431    adder_y/operation_result_o[207]_INST_0_i_12_n_0
-    SLICE_X49Y70         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.489 r  adder_y/operation_result_o[210]_INST_0_i_14/CO[3]
-                         net (fo=1, routed)           0.000    11.489    adder_y/operation_result_o[210]_INST_0_i_14_n_0
-    SLICE_X49Y71         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.547 r  adder_y/operation_result_o[214]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.547    adder_y/operation_result_o[214]_INST_0_i_15_n_0
-    SLICE_X49Y72         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.605 r  adder_y/operation_result_o[218]_INST_0_i_14/CO[3]
-                         net (fo=1, routed)           0.000    11.605    adder_y/operation_result_o[218]_INST_0_i_14_n_0
-    SLICE_X49Y73         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.663 r  adder_y/operation_result_o[222]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.663    adder_y/operation_result_o[222]_INST_0_i_15_n_0
-    SLICE_X49Y74         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.721 r  adder_y/operation_result_o[225]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.008    11.728    adder_y/operation_result_o[225]_INST_0_i_15_n_0
-    SLICE_X49Y75         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.786 r  adder_y/operation_result_o[229]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.786    adder_y/operation_result_o[229]_INST_0_i_15_n_0
-    SLICE_X49Y76         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.844 r  adder_y/operation_result_o[233]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.844    adder_y/operation_result_o[233]_INST_0_i_15_n_0
-    SLICE_X49Y77         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.902 r  adder_y/operation_result_o[237]_INST_0_i_15/CO[3]
-                         net (fo=1, routed)           0.000    11.902    adder_y/operation_result_o[237]_INST_0_i_15_n_0
-    SLICE_X49Y78         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    11.960 r  adder_y/operation_result_o[240]_INST_0_i_11/CO[3]
-                         net (fo=1, routed)           0.000    11.960    adder_y/operation_result_o[240]_INST_0_i_11_n_0
-    SLICE_X49Y79         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    12.018 r  adder_y/operation_result_o[244]_INST_0_i_11/CO[3]
-                         net (fo=1, routed)           0.000    12.018    adder_y/operation_result_o[244]_INST_0_i_11_n_0
-    SLICE_X49Y80         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    12.076 r  adder_y/operation_result_o[248]_INST_0_i_11/CO[3]
-                         net (fo=1, routed)           0.000    12.076    adder_y/operation_result_o[248]_INST_0_i_11_n_0
-    SLICE_X49Y81         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    12.134 r  adder_y/operation_result_o[252]_INST_0_i_11/CO[3]
-                         net (fo=1, routed)           0.000    12.134    adder_y/operation_result_o[252]_INST_0_i_11_n_0
-    SLICE_X49Y82         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.058    12.192 r  adder_y/operation_result_o[255]_INST_0_i_18/CO[3]
-                         net (fo=3, routed)           1.051    13.244    u_adder_x_op_a_blanked/u_blank_and/operation_result_o[0]_INST_0_i_1_0[0]
-    SLICE_X45Y69         LUT4 (Prop_lut4_I0_O)        0.053    13.297 r  u_adder_x_op_a_blanked/u_blank_and/operation_result_o[255]_INST_0_i_9/O
-                         net (fo=256, routed)         1.159    14.456    adder_y/operation_result_o1
-    SLICE_X37Y44         LUT6 (Prop_lut6_I5_O)        0.053    14.509 r  adder_y/operation_result_o[28]_INST_0_i_3/O
-                         net (fo=1, routed)           0.887    15.395    u_shifter_operand_a_blanker/u_blank_and/operation_result_o_28_sn_1
-    SLICE_X37Y68         LUT5 (Prop_lut5_I4_O)        0.053    15.448 r  u_shifter_operand_a_blanker/u_blank_and/operation_result_o[28]_INST_0/O
-                         net (fo=0)                   0.672    16.120    operation_result_o[28]
-                                                                      r  operation_result_o[28] (OUT)
+    SLICE_X19Y24         FDRE (Prop_fdre_C_Q)         0.269     2.097 f  g_mod_words[0].mod_intg_q_reg[0]/Q
+                         net (fo=38, routed)          0.368     2.465    u_adder_w_op_b_blanked/u_blank_and/Q[0]
+    SLICE_X16Y24         LUT2 (Prop_lut2_I0_O)        0.053     2.518 r  u_adder_w_op_b_blanked/u_blank_and/out_o/O
+                         net (fo=1, routed)           0.143     2.661    adder_w/B_buffed[0]
+    SLICE_X17Y24         CARRY4 (Prop_carry4_CYINIT_CO[3])
+                                                      0.346     3.007 r  adder_w/operation_result_o[3]_INST_0_i_35/CO[3]
+                         net (fo=1, routed)           0.008     3.015    adder_w/operation_result_o[3]_INST_0_i_35_n_0
+    SLICE_X17Y25         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.073 r  adder_w/operation_result_o[7]_INST_0_i_42/CO[3]
+                         net (fo=1, routed)           0.000     3.073    adder_w/operation_result_o[7]_INST_0_i_42_n_0
+    SLICE_X17Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.131 r  adder_w/operation_result_o[11]_INST_0_i_44/CO[3]
+                         net (fo=1, routed)           0.000     3.131    adder_w/operation_result_o[11]_INST_0_i_44_n_0
+    SLICE_X17Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.189 r  adder_w/operation_result_o[15]_INST_0_i_44/CO[3]
+                         net (fo=1, routed)           0.000     3.189    adder_w/operation_result_o[15]_INST_0_i_44_n_0
+    SLICE_X17Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.247 r  adder_w/operation_result_o[18]_INST_0_i_38/CO[3]
+                         net (fo=1, routed)           0.000     3.247    adder_w/operation_result_o[18]_INST_0_i_38_n_0
+    SLICE_X17Y29         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.305 r  adder_w/operation_result_o[22]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.305    adder_w/operation_result_o[22]_INST_0_i_41_n_0
+    SLICE_X17Y30         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.363 r  adder_w/operation_result_o[26]_INST_0_i_42/CO[3]
+                         net (fo=1, routed)           0.000     3.363    adder_w/operation_result_o[26]_INST_0_i_42_n_0
+    SLICE_X17Y31         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.421 r  adder_w/operation_result_o[30]_INST_0_i_44/CO[3]
+                         net (fo=1, routed)           0.000     3.421    adder_w/operation_result_o[30]_INST_0_i_44_n_0
+    SLICE_X17Y32         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.479 r  adder_w/operation_result_o[33]_INST_0_i_39/CO[3]
+                         net (fo=1, routed)           0.000     3.479    adder_w/operation_result_o[33]_INST_0_i_39_n_0
+    SLICE_X17Y33         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.537 r  adder_w/operation_result_o[37]_INST_0_i_47/CO[3]
+                         net (fo=1, routed)           0.000     3.537    adder_w/operation_result_o[37]_INST_0_i_47_n_0
+    SLICE_X17Y34         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.595 r  adder_w/operation_result_o[41]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.595    adder_w/operation_result_o[41]_INST_0_i_41_n_0
+    SLICE_X17Y35         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.653 r  adder_w/operation_result_o[45]_INST_0_i_46/CO[3]
+                         net (fo=1, routed)           0.000     3.653    adder_w/operation_result_o[45]_INST_0_i_46_n_0
+    SLICE_X17Y36         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.711 r  adder_w/operation_result_o[48]_INST_0_i_38/CO[3]
+                         net (fo=1, routed)           0.000     3.711    adder_w/operation_result_o[48]_INST_0_i_38_n_0
+    SLICE_X17Y37         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.769 r  adder_w/operation_result_o[52]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.769    adder_w/operation_result_o[52]_INST_0_i_41_n_0
+    SLICE_X17Y38         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.827 r  adder_w/operation_result_o[56]_INST_0_i_40/CO[3]
+                         net (fo=1, routed)           0.000     3.827    adder_w/operation_result_o[56]_INST_0_i_40_n_0
+    SLICE_X17Y39         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.885 r  adder_w/operation_result_o[60]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.885    adder_w/operation_result_o[60]_INST_0_i_41_n_0
+    SLICE_X17Y40         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     3.943 r  adder_w/operation_result_o[63]_INST_0_i_39/CO[3]
+                         net (fo=1, routed)           0.000     3.943    adder_w/operation_result_o[63]_INST_0_i_39_n_0
+    SLICE_X17Y41         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.001 r  adder_w/operation_result_o[67]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     4.001    adder_w/operation_result_o[67]_INST_0_i_41_n_0
+    SLICE_X17Y42         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.059 r  adder_w/operation_result_o[71]_INST_0_i_49/CO[3]
+                         net (fo=1, routed)           0.000     4.059    adder_w/operation_result_o[71]_INST_0_i_49_n_0
+    SLICE_X17Y43         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.117 r  adder_w/operation_result_o[75]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     4.117    adder_w/operation_result_o[75]_INST_0_i_41_n_0
+    SLICE_X17Y44         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.175 r  adder_w/operation_result_o[79]_INST_0_i_45/CO[3]
+                         net (fo=1, routed)           0.000     4.175    adder_w/operation_result_o[79]_INST_0_i_45_n_0
+    SLICE_X17Y45         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.233 r  adder_w/operation_result_o[82]_INST_0_i_38/CO[3]
+                         net (fo=1, routed)           0.000     4.233    adder_w/operation_result_o[82]_INST_0_i_38_n_0
+    SLICE_X17Y46         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.291 r  adder_w/operation_result_o[86]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     4.291    adder_w/operation_result_o[86]_INST_0_i_41_n_0
+    SLICE_X17Y47         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.349 r  adder_w/operation_result_o[90]_INST_0_i_40/CO[3]
+                         net (fo=1, routed)           0.000     4.349    adder_w/operation_result_o[90]_INST_0_i_40_n_0
+    SLICE_X17Y48         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.058     4.407 r  adder_w/operation_result_o[94]_INST_0_i_41/CO[3]
+                         net (fo=1, routed)           0.000     4.407    adder_w/operation_result_o[94]_INST_0_i_41_n_0
+    SLICE_X17Y49         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.213     4.620 r  adder_w/operation_result_o[97]_INST_0_i_38/O[1]
+                         net (fo=32, routed)          1.005     5.625    adder_w/R_buffed[51]
+    SLICE_X20Y42         LUT6 (Prop_lut6_I3_O)        0.152     5.777 r  adder_w/operation_result_o[67]_INST_0_i_36/O
+                         net (fo=1, routed)           0.431     6.208    adder_x/adder_w_res_mux_out[33]
+    SLICE_X18Y42         LUT6 (Prop_lut6_I2_O)        0.053     6.261 r  adder_x/operation_result_o[67]_INST_0_i_26/O
+                         net (fo=1, routed)           0.000     6.261    adder_x/operation_result_o[67]_INST_0_i_26_n_0
+    SLICE_X18Y42         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.219     6.480 r  adder_x/operation_result_o[67]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     6.480    adder_x/operation_result_o[67]_INST_0_i_9_n_0
+    SLICE_X18Y43         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.540 r  adder_x/operation_result_o[71]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     6.540    adder_x/operation_result_o[71]_INST_0_i_9_n_0
+    SLICE_X18Y44         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.600 r  adder_x/operation_result_o[75]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     6.600    adder_x/operation_result_o[75]_INST_0_i_9_n_0
+    SLICE_X18Y45         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.660 r  adder_x/operation_result_o[79]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     6.660    adder_x/operation_result_o[79]_INST_0_i_9_n_0
+    SLICE_X18Y46         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.720 r  adder_x/operation_result_o[82]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000     6.720    adder_x/operation_result_o[82]_INST_0_i_5_n_0
+    SLICE_X18Y47         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.780 r  adder_x/operation_result_o[86]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000     6.780    adder_x/operation_result_o[86]_INST_0_i_5_n_0
+    SLICE_X18Y48         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.840 r  adder_x/operation_result_o[90]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000     6.840    adder_x/operation_result_o[90]_INST_0_i_5_n_0
+    SLICE_X18Y49         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.900 r  adder_x/operation_result_o[94]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.001     6.901    adder_x/operation_result_o[94]_INST_0_i_5_n_0
+    SLICE_X18Y50         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     6.961 r  adder_x/operation_result_o[97]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000     6.961    adder_x/operation_result_o[97]_INST_0_i_5_n_0
+    SLICE_X18Y51         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.021 r  adder_x/operation_result_o[101]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000     7.021    adder_x/operation_result_o[101]_INST_0_i_5_n_0
+    SLICE_X18Y52         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.081 r  adder_x/operation_result_o[105]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000     7.081    adder_x/operation_result_o[105]_INST_0_i_5_n_0
+    SLICE_X18Y53         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.141 r  adder_x/operation_result_o[109]_INST_0_i_5/CO[3]
+                         net (fo=1, routed)           0.000     7.141    adder_x/operation_result_o[109]_INST_0_i_5_n_0
+    SLICE_X18Y54         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.201 r  adder_x/operation_result_o[112]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     7.201    adder_x/operation_result_o[112]_INST_0_i_9_n_0
+    SLICE_X18Y55         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.261 r  adder_x/operation_result_o[116]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     7.261    adder_x/operation_result_o[116]_INST_0_i_9_n_0
+    SLICE_X18Y56         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.321 r  adder_x/operation_result_o[120]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     7.321    adder_x/operation_result_o[120]_INST_0_i_9_n_0
+    SLICE_X18Y57         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.381 r  adder_x/operation_result_o[124]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     7.381    adder_x/operation_result_o[124]_INST_0_i_9_n_0
+    SLICE_X18Y58         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060     7.441 r  adder_x/operation_result_o[127]_INST_0_i_9/CO[3]
+                         net (fo=1, routed)           0.000     7.441    adder_x/operation_result_o[127]_INST_0_i_9_n_0
+    SLICE_X18Y59         CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.173     7.614 r  adder_x/operation_result_o[255]_INST_0_i_20/CO[0]
+                         net (fo=274, routed)         1.483     9.097    adder_x/CO[0]
+    SLICE_X16Y34         LUT6 (Prop_lut6_I1_O)        0.153     9.250 r  adder_x/operation_result_o[131]_INST_0_i_22/O
+                         net (fo=2, routed)           0.457     9.707    adder_y/A_buffed[128]
+    SLICE_X16Y36         CARRY4 (Prop_carry4_DI[0]_CO[3])
+                                                      0.340    10.047 r  adder_y/operation_result_o[131]_INST_0_i_13/CO[3]
+                         net (fo=1, routed)           0.000    10.047    adder_y/operation_result_o[131]_INST_0_i_13_n_0
+    SLICE_X16Y37         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.107 r  adder_y/operation_result_o[135]_INST_0_i_15/CO[3]
+                         net (fo=1, routed)           0.000    10.107    adder_y/operation_result_o[135]_INST_0_i_15_n_0
+    SLICE_X16Y38         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.167 r  adder_y/operation_result_o[139]_INST_0_i_13/CO[3]
+                         net (fo=1, routed)           0.000    10.167    adder_y/operation_result_o[139]_INST_0_i_13_n_0
+    SLICE_X16Y39         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.227 r  adder_y/operation_result_o[143]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    10.227    adder_y/operation_result_o[143]_INST_0_i_14_n_0
+    SLICE_X16Y40         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.287 r  adder_y/operation_result_o[146]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.287    adder_y/operation_result_o[146]_INST_0_i_11_n_0
+    SLICE_X16Y41         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.347 r  adder_y/operation_result_o[150]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.347    adder_y/operation_result_o[150]_INST_0_i_11_n_0
+    SLICE_X16Y42         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.407 r  adder_y/operation_result_o[154]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.407    adder_y/operation_result_o[154]_INST_0_i_11_n_0
+    SLICE_X16Y43         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.467 r  adder_y/operation_result_o[158]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.467    adder_y/operation_result_o[158]_INST_0_i_11_n_0
+    SLICE_X16Y44         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.527 r  adder_y/operation_result_o[161]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.527    adder_y/operation_result_o[161]_INST_0_i_11_n_0
+    SLICE_X16Y45         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.587 r  adder_y/operation_result_o[165]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.587    adder_y/operation_result_o[165]_INST_0_i_11_n_0
+    SLICE_X16Y46         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.647 r  adder_y/operation_result_o[169]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.647    adder_y/operation_result_o[169]_INST_0_i_11_n_0
+    SLICE_X16Y47         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.707 r  adder_y/operation_result_o[173]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    10.707    adder_y/operation_result_o[173]_INST_0_i_11_n_0
+    SLICE_X16Y48         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.767 r  adder_y/operation_result_o[176]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    10.767    adder_y/operation_result_o[176]_INST_0_i_14_n_0
+    SLICE_X16Y49         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.827 r  adder_y/operation_result_o[180]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.001    10.828    adder_y/operation_result_o[180]_INST_0_i_14_n_0
+    SLICE_X16Y50         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.888 r  adder_y/operation_result_o[184]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    10.888    adder_y/operation_result_o[184]_INST_0_i_14_n_0
+    SLICE_X16Y51         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    10.948 r  adder_y/operation_result_o[188]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    10.948    adder_y/operation_result_o[188]_INST_0_i_14_n_0
+    SLICE_X16Y52         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.008 r  adder_y/operation_result_o[191]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    11.008    adder_y/operation_result_o[191]_INST_0_i_14_n_0
+    SLICE_X16Y53         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.068 r  adder_y/operation_result_o[195]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    11.068    adder_y/operation_result_o[195]_INST_0_i_11_n_0
+    SLICE_X16Y54         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.128 r  adder_y/operation_result_o[199]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    11.128    adder_y/operation_result_o[199]_INST_0_i_11_n_0
+    SLICE_X16Y55         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.188 r  adder_y/operation_result_o[203]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    11.188    adder_y/operation_result_o[203]_INST_0_i_11_n_0
+    SLICE_X16Y56         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.248 r  adder_y/operation_result_o[207]_INST_0_i_11/CO[3]
+                         net (fo=1, routed)           0.000    11.248    adder_y/operation_result_o[207]_INST_0_i_11_n_0
+    SLICE_X16Y57         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.308 r  adder_y/operation_result_o[210]_INST_0_i_13/CO[3]
+                         net (fo=1, routed)           0.000    11.308    adder_y/operation_result_o[210]_INST_0_i_13_n_0
+    SLICE_X16Y58         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.368 r  adder_y/operation_result_o[214]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    11.368    adder_y/operation_result_o[214]_INST_0_i_14_n_0
+    SLICE_X16Y59         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.428 r  adder_y/operation_result_o[218]_INST_0_i_13/CO[3]
+                         net (fo=1, routed)           0.000    11.428    adder_y/operation_result_o[218]_INST_0_i_13_n_0
+    SLICE_X16Y60         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.488 r  adder_y/operation_result_o[222]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    11.488    adder_y/operation_result_o[222]_INST_0_i_14_n_0
+    SLICE_X16Y61         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.548 r  adder_y/operation_result_o[225]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    11.548    adder_y/operation_result_o[225]_INST_0_i_14_n_0
+    SLICE_X16Y62         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.608 r  adder_y/operation_result_o[229]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    11.608    adder_y/operation_result_o[229]_INST_0_i_14_n_0
+    SLICE_X16Y63         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.668 r  adder_y/operation_result_o[233]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    11.668    adder_y/operation_result_o[233]_INST_0_i_14_n_0
+    SLICE_X16Y64         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.728 r  adder_y/operation_result_o[237]_INST_0_i_14/CO[3]
+                         net (fo=1, routed)           0.000    11.728    adder_y/operation_result_o[237]_INST_0_i_14_n_0
+    SLICE_X16Y65         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.788 r  adder_y/operation_result_o[240]_INST_0_i_10/CO[3]
+                         net (fo=1, routed)           0.000    11.788    adder_y/operation_result_o[240]_INST_0_i_10_n_0
+    SLICE_X16Y66         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.848 r  adder_y/operation_result_o[244]_INST_0_i_10/CO[3]
+                         net (fo=1, routed)           0.000    11.848    adder_y/operation_result_o[244]_INST_0_i_10_n_0
+    SLICE_X16Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.908 r  adder_y/operation_result_o[248]_INST_0_i_10/CO[3]
+                         net (fo=1, routed)           0.000    11.908    adder_y/operation_result_o[248]_INST_0_i_10_n_0
+    SLICE_X16Y68         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    11.968 r  adder_y/operation_result_o[252]_INST_0_i_10/CO[3]
+                         net (fo=1, routed)           0.000    11.968    adder_y/operation_result_o[252]_INST_0_i_10_n_0
+    SLICE_X16Y69         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.060    12.028 r  adder_y/operation_result_o[255]_INST_0_i_16/CO[3]
+                         net (fo=3, routed)           0.616    12.643    adder_x/operation_result_o[224]_INST_0_i_3_1[0]
+    SLICE_X18Y69         LUT4 (Prop_lut4_I2_O)        0.053    12.696 r  adder_x/operation_result_o[255]_INST_0_i_9/O
+                         net (fo=256, routed)         1.600    14.296    adder_y/operation_result_o1
+    SLICE_X28Y42         LUT6 (Prop_lut6_I5_O)        0.053    14.349 r  adder_y/operation_result_o[32]_INST_0_i_3/O
+                         net (fo=1, routed)           0.785    15.134    u_shifter_operand_a_blanker/u_blank_and/operation_result_o_32_sn_1
+    SLICE_X8Y42          LUT5 (Prop_lut5_I4_O)        0.053    15.187 r  u_shifter_operand_a_blanker/u_blank_and/operation_result_o[32]_INST_0/O
+                         net (fo=0)                   0.672    15.859    operation_result_o[32]
+                                                                      r  operation_result_o[32] (OUT)
   -------------------------------------------------------------------    -------------------
 
-                         max delay                   16.129    16.129    
-                         clock pessimism              0.000    16.129    
-                         output delay                -0.000    16.129    
+                         max delay                   15.873    15.873    
+                         clock pessimism              0.000    15.873    
+                         output delay                -0.000    15.873    
   -------------------------------------------------------------------
-                         required time                         16.129    
-                         arrival time                         -16.120    
+                         required time                         15.873    
+                         arrival time                         -15.859    
   -------------------------------------------------------------------
-                         slack                                  0.009    
+                         slack                                  0.014    
 
 
 

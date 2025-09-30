@@ -1,7 +1,0 @@
-name: unified_mul
-Fmax: 60.0 MHz (16.666666666666668 ns)
-slack: 0.190770
-required: 16.666666
-instances: 27600
-design_area: 227336
-utilization: 53

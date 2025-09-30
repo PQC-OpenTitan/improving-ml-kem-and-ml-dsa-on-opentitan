@@ -1,7 +1,0 @@
-name: otbn_bignum_mul
-Fmax: 100.0 MHz (10.0 ns)
-slack: 0.124372
-required: 10.000000
-instances: 19827
-design_area: 154164
-utilization: 48

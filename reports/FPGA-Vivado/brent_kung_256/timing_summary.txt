@@ -1,14 +1,13 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
----------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-| Date         : Fri Sep 19 15:42:08 2025
-| Host         : jadem4ci running 64-bit unknown
-| Command      : report_timing_summary -file ../../../reports/FPGA-Vivado/brent_kung_256/timing_summary.txt
-| Design       : brent_kung_256
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (lin64) Build 3671981 Fri Oct 14 04:59:54 MDT 2022
+| Date         : Tue Sep 16 11:47:12 2025
+| Host         : ruben-nb02 running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_timing_summary -file ../../../reports/FPGA/brent_kung_adder_256_mode0_only/timing_summary.txt
+| Design       : brent_kung_adder_256_mode0_only
 | Device       : 7k160t-fbg676
 | Speed File   : -1  PRODUCTION 1.12 2017-02-17
-| Design State : Routed
----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
 
 Timing Summary Report
 
@@ -27,7 +26,6 @@ Timing Summary Report
   Timing Early Launch at Borrowing Latches   :  No
   Borrow Time for Max Delay Exceptions       :  Yes
   Merge Timing Exceptions                    :  Yes
-  Inter-SLR Compensation                     :  Conservative
 
   Corner  Analyze    Analyze    
   Name    Max Paths  Min Paths  
@@ -138,7 +136,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      0.305        0.000                      0                  257           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
+      0.182        0.000                      0                  257           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
 
 
 All user specified timing constraints are met.
@@ -175,7 +173,7 @@ From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS
 
 Path Group        From Clock        To Clock              WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
 ----------        ----------        --------              -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
-**default**       input port clock                          0.305        0.000                      0                  257                                                                        
+**default**       input port clock                          0.182        0.000                      0                  257                                                                        
 
 
 ------------------------------------------------------------------------------------------------
@@ -189,55 +187,55 @@ Path Group:  **default**
 From Clock:  input port clock
   To Clock:  
 
-Setup :            0  Failing Endpoints,  Worst Slack        0.305ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        0.182ns,  Total Violation        0.000ns
 Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.305ns  (required time - arrival time)
-  Source:                 A[61]
+Slack (MET) :             0.182ns  (required time - arrival time)
+  Source:                 B[73]
                             (input port)
-  Destination:            res[198]
+  Destination:            sum[211]
   Path Group:             **default**
   Path Type:              Max at Slow Process Corner
   Requirement:            5.714ns  (MaxDelay Path 5.714ns)
-  Data Path Delay:        5.409ns  (logic 0.551ns (10.187%)  route 4.858ns (89.813%))
-  Logic Levels:           8  (LUT3=2 LUT4=2 LUT6=4)
+  Data Path Delay:        5.532ns  (logic 0.558ns (10.086%)  route 4.974ns (89.914%))
+  Logic Levels:           8  (LUT2=1 LUT5=3 LUT6=4)
   Output Delay:           0.000ns
   Timing Exception:       MaxDelay Path 5.714ns -datapath_only
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
-                                                      0.000     0.000 r  A[61] (IN)
-                         net (fo=3, unset)            0.672     0.672    A[61]
-    SLICE_X18Y57         LUT4 (Prop_lut4_I3_O)        0.053     0.725 r  res[63]_INST_0_i_2/O
-                         net (fo=3, routed)           0.479     1.204    res[63]_INST_0_i_2_n_0
-    SLICE_X18Y57         LUT6 (Prop_lut6_I0_O)        0.053     1.257 f  res[129]_INST_0_i_13/O
-                         net (fo=2, routed)           0.538     1.795    res[129]_INST_0_i_13_n_0
-    SLICE_X12Y57         LUT4 (Prop_lut4_I1_O)        0.053     1.848 f  res[97]_INST_0_i_4/O
-                         net (fo=5, routed)           0.580     2.429    res[97]_INST_0_i_4_n_0
-    SLICE_X14Y57         LUT6 (Prop_lut6_I0_O)        0.053     2.482 f  res[129]_INST_0_i_3/O
-                         net (fo=1, routed)           0.447     2.929    res[129]_INST_0_i_3_n_0
-    SLICE_X15Y57         LUT6 (Prop_lut6_I1_O)        0.053     2.982 f  res[129]_INST_0_i_1/O
-                         net (fo=18, routed)          0.616     3.597    res[129]_INST_0_i_1_n_0
-    SLICE_X15Y61         LUT3 (Prop_lut3_I1_O)        0.053     3.650 f  res[200]_INST_0_i_3/O
-                         net (fo=7, routed)           0.389     4.039    res[200]_INST_0_i_3_n_0
-    SLICE_X14Y61         LUT3 (Prop_lut3_I2_O)        0.065     4.104 r  res[199]_INST_0_i_3/O
-                         net (fo=4, routed)           0.464     4.569    res[199]_INST_0_i_3_n_0
-    SLICE_X15Y61         LUT6 (Prop_lut6_I1_O)        0.168     4.737 r  res[198]_INST_0/O
-                         net (fo=0)                   0.672     5.409    res[198]
-                                                                      r  res[198] (OUT)
+                                                      0.000     0.000 r  B[73] (IN)
+                         net (fo=5, unset)            0.672     0.672    B[73]
+    SLICE_X12Y53         LUT2 (Prop_lut2_I1_O)        0.068     0.740 f  sum[97]_INST_0_i_11/O
+                         net (fo=1, routed)           0.558     1.298    sum[97]_INST_0_i_11_n_0
+    SLICE_X13Y52         LUT6 (Prop_lut6_I0_O)        0.172     1.470 r  sum[97]_INST_0_i_8/O
+                         net (fo=2, routed)           0.561     2.031    sum[97]_INST_0_i_8_n_0
+    SLICE_X13Y53         LUT6 (Prop_lut6_I3_O)        0.053     2.084 r  sum[81]_INST_0_i_2/O
+                         net (fo=3, routed)           0.591     2.675    sum[81]_INST_0_i_2_n_0
+    SLICE_X12Y58         LUT6 (Prop_lut6_I3_O)        0.053     2.728 f  sum[129]_INST_0_i_7/O
+                         net (fo=2, routed)           0.343     3.071    sum[129]_INST_0_i_7_n_0
+    SLICE_X14Y58         LUT6 (Prop_lut6_I5_O)        0.053     3.124 f  sum[129]_INST_0_i_1/O
+                         net (fo=18, routed)          0.531     3.655    sum[129]_INST_0_i_1_n_0
+    SLICE_X17Y59         LUT5 (Prop_lut5_I3_O)        0.053     3.708 r  sum[209]_INST_0_i_1/O
+                         net (fo=6, routed)           0.699     4.407    sum[209]_INST_0_i_1_n_0
+    SLICE_X21Y59         LUT5 (Prop_lut5_I0_O)        0.053     4.460 r  sum[211]_INST_0_i_1/O
+                         net (fo=2, routed)           0.347     4.807    sum[211]_INST_0_i_1_n_0
+    SLICE_X21Y61         LUT5 (Prop_lut5_I4_O)        0.053     4.860 r  sum[211]_INST_0/O
+                         net (fo=0)                   0.672     5.532    sum[211]
+                                                                      r  sum[211] (OUT)
   -------------------------------------------------------------------    -------------------
 
                          max delay                    5.714     5.714    
                          output delay                -0.000     5.714    
   -------------------------------------------------------------------
                          required time                          5.714    
-                         arrival time                          -5.409    
+                         arrival time                          -5.532    
   -------------------------------------------------------------------
-                         slack                                  0.305    
+                         slack                                  0.182    
 
 
 
