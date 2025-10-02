@@ -10,7 +10,7 @@
 .section .text.start
 
 #define CTXLEN 32
-#define STACK_SIZE 112000
+#define STACK_SIZE 20000
 
 #define SEEDBYTES 32
 #define CRHBYTES 64
