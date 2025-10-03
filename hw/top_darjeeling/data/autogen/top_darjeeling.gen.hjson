@@ -5429,13 +5429,14 @@
       param_decl:
       {
         EnMasking: "1"
-        NumAppIntf: 4
+        NumAppIntf: 5
         AppCfg:
           '''
           '{kmac_pkg::AppCfgKeyMgr,
                   kmac_pkg::AppCfgLcCtrl,
                   kmac_pkg::AppCfgRomCtrl,
-                  kmac_pkg::AppCfgRomCtrl}
+                  kmac_pkg::AppCfgRomCtrl,
+                  kmac_pkg::kmac_pkg::AppCfgDynamic}
           '''
       }
       clock_srcs:
@@ -5522,7 +5523,7 @@
           name: NumAppIntf
           desc: Number of application interfaces
           type: int
-          default: 4
+          default: 5
           local: "false"
           expose: "true"
           name_top: KmacNumAppIntf
@@ -5541,7 +5542,8 @@
             '{kmac_pkg::AppCfgKeyMgr,
                     kmac_pkg::AppCfgLcCtrl,
                     kmac_pkg::AppCfgRomCtrl,
-                    kmac_pkg::AppCfgRomCtrl}
+                    kmac_pkg::AppCfgRomCtrl,
+                    kmac_pkg::kmac_pkg::AppCfgDynamic}
             '''
           local: "false"
           expose: "true"
@@ -5614,7 +5616,7 @@
             desc: Number of application interfaces
             param_type: int
             unpacked_dimensions: null
-            default: 3
+            default: 4
             local: false
             expose: true
             name_top: KmacNumAppIntf
@@ -5985,6 +5987,18 @@
           default: ""
           top_signame: keymgr_dpe_otbn_key
           index: -1
+        }
+        {
+          name: kmac_data
+          struct: app
+          package: kmac_pkg
+          type: req_rsp
+          act: req
+          width: 1
+          inst_name: otbn
+          default: ""
+          top_signame: kmac_app
+          index: 4
         }
         {
           name: tl
@@ -11391,6 +11405,7 @@
         lc_ctrl.kmac_data
         rom_ctrl0.kmac_data
         rom_ctrl1.kmac_data
+        otbn.kmac_data
       ]
       kmac.en_masking:
       [
@@ -23432,7 +23447,7 @@
           desc: Number of application interfaces
           param_type: int
           unpacked_dimensions: null
-          default: 3
+          default: 4
           local: false
           expose: true
           name_top: KmacNumAppIntf
@@ -23660,6 +23675,18 @@
         default: ""
         top_signame: keymgr_dpe_otbn_key
         index: -1
+      }
+      {
+        name: kmac_data
+        struct: app
+        package: kmac_pkg
+        type: req_rsp
+        act: req
+        width: 1
+        inst_name: otbn
+        default: ""
+        top_signame: kmac_app
+        index: 4
       }
       {
         name: tl
@@ -29526,7 +29553,7 @@
           desc: Number of application interfaces
           param_type: int
           unpacked_dimensions: null
-          default: 3
+          default: 4
           local: false
           expose: true
           name_top: KmacNumAppIntf
@@ -29547,7 +29574,7 @@
           desc: Number of application interfaces
           param_type: int
           unpacked_dimensions: null
-          default: 3
+          default: 4
           local: false
           expose: true
           name_top: KmacNumAppIntf
