@@ -72,7 +72,7 @@ module towards_mac_adder
 //    );
 
     assign {adder_x_carry_out[i], adder_x_sum[i], adder_x_carry_in_unused[i]} =
-        adder_x_op_a[i] + adder_x_op_b[i];
+        {adder_x_op_a[i], 1'b1} + adder_x_op_b[i];
 //        adder_x_op_a_blanked[i] + adder_x_op_b_blanked[i];
 
     // Combine all sums to 256-bit vector
