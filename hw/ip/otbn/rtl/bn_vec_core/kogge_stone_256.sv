@@ -1,159 +1,159 @@
 module kogge_stone_256 (
-    input  logic [255:0] A,
-    input  logic [255:0] B,
-    input  logic [1:0]   word_mode,
-    input  logic         cin,
-    output logic [255:0] res,
-    output logic         cout
+  input  logic [255:0] A,
+  input  logic [255:0] B,
+  input  logic [1:0]   word_mode,
+  input  logic         cin,
+  output logic [255:0] res,
+  output logic         cout
 );
 
-    logic [255:0] g, p;
+  logic [255:0] g, p;
 
-    logic [255:0] g0, p0; // Initial generate and propagate
-    logic [255:0] carry;
+  logic [255:0] g0, p0; // Initial generate and propagate
+  logic [255:0] carry;
 
-    // Stage 0: Generate and Propagate
-    assign g = A & B;
-    assign p = A ^ B;
+  // Stage 0: Generate and Propagate
+  assign g = A & B;
+  assign p = A ^ B;
 
-    // Level-wise generate and propagate
-    logic [255:0] g1, p1;
-    logic [255:0] g2, p2;
-    logic [255:0] g3, p3;
-    logic [255:0] g4, p4;
-    logic [255:0] g5, p5;
-    logic [255:0] g6, p6;
-    logic [255:0] g7, p7;
-    logic [255:0] g8, p8;
+  // Level-wise generate and propagate
+  logic [255:0] g1, p1;
+  logic [255:0] g2, p2;
+  logic [255:0] g3, p3;
+  logic [255:0] g4, p4;
+  logic [255:0] g5, p5;
+  logic [255:0] g6, p6;
+  logic [255:0] g7, p7;
+  logic [255:0] g8, p8;
 
-    genvar i;
+  genvar i;
 
-    assign g0[0] = g[0] | (p[0] & cin);
-    assign p0[0] = 1'b0;
+  assign g0[0] = g[0] | (p[0] & cin);
+  assign p0[0] = 1'b0;
 
-    generate
-        for (i = 1; i < 256; i = i + 1) begin : setup
-            assign g0[i] = g[i];
-            assign p0[i] = p[i];
-        end
-    endgenerate
+  generate
+    for (i = 1; i < 256; i = i + 1) begin : setup
+      assign g0[i] = g[i];
+      assign p0[i] = p[i];
+    end
+  endgenerate
 
 
-    // Stage 1: distance 1
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i == 0) begin
-                assign g1[i] = g0[i];
-                assign p1[i] = p0[i];
-            end else begin
-                assign g1[i] = g0[i] | (p0[i] & g0[i-1]);
-                assign p1[i] = p0[i] & p0[i-1];
-            end
-        end
-    endgenerate
+  // Stage 1: distance 1
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i == 0) begin
+        assign g1[i] = g0[i];
+        assign p1[i] = p0[i];
+      end else begin
+        assign g1[i] = g0[i] | (p0[i] & g0[i-1]);
+        assign p1[i] = p0[i] & p0[i-1];
+      end
+    end
+  endgenerate
 
-    // Stage 2: distance 2
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i < 2) begin
-                assign g2[i] = g1[i];
-                assign p2[i] = p1[i];
-            end else begin
-                assign g2[i] = g1[i] | (p1[i] & g1[i-2]);
-                assign p2[i] = p1[i] & p1[i-2];
-            end
-        end
-    endgenerate
+  // Stage 2: distance 2
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i < 2) begin
+        assign g2[i] = g1[i];
+        assign p2[i] = p1[i];
+      end else begin
+        assign g2[i] = g1[i] | (p1[i] & g1[i-2]);
+        assign p2[i] = p1[i] & p1[i-2];
+      end
+    end
+  endgenerate
 
-    // Stage 3: distance 4
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i < 4) begin
-                assign g3[i] = g2[i];
-                assign p3[i] = p2[i];
-            end else begin
-                assign g3[i] = g2[i] | (p2[i] & g2[i-4]);
-                assign p3[i] = p2[i] & p2[i-4];
-            end
-        end
-    endgenerate
+  // Stage 3: distance 4
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i < 4) begin
+        assign g3[i] = g2[i];
+        assign p3[i] = p2[i];
+      end else begin
+        assign g3[i] = g2[i] | (p2[i] & g2[i-4]);
+        assign p3[i] = p2[i] & p2[i-4];
+      end
+    end
+  endgenerate
 
-    // Stage 4: distance 8
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i < 8) begin
-                assign g4[i] = g3[i];
-                assign p4[i] = p3[i];
-            end else begin
-                assign g4[i] = g3[i] | (p3[i] & g3[i-8]);
-                assign p4[i] = p3[i] & p3[i-8];
-            end
-        end
-    endgenerate
+  // Stage 4: distance 8
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i < 8) begin
+        assign g4[i] = g3[i];
+        assign p4[i] = p3[i];
+      end else begin
+        assign g4[i] = g3[i] | (p3[i] & g3[i-8]);
+        assign p4[i] = p3[i] & p3[i-8];
+      end
+    end
+  endgenerate
 
-    // Stage 5: distance 16
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i < 16) begin
-                assign g5[i] = g4[i];
-                assign p5[i] = p4[i];
-            end else begin
-                assign g5[i] = g4[i] | (p4[i] & g4[i-16]);
-                assign p5[i] = p4[i] & p4[i-16];
-            end
-        end
-    endgenerate
+  // Stage 5: distance 16
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i < 16) begin
+        assign g5[i] = g4[i];
+        assign p5[i] = p4[i];
+      end else begin
+        assign g5[i] = g4[i] | (p4[i] & g4[i-16]);
+        assign p5[i] = p4[i] & p4[i-16];
+      end
+    end
+  endgenerate
 
-    // Stage 6: distance 32
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i < 32) begin
-                assign g6[i] = g5[i];
-                assign p6[i] = p5[i];
-            end else begin
-                assign g6[i] = g5[i] | (p5[i] & g5[i-32]);
-                assign p6[i] = p5[i] & p5[i-32];
-            end
-        end
-    endgenerate
+  // Stage 6: distance 32
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i < 32) begin
+        assign g6[i] = g5[i];
+        assign p6[i] = p5[i];
+      end else begin
+        assign g6[i] = g5[i] | (p5[i] & g5[i-32]);
+        assign p6[i] = p5[i] & p5[i-32];
+      end
+    end
+  endgenerate
 
-    // Stage 7: distance 64
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i < 64) begin
-                assign g7[i] = g6[i];
-                assign p7[i] = p6[i];
-            end else begin
-                assign g7[i] = g6[i] | (p6[i] & g6[i-64]);
-                assign p7[i] = p6[i] & p6[i-64];
-            end
-        end
-    endgenerate
+  // Stage 7: distance 64
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i < 64) begin
+        assign g7[i] = g6[i];
+        assign p7[i] = p6[i];
+      end else begin
+        assign g7[i] = g6[i] | (p6[i] & g6[i-64]);
+        assign p7[i] = p6[i] & p6[i-64];
+      end
+    end
+  endgenerate
 
-    // Stage 8: distance 128
-    generate
-        for (i = 0; i < 256; i = i + 1) begin
-            if (i < 128) begin
-                assign g8[i] = g7[i];
-                assign p8[i] = p7[i];
-            end else begin
-                assign g8[i] = g7[i] | (p7[i] & g7[i-128]);
-                assign p8[i] = p7[i] & p7[i-128];
-            end
-        end
-    endgenerate
+  // Stage 8: distance 128
+  generate
+    for (i = 0; i < 256; i = i + 1) begin
+      if (i < 128) begin
+        assign g8[i] = g7[i];
+        assign p8[i] = p7[i];
+      end else begin
+        assign g8[i] = g7[i] | (p7[i] & g7[i-128]);
+        assign p8[i] = p7[i] & p7[i-128];
+      end
+    end
+  endgenerate
 
-    // Carry computation
-    assign carry[0] = cin;
-    generate
-        for (i = 1; i < 256; i = i + 1) begin
-            assign carry[i] = g8[i-1];
-        end
-    endgenerate
+  // Carry computation
+  assign carry[0] = cin;
+  generate
+    for (i = 1; i < 256; i = i + 1) begin
+      assign carry[i] = g8[i-1];
+    end
+  endgenerate
 
-    // Final res
-    assign res = p ^ carry;
-    assign cout = g8[255];
+  // Final res
+  assign res = p ^ carry;
+  assign cout = g8[255];
 
 endmodule
 

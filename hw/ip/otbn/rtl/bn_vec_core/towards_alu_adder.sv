@@ -1,13 +1,13 @@
 module towards_alu_adder
   import otbn_pkg::*;
 (
-    input  logic [16:0] A [15:0],
-    input  logic [16:0] B [15:0],
+  input  logic [16:0] A [15:0],
+  input  logic [16:0] B [15:0],
 
-    input  logic [1:0]   word_mode,   // 00: scalar, 11: vec32, 10: vec16
-    input  logic         cin,
-    output logic [255:0] sum,
-    output logic [15:0]  cout
+  input  logic [1:0]   word_mode,   // 00: scalar, 11: vec32, 10: vec16
+  input  logic         cin,
+  output logic [255:0] sum,
+  output logic [15:0]  cout
 );
   logic [16:0] adder_x_op_a_blanked [15:0];
   logic [16:0] adder_x_op_b_blanked [15:0];
@@ -20,17 +20,15 @@ module towards_alu_adder
     assign adder_x_op_b_blanked[i][0] = adder_x_vcarry_in[i];
   end
 
-  logic        adder_selvector_i;
-  logic        adder_vector_i;
-  assign       adder_selvector_i = word_mode[0];
-  assign       adder_vector_i = word_mode[1];
+  logic  adder_selvector_i;
+  logic  adder_vector_i;
+  assign adder_selvector_i = word_mode[0];
+  assign adder_vector_i = word_mode[1];
 
   logic adder_x_carry_in_blanked;
-
   assign adder_x_carry_in_blanked = cin;
 
   logic [15:0] adder_x_carry_out;
-
   logic [15:0] adder_x_sum [15:0];
   logic [15:0] adder_x_carry_in_unused;
 

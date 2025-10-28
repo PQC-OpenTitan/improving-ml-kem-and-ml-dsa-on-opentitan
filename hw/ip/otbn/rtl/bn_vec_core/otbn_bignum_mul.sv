@@ -1,11 +1,11 @@
 module otbn_bignum_mul
 (
-  input  logic [256-1:0]              A,
-  input  logic [256-1:0]              B,
+  input  logic [256-1:0]            A,
+  input  logic [256-1:0]            B,
   input  logic [$clog2(256/64)-1:0] word_sel_A,
   input  logic [$clog2(256/64)-1:0] word_sel_B,
-  input  logic [1:0]                  data_type_64_shift,
-  output logic [256-1:0]              result
+  input  logic [1:0]                data_type_64_shift,
+  output logic [256-1:0]            result
 );
 
   localparam int QWLEN = 64;

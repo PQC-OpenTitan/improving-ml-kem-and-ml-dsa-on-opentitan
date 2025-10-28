@@ -1,12 +1,12 @@
 module towards_mac_adder
   import otbn_pkg::*;
 (
-    input  logic [255:0] A,
-    input  logic [255:0] B,
-    input  logic [1:0]   word_mode,   // 00: scalar, 11: vec32, 10: vec16
-    input  logic         cin,
-    output logic [255:0] sum,
-    output logic [7:0]   cout
+  input  logic [255:0] A,
+  input  logic [255:0] B,
+  input  logic [1:0]   word_mode,   // 00: scalar, 11: vec32, 10: vec16
+  input  logic         cin,
+  output logic [255:0] sum,
+  output logic [7:0]   cout
 );
 
   logic [255:0] adder_op_a;
@@ -25,8 +25,8 @@ module towards_mac_adder
   logic [WLEN:0] adder_x_res;
   logic [31:0]   adder_x_op_a [7:0];
   logic [32:0]   adder_x_op_b [7:0];
-//  logic [32:0]   adder_x_op_a_blanked [7:0];
-//  logic [32:0]   adder_x_op_b_blanked [7:0];
+  logic [32:0]   adder_x_op_a_blanked [7:0];
+  logic [32:0]   adder_x_op_b_blanked [7:0];
   logic [7:0]    adder_x_vcarry_in;
   logic [31:0]   adder_x_sum [7:0];
   logic [7:0]    adder_x_carry_out;
@@ -54,26 +54,29 @@ module towards_mac_adder
 
     assign adder_x_op_a[i] = adder_op_a[i*32 +: 32];
 
-//    // SEC_CM: DATA_REG_SW.SCA
-//    prim_blanker #(.Width(33)) u_adder_op_a_blanked (
-//      .in_i ({adder_x_op_a[i], 1'b1}),
-//      .en_i (1'b1),
-//      .out_o(adder_x_op_a_blanked[i])
-//    );
+    // // SEC_CM: DATA_REG_SW.SCA
+    // prim_blanker #(.Width(33)) u_adder_op_a_blanked (
+    //   .in_i ({adder_x_op_a[i], 1'b1}),
+    //   .en_i (1'b1),
+    //   .out_o(adder_x_op_a_blanked[i])
+    // );
+
+    assign adder_x_op_a_blanked[i] = {adder_x_op_a[i], 1'b1};
 
     assign adder_x_op_b[i] = {adder_x_op_b_invert ? ~adder_op_b[i*32 +: 32] : adder_op_b[i*32 +: 32],
                               adder_x_vcarry_in[i]};
 
-//    // SEC_CM: DATA_REG_SW.SCA
-//    prim_blanker #(.Width(33)) u_adder_op_b_blanked (
-//      .in_i (adder_x_op_b[i]),
-//      .en_i (1'b1),
-//      .out_o(adder_x_op_b_blanked[i])
-//    );
+    // // SEC_CM: DATA_REG_SW.SCA
+    // prim_blanker #(.Width(33)) u_adder_op_b_blanked (
+    //   .in_i (adder_x_op_b[i]),
+    //   .en_i (1'b1),
+    //   .out_o(adder_x_op_b_blanked[i])
+    // );
+
+    assign adder_x_op_b_blanked[i] = adder_x_op_b[i];
 
     assign {adder_x_carry_out[i], adder_x_sum[i], adder_x_carry_in_unused[i]} =
-        {adder_x_op_a[i], 1'b1} + adder_x_op_b[i];
-//        adder_x_op_a_blanked[i] + adder_x_op_b_blanked[i];
+        adder_x_op_a_blanked[i] + adder_x_op_b_blanked[i];
 
     // Combine all sums to 256-bit vector
     assign adder_x_res[1 + i*32 +: 32] = adder_x_sum[i][31:0];

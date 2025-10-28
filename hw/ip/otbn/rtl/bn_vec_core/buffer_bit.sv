@@ -40,11 +40,6 @@ module buffer_bit
     end
   endgenerate
 
-//  logic unused;
-//
-//  // Make sure we get addition with carry.
-//  assign {R_buffed, unused} = {A_buffed, cin} + {B_buffed, cin};  // same as A_buffed + B_buffed + cin
-
   assign R_buffed = A_buffed + B_buffed + {271'b0, cin};
 
   generate
