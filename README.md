@@ -1,32 +1,119 @@
-# Improving ML-KEM and ML-DSA on OpenTitan - Efficient Multiplication Vector Instructions for OTBN
+# Improving ML-KEM and ML-DSA on OpenTitan
 
-## About this repository
+# Efficient Multiplication Vector Instructions for OTBN
 
-This repository is the artifact of the paper **Improving ML-KEM and ML-DSA on
-OpenTitan - Efficient Multiplication Vector Instructions for OTBN** which
-contains changes to the hardware design as well as the Python simulator to
-support our proposed vector multiplication instructions for OTBN. In the
-following, we will give a description to guide the readers on how to reproduce
-the results presented in our paper.
+## About This Repository
+
+This repository is a [research fork](https://github.com/zerorisc/expo-otbn-pqc)
+of OpenTitan hosted by our collaborators at [ZeroRISC](https://www.zerorisc.com/).
+It accompanies our paper
+**[Improving ML-KEM and ML-DSA on OpenTitan – Efficient Multiplication Vector
+Instructions for OTBN](https://eprint.iacr.org/2025/2028)**, and contains the hardware and simulator
+modifications that implement our proposed **vector multiplication instructions**
+for OTBN.
+
+This README provides a step-by-step guide to reproduce all results presented in
+the paper, including **software benchmarks**, **hardware synthesis**, and **FPGA
+experiments**.
+
+---
+
+## Structure of The Code
+
+We follow the notations used in the paper to explain the structure of our
+code.
+
+### 1. Hardware
+Under `hw/ip/otbn/rtl`, you can find five hardware designs for OTBN, which are
+controlled by corresponding macros, allowing easier version control with
+Fusesoc:
+
+
+| Version | Macros | Description |
+| ----------- | ---------- | ---------- |
+| OTBN | None | Unmodified OTBN |
+| OTBN<sub>KMAC</sub> | `TOWARDS_KMAC` | OTBN with only KMAC interface from [*Towards ML-KEM and ML-DSA on OpenTitan*](https://eprint.iacr.org/2024/1192.pdf) (also referred to as OTBN<sup>KMAC</sup> in that paper) |
+| OTBN<sub>TW</sub> | `TOWARDS_KMAC`, `TOWARDS_BASE`, `TOWARDS_ALU_ADDER`, `TOWARDS_MAC_ADDER` | `OTBN_KMAC` + full hardware design for the ISE (multi-cycle multiplication approach) from [*Towards ML-KEM and ML-DSA on OpenTitan*](https://eprint.iacr.org/2024/1192.pdf) (also referred to as OTBN<sup>KMAC</sup><sub>Ext</sub> in that paper) |
+| OTBNV1 | `TOWARDS_KMAC`, `TOWARDS_BASE`, `BNMULV` | Variant 1 of our proposed vector multiplication instruction |
+| OTBNV2 | `TOWARDS_KMAC`, `TOWARDS_BASE`, `BNMULV`, `BNMULV_ACCH` | Variant 2 of our proposed vector multiplication instruction |
+| OTBNV3 | `TOWARDS_KMAC`, `TOWARDS_BASE`, `BNMULV`, `BNMULV_ACCH`, `BNMULV_COND_SUB` | Variant 3 of our proposed vector multiplication instruction |
+
+Under `hw/ip/otbn/rtl/bn_vec_core`, you can find core modules for the five
+versions above:
+
+| Module | Description |
+| ----------- | --------- |
+| otbn_bignum_mul.sv | 64-bit multiplier of unmodified OTBN |
+| otbn_mul.sv | Vector multiplier of [*Towards ML-KEM and ML-DSA on OpenTitan*](https://eprint.iacr.org/2024/1192.pdf) |
+| unified_mul.sv | Vector multiplier of this paper |
+| towards_alu_adder.sv | Vector adder of BN-ALU in [*Towards ML-KEM and ML-DSA on OpenTitan*](https://eprint.iacr.org/2024/1192.pdf) |
+| towards_mac_adder.sv | Vector adder of BN-MAC in [*Towards ML-KEM and ML-DSA on OpenTitan*](https://eprint.iacr.org/2024/1192.pdf) |
+| brent_kung.sv | Brent-Kung vector adder of this paper |
+| kogge_stone.sv | Kogge-Stone vector adder of this paper |
+| sklansky.sv | Sklansky vector adder of this paper |
+| buffer_bit.sv | Buffer-bit vector adder of this paper |
+| csa_carry4.sv | FPGA-tailored vector adder with Xilinx primitives `LUT6_2` and `CARRY4` of this paper |
+| ref_add.sv | Reference 256-bit non-vector adder of this paper |
+| brent_kung_256.sv | 256-bit Brent-Kung non-vector adder of this paper |
+| kogge_stone_256.sv | 256-bit Kogge-Stone non-vector adder of this paper |
+| sklansky_256.sv | 256-bit Sklansky non-vector adder of this paper |
+
+### 2. Software
+
+Under `sw/otbn/crypto`, you can find five software implementations of ML-KEM and
+ML-DSA:
+
+| Version     | Description                                                                                                         |
+| ----------- | ------------------------------------------------------------------------------------------------------------------- |
+| `ver0_base` | With base OTBN's instructions and with KMAC interface from [Towards ML-KEM and ML-DSA on OpenTitan](https://eprint.iacr.org/2024/1192.pdf) |
+| `ver0`      | With ISE (multi-cycle multiplication approach) and KMAC interface from [Towards ML-KEM and ML-DSA on OpenTitan](https://eprint.iacr.org/2024/1192.pdf)                                                          |
+| `ver1`      | With Variant 1 (OTBNV1) of our proposed vector multiplication instruction                                                               |
+| `ver2`      | With Variant 2 (OTBNV2) of our proposed vector multiplication instruction                                                               |
+| `ver3`      | With Variant 3 (OTBNV3) of our proposed vector multiplication instruction                                                               |
+
+All the tests for above implementations can be found in
+`sw/otbn/crypto/tests/{mlkem,mldsa}`.
+
+> 💡 Although Variant 3 of our vector multiplication instruction is only briefly
+> discussed in Section 5.2 (*Design Space Exploration*), we include it here to
+> allow readers to explore the complete design and evaluate both its hardware
+> and software performance in support of the claims made in our paper.
+
+---
 
 ## Getting Started
-For setting up testing environment, please follow the
-[OpenTitan's official guide](https://opentitan.org/book/doc/getting_started/index.html).
 
-In case you are also using Python virtual environment, we recommend using
-Python 3.10. Then run:
+### 1. Clone this repository
 ```
+git clone --recurse-submodules -j8 https://github.com/phamhnh/improving-mlkem-and-mldsa-on-opentitan.git
+git submodule init
+git submodule update
+```
+
+### 2. Environment setup for Ubuntu 22.04
+
+Please follow the [OpenTitan official setup
+guide](https://opentitan.org/book/doc/getting_started/index.html) to prepare
+your development environment. If you are using a Python virtual environment, we
+recommend **Python 3.10**. Then you can set up and install dependencies as
+follows:
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -U pip "setuptools<66.0.0"
 pip3 install -r python-requirements.txt --require-hashes
 ```
 
-You also need Verilator with version 5.022:
-```
+### 3. Installing Verilator 5.022
+
+In order to run hardware-related simulation, you need to install Verilator with
+version 5.022:
+
+```bash
 export VERILATOR_VERSION=5.022
 
-# Install Verilator
+# Clone and build Verilator
 git clone https://github.com/verilator/verilator.git
 cd verilator
 git checkout v$VERILATOR_VERSION
@@ -38,234 +125,296 @@ sudo CC=gcc-11 CXX=g++-11 make install
 
 # Add Verilator to your PATH
 export PATH=/tools/verilator/$VERILATOR_VERSION/bin:$PATH
-``` 
+```
 
-To run ASIC synthesis with OpenRoad in our paper, you need `sv2v` to
-translate SystemVerilog source files to Verilog files, which can be downloaded
-at [sv2v GitHub](https://github.com/zachjs/sv2v/releases/tag/v0.0.13). Then you
-need to move the executable to your desired install directory, e.g.,
-`/tools/sv2v/` and add it to your `PATH`.
+### 4. Installing hardware synthesis tools
+
+For ASIC synthesis using OpenROAD, you need
+[`sv2v`](https://github.com/zachjs/sv2v/releases/tag/v0.0.13) to convert
+SystemVerilog to Verilog. You can download the `sv2v` binary to your preferred
+directory (e.g. `/tools/sv2v/`) and add it to your `PATH`.
+
+For ASIC synthesis with Cadence Genus or FPGA synthesis with Vivado, you need a paid license.
+
+---
 
 ## Software
 
-In order to get the software testing environment working properly, please run the following command:
-```
-./bazelisk test //sw/otbn/crypto/tests:sha3_shake_test
-```
-This will trigger Bazel to load the docker container for Bazel-ORFS flow, which
-needs Python 3.13. Then this test will fail due to Python 3.13 is not compatible
-with software flow. Then you need to change Python version in `third_party/python/python.MODULE.bazel` to 3.10, instead of 3.13. Now, software tests can be run without errors.
+### 1. Benchmarking (Tables 4–6)
 
-### Benchmarking software (Table 4, 5 and 6)
+We benchmark ML-KEM and ML-DSA using the `otbn_sim_py_test` Bazel rule, which runs both:
 
-Software benchmarking of ML-KEM and ML-DSA are done with `otbn_sim_py_test`
-Bazel rule, which feeds a same random input generated in Python to both Python
-reference implementation (by Giacomo Pope, for
-[ML-KEM](https://github.com/GiacomoPope/kyber-py) and
-[ML-DSA](https://github.com/GiacomoPope/dilithium-py)) and OTBN implementation,
-then compares their results. For each `otbn_sim_py_test` target, it can be run
-for `ITERATIONS` number of iterations with `N_PROC` number of threads, which is
-found in
-`sw/otbn/crypto/tests/{mlkem,mldsa}/{kyberpy,dilithiumpy}_bench_otbn/bench_{kyber,dilithium}.py`.
+* Python reference implementations by Giacomo Pope
+  ([ML-KEM](https://github.com/GiacomoPope/kyber-py),
+  [ML-DSA](https://github.com/GiacomoPope/dilithium-py)) in `sw/otbn/crypto/tests/{mlkem,mldsa}/{kyber,dilithium}py_bench_otbn`
+* Corresponding OTBN implementations in `sw/otbn/crypto/{mlkem,mldsa}_ver{0_base,0,1,2,3}`
 
-There are four software versions for ML-KEM and ML-DSA:
-- `ver0_base`: base implementations with KMAC interface and without ISE from
-  [Towards ML-KEM and ML-DSA on
-  OpenTitan](https://eprint.iacr.org/2024/1192.pdf).
-- `ver0`: implementations with KMAC interface and with ISE (multi-cycle
-  multiplication approach) from [Towards ML-KEM and ML-DSA on
-  OpenTitan](https://eprint.iacr.org/2024/1192.pdf).
-- `ver1`: our implementations with Variant 1 (OTBNV1) of the new multiplication vector instruction.
-- `ver2`: our implementations with Variant 2 (OTBNV2) of the new multiplication vector instruction.
-- `ver3`: our implementations with Variant 3 (OTBNV3) of the new multiplication vector instruction.
+The benchmarks compare outputs and collect performance data over `ITERATIONS`
+iterations using `N_PROC` threads (as defined in
+`sw/otbn/crypto/tests/{mlkem,mldsa}/{kyberpy,dilithiumpy}_bench_otbn/bench_{kyber,dilithium}.py`).
+The data are logged in SQLite database files `mlkem_bench.db` and
+`mldsa_bench.db`.
 
-The results obtained in the following commands are the software benchmark of
-ML-KEM and ML-DSA in Table 6 in our paper:
+#### Running ML-DSA
 
-For ML-DSA:
-```
-./bazelisk.sh test --test_timeout=10000 --cache_test_results=no 
---action_env=PATH --sandbox_writable_path="path/to/this/repo" 
-//sw/otbn/crypto/tests/mldsa:mldsa{44,65,87}_{keypair,sign,verify}_bench_{ver0_base,ver0,ver1,ver2,ver3}
+```bash
+./bazelisk.sh test --test_timeout=10000 --cache_test_results=no
+--action_env=PATH --sandbox_writable_path="path/to/repo"
+//sw/otbn/crypto/tests/mldsa:mldsa{44,65,87}_{keypair,sign,verify}_bench_ver{0_base,0,1,2,3}
 ```
 
-For ML-KEM:
-```
-./bazelisk.sh test --test_timeout=10000 --cache_test_results=no 
---action_env=PATH --sandbox_writable_path="path/to/this/repo" 
-//sw/otbn/crypto/tests/mlkem:mlkem{512,768,1024}_{keypair,encap,decap}_bench_{ver0_base,ver0,ver1,ver2,ver3}
-```
+#### Running ML-KEM
 
-The commands above will log the results to a DB file (`mldsa_bench.db` and
-`mlkem_bench.db`). We also provide a script to parse the results in the DB
-files, in which numbers for NTT, INTT, (pair-)pointwise and ciphertext packing
-can be found. In the followings, `start` is the start row of your benchmarked
-target in the DB and `end` is the end row of your benchmarked target in the DB.
-
-```
-util/get_benchmark.py -f mldsa_bench.db -o mldsa_eval.txt -i start end --scheme mldsa
-util/get_benchmark.py -f mlkem_bench.db -o mlkem_eval.txt -i start end --scheme mldsa
+```bash
+./bazelisk.sh test --test_timeout=10000 --cache_test_results=no
+--action_env=PATH --sandbox_writable_path="path/to/repo"
+//sw/otbn/crypto/tests/mlkem:mlkem{512,768,1024}_{keypair,encap,decap}_bench_{0_base,0,1,2,3}
 ```
 
-### Running fixed-input tests
+To extract benchmark numbers in Table 6, you can use our provided script as
+follows, where `<start>` and `<end>` is the start and end index of the test you want to benchmark in
+the database file:
 
-We also provide fixed-input tests for fast testing with `otbn_sim_test` rule. To run these test,
-execute the following commands:
-
-For ML-DSA:
+```bash
+util/get_benchmark.py -f mldsa_bench.db -o mldsa_eval.txt -i <start> <end> --scheme mldsa
+util/get_benchmark.py -f mlkem_bench.db -o mlkem_eval.txt -i <start> <end> --scheme mlkem
 ```
+
+We also include the benchmark results in Table 6 of the paper in `DBs.tar.gz`.  
+
+---
+
+### 2. Fixed-input tests
+
+In case you want to modify the implementations, these tests are quicker to
+execute, which use `otbn_sim_test` Bazel rule.
+
+#### Running ML-DSA
+
+```bash
 ./bazelisk.sh test --test_output=streamed --cache_test_results=no
---action_env=PATH --sandbox_writable_path="path/to/this/repo"
-//sw/otbn/crypto/tests/mldsa:mldsa{44,65,87}_{keypair,sign,verify}_test_{ver0_base,ver0,ver1,ver2,ver3}
+--action_env=PATH --sandbox_writable_path="path/to/repo"
+//sw/otbn/crypto/tests/mldsa:mldsa{44,65,87}_{keypair,sign,verify}_test_ver{0_base,0,1,2,3}
 ```
 
-For ML-KEM:
-```
+#### Running ML-KEM
+
+```bash
 ./bazelisk.sh test --test_output=streamed --cache_test_results=no
---action_env=PATH --sandbox_writable_path="path/to/this/repo"
-//sw/otbn/crypto/tests/mlkem:mlkem{512,768,1024}_{keypair,encap,decap}_test_{ver0_base,ver1,ver2,ver3}
+--action_env=PATH --sandbox_writable_path="path/to/repo"
+//sw/otbn/crypto/tests/mlkem:mlkem{512,768,1024}_{keypair,encap,decap}_test_ver{0_base,0,1,2,3}
 ```
 
-### Running all software tests
+---
 
-To run all the tests available for ML-{KEM,DSA}, you can execute the following commands:
-```
-./bazelisk.sh test //sw/otbn/crypto/tests/mldsa:*
-./bazelisk.sh test //sw/otbn/crypto/tests/mlkem:*
-```
+### 3. Obtaining code size (Table 7)
 
-### Obtaining code size (Table 7)
+To reproduce the code size analysis in Table 7 of the paper, you can use our
+script:
 
-The code size numbers in Table 7 can be obtained with the following command:
-```
+```bash
 util/get_codesize.py --mlkem --mldsa --compare
 ```
 
-In case you want to obtain the code size manually, Bazel binary targets for code
-size are:
-- `otbn_mlkem{512,768,1024}_code_size_{ver0_base,ver0,ver1,ver2,ver3}`
-- `otbn_mldsa{44,65,87}_code_size_{ver0_base,ver0,ver1,ver2,ver3}`
+---
 
-And you need to run the following, for example:
-```
-./bazelisk.sh build //sw/otbn/crypto/tests/mlkem:otbn_mlkem512_code_size_ver1
-size bazel-bin/sw/otbn/crypto/tests/mlkem/otbn_mlkem512_code_size_ver1.elf
-```
 ## Hardware
 
-To obtain ASIC numbers with ORFS flow, please change Python version in
-`third_party/python/python.MODULE.bazel` back to 3.13 if you run software tests
-before this.
+### 1. ASIC Synthesis (Tables 1–3)
 
-### Obtaining hardware synthesis results (Table 1, 2 and 3)
+OpenROAD synthesis is integrated into the Bazel workflow and runs inside a
+Docker container. To ensure you can run Docker without root privileges, run:
 
-ASIC synthesis with OpenRoad is integrated into our Bazel workflow.
-Bazel will download the docker container of OpenRoad and synthesize the
-design. In order to run this flow, you need to be able to run `docker` without
-root permission. This can be done by:
-```
- sudo gpasswd -a $USER docker
-```
-Then you may have to restart your PC for this to take effect. After this, you're
-set to run our script to get the results in Table 1, 2 and 3.
-
-If you want to synthesize the designs with a specific tool (Vivado, Genus or ORFS),
-add `--tool={Vivao,Genus,ORFS}`. If you want to synthesize with all the tools,
-use `--tool=all`. The results are in `reports/FPGA-Vivado`, `reports/ASIC-Genus`
-and `reports/ASIC-ORFS`.
-
-To obtain synthesis numbers for the multiplier (Table 1):
-```
-./gen_tables.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --mul
+```bash
+sudo gpasswd -a $USER docker
+# Then restart system to apply group changes
 ```
 
-To obtain synthesis numbers for the adders (Table 2):
+We provide a script that can run synthesis for either Vivado, ORFS or Cadence
+Genus. You can specify synthesis tools using:
+
 ```
-./gen_tables.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --adders
+--tool={Vivado,Genus,ORFS,all}
 ```
 
-To obtain synthesis numbers for BN-ALU, BN-MAC and OTBN (Table 3):
-```
-./gen_tables.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --otbn_sub
-./gen_tables.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --otbn
+Synthesis results are stored under:
+
+* `reports/FPGA-Vivado`
+* `reports/ASIC-Genus`
+* `reports/ASIC-ORFS`
+
+#### Multiplier (Table 1)
+
+```bash
+util/gen_synth.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --mul
 ```
 
-### Verifying new RTL modules with cocotb and pytest
+#### Adders (Table 2)
 
-We provide cocotb tests, which simulate the RTL with Verilator and compare the
-result with reference Python implementation, for our new modules.
-There are three test `TARGET`:
-- `test/test_vector_adder_pytest.py`: test all vectorized adders mentioned in our paper.
-- `test/test_non_vector_adder_pytest.py`: test all non-vectorized adders mentioned in our paper.
-- `test/test_unified_mul_pytest.py`: test our vectorized multiplier.
-
-In `hw/ip/otbn/rtl/`, run:
+```bash
+util/gen_synth.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --adders
 ```
+
+#### BN-ALU / BN-MAC / OTBN (Table 3)
+
+```bash
+util/gen_synth.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --otbn_sub
+util/gen_synth.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --otbn
+```
+
+(Without `--run_synthesis`, existing reports will be parsed.)
+
+> 💡 For OpenRoad (ORFS flow), we need to apply a patch to
+`third_party/python/python.MODULE.bazel`:
+
+> ```bash
+> git apply aux/python_orfs.patch
+> ```
+> This is already handled by the script. However, if you want to run ORFS
+> manually, please apply the patch and restore this file when done in order for
+> the SW testing to work correctly.
+
+---
+
+### 2. RTL functional correctness verification with cocotb + pytest
+
+Our RTL modules in `hw/ip/otbn/rtl/bn_vec_core` can be validated using cocotb
+testbenches:
+
+| TARGET                                 | Description                    |
+| -------------------------------------- | ------------------------------ |
+| `test/test_vector_adder_pytest.py`     | Test our vectorized adders     |
+| `test/test_non_vector_adder_pytest.py` | Test our non-vectorized adders |
+| `test/test_unified_mul_pytest.py`      | Test our vectorized multiplier |
+
+Then from `hw/ip/otbn/rtl/`, please run:
+
+```bash
 pytest TARGET
 ```
 
-### Running Top Earlgrey chip-level tests
+---
 
-We also provide chip-level tests for ML-KEM and ML-DSA on `top_earlgrey`. Ibex
-will run C-reference implementations of
-[Kyber](https://github.com/pq-crystals/kyber) and
-[Dilithium](https://github.com/pq-crystals/dilithium) from
-[pq-crystals](https://pq-crystals.org/) and commands OTBN to run ML-KEM and
-ML-DSA with the same inputs. The results read from OTBN will then be compared
-with those of the reference ones. This test can either be run with Verilator
-simulation or with our provided bitstreams for CW310.
+### 3. RTL–ISS Tests
 
-#### With Verilator
+The RTL-ISS test simulates OTBN's RTL, runs an OTBN program binary on it and
+compares results with standalone-Python-simulator (ISS) results for every cycle.
+We provide these tests for our new multiplication instructions and
+full ML-KEM/ML-DSA designs, which takes significantly less time than full-chip simulation with Verilator.
 
-For ML-DSA:
+Our script `run_rtl_iss_test.py` supports the following SW versions:
+
+* `ver0`: Test base OTBN's instruction and ISE from *Towards ML-KEM and ML-DSA on OpenTitan*
+* `ver1`, `ver2`, `ver3`: Test base OTBN's instruction, our proposed vector
+  multiplication instructions and full-scheme ML-KEM/ML-DSA with these
+  instructions.
+
+With `ver{1,2,3}`, you can also configure the BN-MAC and BN-ALU adders using
+`-m` and `-a` options respectively (`buffer_bit` by default).
+
+> ⚠️ For `csa_carry4`, due to copyright restrictions, please copy `LUT6_2.v` and
+> `CARRY4.v` from `<Vivado install dir>/data/verilog/src/unisims/` to
+> `hw/ip/otbn/rtl/bn_vec_core/` before running the test.
+
+Here is an example to run all RTL-ISS tests with Variant 2 (OTBNV2) of our
+vector multiplication instruction, Brent-Kung as BN-ALU adders and Kogge-Stone as
+BN-MAC adder:
+
+```bash
+hw/ip/otbn/dv/smoke/run_rtl_iss_test.py -ver 2 -a brent_kung -m kogge_stone
 ```
-./bazelisk.sh test --test_output=streamed --test_timeout=10000 --action_env=PATH 
---copt="-DBNMULV_VER={1,2,3}" --copt="-DDILITHIUM_MODE={2,3,5}" 
+
+In order to skip Fusesoc building Verilated model, use `-s`. For more
+information, use `-h`.
+
+---
+
+### 4. Chip-Level (Top Earlgrey) tests
+
+These tests compare OTBN’s results with reference implementations of
+[**pq-crystals**](https://pq-crystals.org/)
+[Kyber](https://github.com/pq-crystals/kyber) and
+[Dilithium](https://github.com/pq-crystals/dilithium) running on Ibex.
+
+#### 🔸 With Verilator
+
+These tests can take several hours.
+
+**Running ML-DSA:**
+
+```bash
+./bazelisk.sh test --test_output=streamed --test_timeout=10000 --action_env=PATH
+--copt="-DBNMULV_VER={1,2,3}" --copt="-DDILITHIUM_MODE={2,3,5}"
 //sw/device/tests:otbn_mldsa_test_sim_verilator_ver{1,2,3}
 ```
 
-For ML-KEM:
-```
+**Running ML-KEM:**
+
+```bash
 ./bazelisk.sh test --test_output=streamed --test_timeout=10000 --action_env=PATH
---copt="-DBNMULV_VER={1,2,3}" --copt="-DKYBER_K={2,3,4}" 
+--copt="-DBNMULV_VER={1,2,3}" --copt="-DKYBER_K={2,3,4}"
 //sw/device/tests:otbn_mlkem_test_sim_verilator_ver{1,2,3}
 ```
 
-Note that the version in `sim_verilator_ver*` must match the
-`--copt="-DBNMULV_VER*`. 
+> ⚠️ Note that `_sim_verilator_ver*` must match the version defined in
+> `--copt="-DBNMULV_VER=*"`.
 
-#### With FPGA
+#### 🔸 With FPGA (CW310)
 
-For setting up the FPGA board ChipWhisperer CW310, please see [OpenTitan's
-guide](https://opentitan.org/book/doc/getting_started/setup_fpga.html#connecting-chipwhisperer-fpga-and-hyperdebug-boards-to-your-pc).
+Please follow [OpenTitan’s FPGA setup
+guide](https://opentitan.org/book/doc/getting_started/setup_fpga.html#connecting-chipwhisperer-fpga-and-hyperdebug-boards-to-your-pc)
+for setting up your CW310 board.
 
-We provide bitstreams for the two hardware variants OTBNV1 and OTBNV2 in the
-paper. In both variants, buffer-bit adder is set as the adder in both BN-ALU and
-BN-MAC.
+We provide bitstreams for OTBNV1, OTBNV2 and OTBNV3 with `buffer_bit` as adders
+in both BN-ALU and BN-MAC in
+`hw/top_earlgrey/bitstream_cw310/bnmulv_ver{1,2,3}`.
 
-To load the bitstream onto the FPGA, run:
-```
-./bazelisk.sh run //sw/host/opentitantool -- fpga load-bitstream 
+**Load bitstream:**
+
+```bash
+./bazelisk.sh run //sw/host/opentitantool -- fpga load-bitstream
 hw/top_earlgrey/bitstream_cw310/bnmulv_ver{1,2,3}/lowrisc_systems_chip_earlgrey_cw310_0.1.bit
 ```
 
-To run ML-KEM chip-level tests with this bitstream:
-```
+**Run ML-KEM tests:**
+
+```bash
 ./bazelisk.sh test --define bitstream=skip --test_output=streamed --action_env=PATH
---copt="-DKYBER_K={2,3,4}" --copt="-DBNMULV_VER={1,2,3}" 
+--copt="-DKYBER_K={2,3,4}" --copt="-DBNMULV_VER={1,2,3}"
 //sw/device/tests:otbn_mlkem_test_fpga_cw310_test_rom_ver{1,2,3}
 ```
 
-To run ML-DSA chip-level tests with this bitstream:
-```
+**Run ML-DSA tests:**
+
+```bash
 ./bazelisk.sh test --define bitstream=skip --test_output=streamed --action_env=PATH
---copt="-DDILITHIUM_MODE={2,3,5}" --copt="-DBNMULV_VER={1,2,3}" 
+--copt="-DDILITHIUM_MODE={2,3,5}" --copt="-DBNMULV_VER={1,2,3}"
 //sw/device/tests:otbn_mldsa_test_fpga_cw310_test_rom_ver{1,2,3}
 ```
 
-Note that by loading the bitstream onto the FPGA before running the tests, the
-version in the tag `_fpga_cw310_test_rom_ver*` does not have to match that in
-`--copt`. These two must only match if we pass `--define bitstream=vivado`
-instead of `--define bitstream=skip` to build the bitstream directly in the
-Bazel test command (which means the bitstream does not have to be pre-loaded onto
-the FPGA).
+> 💡 When preloading the bitstream, the test version suffix (`_ver*`) and `--copt` version do **not** need to match, unless you are building the bitstream on the fly with `--define bitstream=vivado`.
+
+---
+
+## Have a question?
+
+If you have any troubles running the code or questions for the paper, please contact:
+
+* **Ruben Niederhagen**: ruben@polycephaly.org
+* **Hoang Nguyen Hien Pham**: nguyenhien.phamhoang@gmail.com
+
+---
+
+## Citation
+
+If you use this work, please cite us as follows:
+
+```
+@misc{cryptoeprint:2025/2028,
+      author = {Ruben Niederhagen and Hoang Nguyen Hien Pham},
+      title = {Improving {ML}-{KEM} and {ML}-{DSA} on {OpenTitan} - Efficient Multiplication Vector Instructions for {OTBN}},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2025/2028},
+      year = {2025},
+      url = {https://eprint.iacr.org/2025/2028}
+}
+```
