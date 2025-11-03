@@ -1,4 +1,9 @@
 #!/bin/bash
+# Copyright Ruben Niederhagen and Hoang Nguyen Hien Pham - authors of
+# "Improving ML-KEM & ML-DSA on OpenTitan - Efficient Multiplication Vector Instructions for OTBN"
+# (https://eprint.iacr.org/2025/2028)
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
 
 set -e -x
 

@@ -1,3 +1,9 @@
+// Copyright Ruben Niederhagen and Hoang Nguyen Hien Pham - authors of
+// "Improving ML-KEM & ML-DSA on OpenTitan - Efficient Multiplication Vector Instructions for OTBN"
+// (https://eprint.iacr.org/2025/2028)
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
 // 7-Series (DSP48E1) multimode multiplier with full column cascades.
 // Modes:
 //   mode=2'b00 : 1 × (64x64  -> 128b)

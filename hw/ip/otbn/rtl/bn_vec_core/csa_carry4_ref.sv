@@ -1,3 +1,9 @@
+// Copyright Ruben Niederhagen and Hoang Nguyen Hien Pham - authors of
+// "Improving ML-KEM & ML-DSA on OpenTitan - Efficient Multiplication Vector Instructions for OTBN"
+// (https://eprint.iacr.org/2025/2028)
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
 // This module implements a Carry-Select vectorized adder which performs a
 // 256-bit addition (original BN-ALU addition) for base bignum instructions
 // (such as BN.ADD/SUB, BN.ADDM/SUBM, etc.), 8 32-bit additions for

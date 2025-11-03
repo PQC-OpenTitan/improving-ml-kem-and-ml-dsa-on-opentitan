@@ -3,6 +3,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Modified by Authors of "Towards ML-KEM & ML-DSA on OpenTitan" (https://eprint.iacr.org/2024/1192)
 // Copyright "Towards ML-KEM & ML-DSA on OpenTitan" Authors
+// Modified by Ruben Niederhagen and Hoang Nguyen Hien Pham - authors of
+// "Improving ML-KEM & ML-DSA on OpenTitan - Efficient Multiplication Vector Instructions for OTBN"
+// (https://eprint.iacr.org/2025/2028)
+// Copyright Ruben Niederhagen and Hoang Nguyen Hien Pham.
 //
 // SHA3 core is a fully functional SHA3/SHAKE/cSHAKE hashing module.
 //
