@@ -86,19 +86,26 @@ All the tests for above implementations can be found in
 ### 1. Clone this repository
 ```
 git clone --recurse-submodules -j8 https://github.com/phamhnh/improving-mlkem-and-mldsa-on-opentitan.git
-git submodule init
-git submodule update
 ```
 
 ### 2. Environment setup for Ubuntu 22.04
 
 Please follow the [OpenTitan official setup
 guide](https://opentitan.org/book/doc/getting_started/index.html) to prepare
-your development environment. If you are using a Python virtual environment, we
+your development environment.
+
+Concretely, you need to install required packages as below:
+
+```bash
+sed '/^#/d' ./apt-requirements.txt | xargs sudo apt install -y
+```
+
+If you are using a Python virtual environment, we
 recommend **Python 3.10**. Then you can set up and install dependencies as
 follows:
 
 ```bash
+cd improving-mlkem-and-mldsa-on-opentitan
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -U pip "setuptools<66.0.0"
@@ -108,9 +115,16 @@ pip3 install -r python-requirements.txt --require-hashes
 ### 3. Installing Verilator 5.022
 
 In order to run hardware-related simulation, you need to install Verilator with
-version 5.022:
+version 5.022 outside this repository:
 
 ```bash
+# Install prerequisites
+sudo apt-get install git help2man perl python3 make autoconf g++ flex bison ccache
+sudo apt-get install libgoogle-perftools-dev numactl perl-doc
+sudo apt-get install libfl2  # Ubuntu only (ignore if gives error)
+sudo apt-get install libfl-dev  # Ubuntu only (ignore if gives error)
+sudo apt-get install zlibc zlib1g zlib1g-dev  # Ubuntu only (ignore if gives error)
+
 export VERILATOR_VERSION=5.022
 
 # Clone and build Verilator
@@ -127,6 +141,9 @@ sudo CC=gcc-11 CXX=g++-11 make install
 export PATH=/tools/verilator/$VERILATOR_VERSION/bin:$PATH
 ```
 
+If you are not using Ubuntu, please reference the official [installation guide
+of Verilator](https://verilator.org/guide/latest/install.html).
+
 ### 4. Installing hardware synthesis tools
 
 For ASIC synthesis using OpenROAD, you need
@@ -135,6 +152,46 @@ SystemVerilog to Verilog. You can download the `sv2v` binary to your preferred
 directory (e.g. `/tools/sv2v/`) and add it to your `PATH`.
 
 For ASIC synthesis with Cadence Genus or FPGA synthesis with Vivado, you need a paid license.
+
+### 5. Installing Docker
+
+OpenROAD synthesis is integrated into the Bazel workflow and runs inside a
+Docker container. Thus, you also need Docker on your machine.
+We advise to follow
+[the official Docker installation guide for Ubuntu](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+In particular, you can run the followings:
+
+```bash
+# Remove conflicting packages
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Install the latest version
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Verify that Docker is running:
+sudo systemctl status docker
+```
+
+We must ensure Docker can be run without root privileges:
+
+```bash
+sudo gpasswd -a $USER docker
+# Then restart system to apply group changes
+```
 
 ---
 
@@ -159,7 +216,7 @@ The data are logged in SQLite database files `mlkem_bench.db` and
 
 ```bash
 ./bazelisk.sh test --test_timeout=10000 --cache_test_results=no
---action_env=PATH --sandbox_writable_path="path/to/repo"
+--action_env=PATH --sandbox_writable_path="$PWD$"
 //sw/otbn/crypto/tests/mldsa:mldsa{44,65,87}_{keypair,sign,verify}_bench_ver{0_base,0,1,2,3}
 ```
 
@@ -167,7 +224,7 @@ The data are logged in SQLite database files `mlkem_bench.db` and
 
 ```bash
 ./bazelisk.sh test --test_timeout=10000 --cache_test_results=no
---action_env=PATH --sandbox_writable_path="path/to/repo"
+--action_env=PATH --sandbox_writable_path="$PWD$"
 //sw/otbn/crypto/tests/mlkem:mlkem{512,768,1024}_{keypair,encap,decap}_bench_{0_base,0,1,2,3}
 ```
 
@@ -178,6 +235,14 @@ the database file:
 ```bash
 util/get_benchmark.py -f mldsa_bench.db -o mldsa_eval.txt -i <start> <end> --scheme mldsa
 util/get_benchmark.py -f mlkem_bench.db -o mlkem_eval.txt -i <start> <end> --scheme mlkem
+```
+
+For example, to analyze benchmark results of target
+`mlkem512_keypair_bench_ver1`, `mlkem512_encap_bench_ver1` and
+`mlkem512_decap_bench_ver1`, which has index 28, 29, 30 in `mlkem_bench.db`, do:
+
+```bash
+util/get_benchmark.py -f mlkem_bench.db -o mlkem_eval.txt -i 28 30 --scheme mlkem
 ```
 
 We also include the benchmark results in Table 6 of the paper in `DBs.tar.gz`.  
@@ -222,14 +287,6 @@ util/get_codesize.py --mlkem --mldsa --compare
 
 ### 1. ASIC Synthesis (Tables 1–3)
 
-OpenROAD synthesis is integrated into the Bazel workflow and runs inside a
-Docker container. To ensure you can run Docker without root privileges, run:
-
-```bash
-sudo gpasswd -a $USER docker
-# Then restart system to apply group changes
-```
-
 We provide a script that can run synthesis for either Vivado, ORFS or Cadence
 Genus. You can specify synthesis tools using:
 
@@ -272,7 +329,11 @@ util/gen_synth.py --run_synthesis --tool={all,Vivado,ORFS,Genus} --otbn
 > ```
 > This is already handled by the script. However, if you want to run ORFS
 > manually, please apply the patch and restore this file when done in order for
-> the SW testing to work correctly.
+> the SW testing to work correctly:
+> ```bash
+> git restore third_party/python/python.MODULE.bazel
+> git restore MODULE.bazel.lock
+> ```
 
 ---
 
