@@ -224,13 +224,15 @@ def run_synthesis(top, tool, outdir, flags=None):
             cmd = (
                 # Apply patch for third_party/python/python.MODULE.bazel before running ORFS
                 "git restore third_party/python/python.MODULE.bazel && "
+                "git restore MODULE.bazel.lock && "
                 "git apply aux/python_orfs.patch && "
-                f"bazel build {target} && mkdir -p {outdir} && chmod u+w {OUTDIR_ORFS}/* && "
+                f"./bazelisk.sh build {target} && mkdir -p {outdir} && chmod u+w {OUTDIR_ORFS}/* && "
                 f"cp -f {outname}_stats {outdir} && "
                 f"cp -f {outname}_reports {outdir} && "
                 f"cp -f {outname}_fsearch {outdir} && "
                 # Restore third_party/python/python.MODULE.bazel when done
-                "git restore third_party/python/python.MODULE.bazel"
+                "git restore third_party/python/python.MODULE.bazel && "
+                "git restore MODULE.bazel.lock"
             )
     else:
         print(f"ERROR: Unsupported tool {tool}")
