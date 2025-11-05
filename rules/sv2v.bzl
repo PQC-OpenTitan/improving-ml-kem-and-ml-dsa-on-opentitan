@@ -4,8 +4,6 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-load("@nonhermetic//:env.bzl", "BIN_PATHS")
-
 """Rules for running sv2v.
 
 sv2v is an open-source tool that generates Verilog files (.v) from SystemVerilog
@@ -69,10 +67,6 @@ def _sv2v_impl(ctx):
             arguments = [args],
             executable = ctx.executable._sv2v_wrapper,
             use_default_shell_env = False,
-            env = {
-                # Obtain the non-hermetic binary path and append Bazel's default PATH.
-                "PATH": BIN_PATHS["sv2v"] + ":/bin:/usr/bin:/usr/local/bin",
-            },
             progress_message = "Converting {} → {}".format(src.short_path, src.basename),
         )
         outs.append(out)

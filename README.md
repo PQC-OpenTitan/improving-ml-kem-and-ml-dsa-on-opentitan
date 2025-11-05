@@ -146,11 +146,6 @@ of Verilator](https://verilator.org/guide/latest/install.html).
 
 ### 4. Installing hardware synthesis tools
 
-For ASIC synthesis using OpenROAD, you need
-[`sv2v`](https://github.com/zachjs/sv2v/releases/tag/v0.0.13) to convert
-SystemVerilog to Verilog. You can download the `sv2v` binary to your preferred
-directory (e.g. `/tools/sv2v/`) and add it to your `PATH`.
-
 For ASIC synthesis with Cadence Genus or FPGA synthesis with Vivado, you need a paid license.
 
 ### 5. Installing Docker

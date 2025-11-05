@@ -9,6 +9,10 @@ package(default_visibility = ["//visibility:public"])
 sh_binary(
     name = "sv2v_wrapper",
     srcs = ["sv2v_wrapper.sh"],
+    data = [
+        "@sv2v//:sv2v_bin",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
 )
 
 filegroup(
