@@ -115,8 +115,11 @@ filesets:
 
   files_sta_vivado:
     files:
-      - sta/vivado.tcl:
-          copyto: vivado.tcl
+      - sta/vivado_synth.tcl:
+          copyto: vivado_synth.tcl
+          is_include_file: true
+      - sta/vivado_timing.tcl:
+          copyto: vivado_timing.tcl
           is_include_file: true
 
   files_sta_genus:
