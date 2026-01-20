@@ -5,7 +5,7 @@
 ## About This Repository
 
 This repository is a [research fork](https://github.com/zerorisc/expo-otbn-pqc)
-of OpenTitan hosted by our collaborators at [ZeroRISC](https://www.zerorisc.com/).
+of OpenTitan hosted by our collaborators at [zeroRISC](https://www.zerorisc.com/).
 It accompanies our paper
 **[Improving ML-KEM and ML-DSA on OpenTitan – Efficient Multiplication Vector
 Instructions for OTBN](https://eprint.iacr.org/2025/2028)**, and contains the hardware and simulator
