@@ -240,9 +240,9 @@ def run_synthesis(top, tool, outdir, flags=None):
 
     print(f"Command: {cmd}")
     if tool != 'genus':
-        subprocess.run(cmd, shell=True)
+        subprocess.run(cmd, shell=True, check=True)
     else:
-        subprocess.run(cmd, shell=True, executable='csh')
+        subprocess.run(cmd, shell=True, executable='csh', check=True)
 
 
 def main():

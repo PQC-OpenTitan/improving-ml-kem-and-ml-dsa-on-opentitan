@@ -214,7 +214,7 @@ targets:
       - MAC_ADDER
       - ALU_ADDER
       - SYNTHESIS=true
-      - SYNTHESIS_MEMORY_BLACK_BOXING=true
+      - "!tool_vivado ? (SYNTHESIS_MEMORY_BLACK_BOXING=true)"
       - kmac        ? (TOWARDS_KMAC=true)
       - towards     ? (TOWARDS_KMAC=true)
       - towards     ? (TOWARDS_BASE=true)
