@@ -45,5 +45,8 @@ def _nonhermetic_repo_impl(rctx):
 nonhermetic_repo = repository_rule(
     implementation = _nonhermetic_repo_impl,
     attrs = {},
-    environ = NONHERMETIC_ENV_VARS,
+    # Include PATH so that the repo is re-evaluated (and tool binaries such as
+    # verilator are re-detected via rctx.which) whenever PATH changes. Without
+    # this, the detected tool paths get baked into env.bzl and never refresh.
+    environ = NONHERMETIC_ENV_VARS + ["PATH"],
 )
