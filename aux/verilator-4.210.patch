@@ -1,0 +1,100 @@
+diff --git a/hw/ip/otbn/rtl/bn_vec_core/kogge_stone.sv b/hw/ip/otbn/rtl/bn_vec_core/kogge_stone.sv
+index 86879cf1a1..67725a73b4 100644
+--- a/hw/ip/otbn/rtl/bn_vec_core/kogge_stone.sv
++++ b/hw/ip/otbn/rtl/bn_vec_core/kogge_stone.sv
+@@ -25,7 +25,7 @@ module kogge_stone
+   assign p = A ^ B;
+ 
+   // Level-wise generate and propagate
+-  /* verilator lint_off UNUSEDSIGNAL */
++  /* verilator lint_off UNUSED */
+   logic [255:0] g1, p1;
+   logic [255:0] g2, p2;
+   logic [255:0] g3, p3;
+@@ -34,7 +34,7 @@ module kogge_stone
+   logic [255:0] g6, p6;
+   logic [255:0] g7, p7;
+   logic [255:0] g8, p8;
+-  /* verilator lint_on UNUSEDSIGNAL */
++  /* verilator lint_on UNUSED */
+ 
+   genvar i;
+ 
+diff --git a/hw/ip/otbn/rtl/bn_vec_core/sklansky.sv b/hw/ip/otbn/rtl/bn_vec_core/sklansky.sv
+index 18b1d161fc..511c23cdbb 100644
+--- a/hw/ip/otbn/rtl/bn_vec_core/sklansky.sv
++++ b/hw/ip/otbn/rtl/bn_vec_core/sklansky.sv
+@@ -17,7 +17,7 @@ module sklansky
+ 
+   logic [255:0] g, p;
+ 
+-  /* verilator lint_off UNUSEDSIGNAL */
++  /* verilator lint_off UNUSED */
+   logic [255:0] g_0, p_0;
+   logic [255:0] g_s1, p_s1;
+   logic [255:0] g_s2, p_s2;
+@@ -28,7 +28,7 @@ module sklansky
+   logic [255:0] g_s7, p_s7;
+   logic [255:0] g_s8, p_s8;
+   logic [255:0] carry;
+-  /* verilator lint_on UNUSEDSIGNAL */
++  /* verilator lint_on UNUSED */
+ 
+   assign g = A & B;
+   assign p = A ^ B;
+diff --git a/hw/ip/otbn/rtl/bn_vec_core/unified_mul.sv b/hw/ip/otbn/rtl/bn_vec_core/unified_mul.sv
+index 6de43d7ddc..39ccdf4724 100644
+--- a/hw/ip/otbn/rtl/bn_vec_core/unified_mul.sv
++++ b/hw/ip/otbn/rtl/bn_vec_core/unified_mul.sv
+@@ -284,7 +284,6 @@ module unified_mul #(
+ 
+   /* verilator lint_off UNUSED */
+   /* verilator lint_off UNOPTFLAT */
+-  /* verilator lint_off SIDEEFFECT */
+   logic [WLEN/2-1:0] mul2csa2 [5];
+ 
+   assign mul2csa2[0] = mul2csa[6];
+@@ -308,7 +307,6 @@ module unified_mul #(
+     end
+   endgenerate
+ 
+-  /* verilator lint_on SIDEEFFECT */
+   /* verilator lint_on UNUSED */
+   /* verilator lint_on UNOPTFLAT */
+ `endif
+diff --git a/hw/ip/otbn/rtl/otbn_mac_bignum.sv b/hw/ip/otbn/rtl/otbn_mac_bignum.sv
+index 17aee363c6..9f059f8c64 100644
+--- a/hw/ip/otbn/rtl/otbn_mac_bignum.sv
++++ b/hw/ip/otbn/rtl/otbn_mac_bignum.sv
+@@ -586,9 +586,9 @@ module otbn_mac_bignum
+   assign adder_op_a = (operation_i.mac_mulv_en) ? {128'b0, mul_res} : mul_res_shifted;
+   assign adder_op_b = (operation_i.mac_mulv_en) ? {128'b0, p_tmp_blanked} : acc_blanked;
+ 
+-  /* verilator lint_off UNUSEDSIGNAL */
++  /* verilator lint_off UNUSED */
+   logic [7:0]    adder_x_carry_out;
+-  /* verilator lint_on UNUSEDSIGNAL */
++  /* verilator lint_on UNUSED */
+ 
+   towards_mac_adder adder (
+     .A(adder_op_a),
+diff --git a/hw/ip/otbn/rtl/otbn_mul.sv b/hw/ip/otbn/rtl/otbn_mul.sv
+index 716cbdb12a..df459ebfc8 100644
+--- a/hw/ip/otbn/rtl/otbn_mul.sv
++++ b/hw/ip/otbn/rtl/otbn_mul.sv
+@@ -95,7 +95,6 @@ module otbn_mul
+   logic [WLEN/2-1:0] sum [NOF_CSASTAGES-1:0];
+ 
+   // Build CSA tree for addition of (NOF_DSP_W x NOF_DSP_H) operands
+-  /* verilator lint_off SIDEEFFECT */
+   generate
+     for (genvar i=0; i<NOF_CSASTAGES; ++i) begin
+       if (i == 0) begin : g_inital_stage
+@@ -105,7 +104,6 @@ module otbn_mul
+       end : g_intermediate_stage
+     end
+   endgenerate
+-  /* verilator lint_on SIDEEFFECT */
+ 
+   assign multiplier_res_o = sum[$left(sum)] + carry[$left(carry)];
+ endmodule
