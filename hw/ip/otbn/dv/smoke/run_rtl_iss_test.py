@@ -15,6 +15,9 @@ import argparse
 import subprocess
 from pathlib import Path
 
+DEFAULT_VERILATOR_ROOT = "/tools/verilator/5.022"
+EXPECTED_VERILATOR_VERSION = "5.022"
+
 
 def print_info(s):
     """Print info or error message
@@ -28,6 +31,55 @@ def print_info(s):
 
     info = ': '.join(s_split)
     print(info)
+
+
+def verilator_version(binary):
+    """Return the version line reported by `binary --version`, or None if it
+    cannot be run.
+    """
+    try:
+        out = subprocess.run([binary, '--version'], capture_output=True, text=True, check=True)
+    except (subprocess.CalledProcessError, OSError):
+        return None
+    return out.stdout.strip() or out.stderr.strip()
+
+
+def ensure_verilator(verilator_root=DEFAULT_VERILATOR_ROOT):
+    """Make sure Verilator 5.022 is the active toolchain before building.
+
+    Only Verilator 5.022 works for this test. Detects the Verilator currently on
+    PATH and, if it is not 5.022, switches to the install at verilator_root by
+    prepending its bin/ to PATH (so the fusesoc build and the Verilated model use
+    it). Returns True on success; prints an ERROR and returns False if 5.022
+    cannot be found.
+    """
+    current = verilator_version('verilator')
+    if current is None:
+        print_info('INFO: No Verilator found on PATH.')
+    else:
+        print_info(f'INFO: Found Verilator: {current}')
+        if EXPECTED_VERILATOR_VERSION in current:
+            print_info(f'INFO: Verilator {EXPECTED_VERILATOR_VERSION} is active; no switch needed.')
+            return True
+
+    print_info(f'INFO: Switching to Verilator {EXPECTED_VERILATOR_VERSION}...')
+    bin_dir = os.path.join(verilator_root, 'bin')
+    binary = os.path.join(bin_dir, 'verilator')
+    if not os.path.isfile(binary):
+        print_info(f'ERROR: Verilator {EXPECTED_VERILATOR_VERSION} not found at {binary}. '
+                   'Only Verilator 5.022 works for this test -- aborting.')
+        return False
+    version_line = verilator_version(binary)
+    if version_line is None:
+        print_info(f'ERROR: could not run {binary} -- aborting.')
+        return False
+    if EXPECTED_VERILATOR_VERSION not in version_line:
+        print_info(f'ERROR: binary at {binary} does not report {EXPECTED_VERILATOR_VERSION} '
+                   f'(got: {version_line!r}) -- aborting.')
+        return False
+    os.environ['PATH'] = bin_dir + os.pathsep + os.environ.get('PATH', '')
+    print_info(f'INFO: Switched to Verilator: {version_line}')
+    return True
 
 
 def fusesoc_build(flags, mac_adder, alu_adder, verbose):
@@ -244,6 +296,9 @@ def main() -> int:
     if args.skip_verilator_build is True:
         print_info('INFO: Skip Verilator build of otbn_top_sim')
     else:
+        # Only Verilator 5.022 works: verify/switch to it before building.
+        if not ensure_verilator():
+            return 1
         fusesoc_build(flags, args.mac_adder, args.alu_adder, verbose)
 
     # Run Verilated model
