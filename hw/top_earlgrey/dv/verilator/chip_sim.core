@@ -79,6 +79,12 @@ parameters:
     datatype: bool
     paramtype: vlogdefine
     description: Disconnect the TL data output of rv_core_ibex so that we can attach the simulation SRAM.
+  TOWARDS_KMAC:
+    datatype: bool
+    paramtype: vlogdefine
+  TOWARDS_BASE:
+    datatype: bool
+    paramtype: vlogdefine
 
 targets:
   default: &default_target
@@ -97,6 +103,8 @@ targets:
       - otpinit
       - DMIDirectTAP
       - RV_CORE_IBEX_SIM_SRAM=true
+      - TOWARDS_KMAC=true
+      - TOWARDS_BASE=true
     default_tool: verilator
     filesets:
       - files_sim_verilator
@@ -128,12 +136,12 @@ targets:
           # XXX: Cleanup all warnings and remove this option
           # (or make it more fine-grained at least)
           - '-Wno-fatal'
-          - bnmulv_ver1 ? (BNMULV=true)
-          - bnmulv_ver2 ? (BNMULV=true)
-          - bnmulv_ver2 ? (BNMULV_ACCH=true)
-          - bnmulv_ver3 ? (BNMULV=true)
-          - bnmulv_ver3 ? (BNMULV_ACCH=true)
-          - bnmulv_ver3 ? (BNMULV_COND_SUB=true)
+          - bnmulv_ver1 ? (-DBNMULV=true)
+          - bnmulv_ver2 ? (-DBNMULV=true)
+          - bnmulv_ver2 ? (-DBNMULV_ACCH=true)
+          - bnmulv_ver3 ? (-DBNMULV=true)
+          - bnmulv_ver3 ? (-DBNMULV_ACCH=true)
+          - bnmulv_ver3 ? (-DBNMULV_COND_SUB=true)
 
   lint:
     <<: *default_target
