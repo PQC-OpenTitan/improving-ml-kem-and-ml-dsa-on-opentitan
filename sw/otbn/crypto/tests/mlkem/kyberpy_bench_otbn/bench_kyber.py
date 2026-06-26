@@ -16,7 +16,7 @@ from otbn_interface import mlkem_keypair_otbn, mlkem_encaps_otbn, mlkem_decaps_o
 from create_db import create_db
 
 NPROC = 1
-ITERATIONS = 1
+ITERATIONS = 2
 
 DATABASE_PATH = os.path.realpath(os.path.dirname(os.path.realpath(__file__)) +
                                  '../../../../../../../mlkem_bench.db')

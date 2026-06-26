@@ -15,7 +15,7 @@ from otbn_interface import key_pair_otbn, sign_otbn, verify_otbn
 from create_db import create_db
 
 NPROC = 1
-ITERATIONS = 1
+ITERATIONS = 2
 
 CTX=b"\x00"*4+b"\x11"*4+b"\x22"*4+b"\x33"*4+b"\x44"*4+b"\x55"*4+b"\x66"*4+b"\x77"*4
 CTXLEN = 32
