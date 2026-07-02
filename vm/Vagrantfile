@@ -21,7 +21,7 @@ MEMORY = (ENV["VM_MEMORY"] || "16384").to_i   # MiB
 DISK   = (ENV["VM_DISK"]   || "100GB")
 
 Vagrant.configure("2") do |config|
-  # bento boxes track Ubuntu 22.04 and support both VirtualBox and libvirt.
+  # bento boxes track Ubuntu 22.04 and support VirtualBox.
   config.vm.box = "bento/ubuntu-22.04"
   config.vm.hostname = "otbn-pqc"
 
@@ -38,13 +38,6 @@ Vagrant.configure("2") do |config|
     vb.memory = MEMORY
     # Nested paging helps the heavy C++ / Verilator compiles.
     vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
-  end
-
-  # --- libvirt provider (Linux/KVM; faster for this workload) --------------
-  config.vm.provider "libvirt" do |lv|
-    lv.cpus   = CPUS
-    lv.memory = MEMORY
-    lv.machine_virtual_size = DISK.to_i   # GiB
   end
 
   # Provisioning: pass config through the environment so the shell script

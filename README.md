@@ -105,9 +105,11 @@ the [Hardware](#hardware) section for these.
 
 #### Requirements
 
-* [Vagrant](https://developer.hashicorp.com/vagrant/downloads) with a provider:
-  **VirtualBox** (any host) or **libvirt/KVM** (Linux, faster for this workload).
-* For VirtualBox, the disk-resize plugin:
+* **VirtualBox** — download and install from the
+  [official downloads page](https://www.virtualbox.org/wiki/Downloads).
+* **Vagrant** — download and install from the
+  [official downloads page](https://developer.hashicorp.com/vagrant/downloads).
+* The VirtualBox disk-resize plugin:
   `vagrant plugin install vagrant-disksize`.
 * Host resources: **≥ 8 vCPUs**, **≥ 16 GB RAM**, and **~100 GB free disk**
   (two Verilator builds, Bazel toolchains and the OpenTitan external
