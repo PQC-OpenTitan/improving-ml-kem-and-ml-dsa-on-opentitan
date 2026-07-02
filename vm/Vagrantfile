@@ -1,0 +1,60 @@
+# Vagrantfile -- reproducible VM for
+#   "Improving ML-KEM and ML-DSA on OpenTitan"
+#
+# Brings up an Ubuntu 22.04 VM and runs vm/provision.sh, which installs the
+# repo, a Python 3.10 venv, Verilator 5.022 AND 4.210, and Docker (for the
+# OpenROAD/ORFS flow). See vm/README.md for usage, sizing, and caveats.
+#
+#   vagrant up                 # build + provision (long: two Verilator builds)
+#   vagrant ssh                # log in (docker works without sudo after this)
+#   vagrant provision          # re-run provisioning (idempotent)
+#   vagrant package            # snapshot a prebuilt box for distribution
+#
+# Resource knobs (override without editing this file):
+#   VM_CPUS=8 VM_MEMORY=16384 VM_DISK=100GB vagrant up
+#
+# Clone a specific artifact ref instead of main:
+#   REPO_REF=v1.0 vagrant up
+
+CPUS   = (ENV["VM_CPUS"]   || "8").to_i
+MEMORY = (ENV["VM_MEMORY"] || "16384").to_i   # MiB
+DISK   = (ENV["VM_DISK"]   || "100GB")
+
+Vagrant.configure("2") do |config|
+  # bento boxes track Ubuntu 22.04 and support both VirtualBox and libvirt.
+  config.vm.box = "bento/ubuntu-22.04"
+  config.vm.hostname = "otbn-pqc"
+
+  # Chip-level Verilator builds are large; grow the disk if the plugin is present.
+  # Install once with: vagrant plugin install vagrant-disksize
+  if Vagrant.has_plugin?("vagrant-disksize")
+    config.disksize.size = DISK
+  end
+
+  # --- VirtualBox provider -------------------------------------------------
+  config.vm.provider "virtualbox" do |vb|
+    vb.name   = "otbn-pqc"
+    vb.cpus   = CPUS
+    vb.memory = MEMORY
+    # Nested paging helps the heavy C++ / Verilator compiles.
+    vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+  end
+
+  # --- libvirt provider (Linux/KVM; faster for this workload) --------------
+  config.vm.provider "libvirt" do |lv|
+    lv.cpus   = CPUS
+    lv.memory = MEMORY
+    lv.machine_virtual_size = DISK.to_i   # GiB
+  end
+
+  # Provisioning: pass config through the environment so the shell script
+  # stays the single source of truth.
+  config.vm.provision "shell",
+    path: "provision.sh",
+    privileged: true,
+    env: {
+      "REPO_REF"     => (ENV["REPO_REF"]     || "main"),
+      "REPO_URL"     => (ENV["REPO_URL"]     || "https://github.com/PQC-OpenTitan/improving-ml-kem-and-ml-dsa-on-opentitan.git"),
+      "PREPULL_ORFS" => (ENV["PREPULL_ORFS"] || "0"),
+    }
+end

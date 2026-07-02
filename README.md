@@ -83,6 +83,60 @@ All the tests for above implementations can be found in
 
 ## Getting Started
 
+### Reproducible VM (recommended)
+
+To make reproduction easy, we provide a [Vagrant](https://developer.hashicorp.com/vagrant)
+VM under [`vm/`](vm/) that sets up the whole environment for you: it clones the
+repository, creates the Python virtualenv, builds **both** Verilator versions
+(5.022 and 4.210), and installs Docker for the OpenROAD flow.
+
+The VM covers:
+
+* all **software** test flows (benchmarking, fixed-input tests, code size),
+* **hardware synthesis with ORFS** (OpenROAD, no license required),
+* **RTL functional verification** with cocotb + pytest,
+* **chip-level (Top Earlgrey) tests with Verilator**.
+
+The following **must be run manually on a suitable host** (they cannot be
+bundled into the VM): hardware **synthesis with Vivado and Cadence Genus**
+(proprietary, licensed tools) and **chip-level tests on the CW310 FPGA board**
+(requires the physical board and USB access). Follow the manual instructions in
+the [Hardware](#hardware) section for these.
+
+#### Requirements
+
+* [Vagrant](https://developer.hashicorp.com/vagrant/downloads) with a provider:
+  **VirtualBox** (any host) or **libvirt/KVM** (Linux, faster for this workload).
+* For VirtualBox, the disk-resize plugin:
+  `vagrant plugin install vagrant-disksize`.
+* Host resources: **≥ 8 vCPUs**, **≥ 16 GB RAM**, and **~100 GB free disk**
+  (two Verilator builds, Bazel toolchains and the OpenTitan external
+  dependencies, and the per-configuration Verilated chip models add up fast).
+  Hardware virtualization must be enabled in the host BIOS.
+
+#### Running
+
+```bash
+cd vm
+vagrant up          # build + provision (long: builds two Verilators from source)
+vagrant ssh         # log into the VM (Docker works without sudo from here)
+```
+
+Then, inside the VM:
+
+```bash
+cd ~/improving-ml-kem-and-ml-dsa-on-opentitan
+source .venv/bin/activate
+verilator --version   # -> Verilator 5.022
+```
+
+You can now run any of the software/hardware flows described below. See the
+comments in [`vm/Vagrantfile`](vm/Vagrantfile) for configuration options
+(resource sizing, pinning a specific ref, packaging a prebuilt box for
+distribution, etc.).
+
+> 💡 Prefer a manual setup instead? Follow steps 1–5 below.
+
 ### 1. Clone this repository
 ```
 git clone --recurse-submodules -j8 https://github.com/PQC-OpenTitan/improving-ml-kem-and-ml-dsa-on-opentitan.git
