@@ -29,6 +29,7 @@ Examples:
 
 import argparse
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -36,6 +37,11 @@ import sys
 DEFAULT_PATCH = "aux/verilator-4.210.patch"
 DEFAULT_VERILATOR_ROOT = "/tools/verilator/4.210"
 EXPECTED_VERILATOR_VERSION = "4.210"
+
+# How many times to re-run after discovering a new read-only sandbox path.
+# Bounded so a persistent failure cannot loop forever; each retry must discover
+# a *new* path or the loop stops.
+MAX_SANDBOX_RETRIES = 3
 
 # ANSI color codes. Disabled automatically when stdout/stderr is not a TTY or
 # when NO_COLOR is set (https://no-color.org/).
@@ -144,7 +150,29 @@ def patch_already_applied(root, patch):
     return r.returncode == 0
 
 
-def build_command(args):
+# Matches a sandbox "Read-only file system" complaint and captures the path,
+# e.g. ccache's:
+#   ccache: error: Failed to create temporary file for
+#   /run/user/1000/ccache-tmp/tmp.cpp_stdout.j1xkDM: Read-only file system
+# The offending path is user/machine-specific (the UID in /run/user/<UID>
+# varies), so we discover it from the build output at runtime instead of
+# hardcoding it.
+READONLY_RE = re.compile(r"(/[^\s:]+):\s*Read-only file system")
+
+
+def readonly_paths(output):
+    """Return the set of directories the sandbox reported as read-only.
+
+    We whitelist the *parent directory* of each reported path: the file itself
+    could not be created, so its containing dir is what must become writable."""
+    dirs = set()
+    for m in READONLY_RE.finditer(output):
+        path = m.group(1)
+        dirs.add(os.path.dirname(path) or path)
+    return dirs
+
+
+def build_command(args, writable_paths=()):
     suite = "mlkem" if args.mlkem else "mldsa"
     target = f"//sw/device/tests:otbn_{suite}_test_sim_verilator_ver{args.ver}"
     copts = [f"-DBNMULV_VER={args.ver}"]
@@ -162,6 +190,9 @@ def build_command(args):
         "--action_env=PATH",
         "--repo_env=PATH",
     ]
+    # Sandbox paths discovered from a previous attempt's "Read-only file system"
+    # errors (e.g. ccache's per-user temp dir). Empty on the first attempt.
+    cmd += [f"--sandbox_writable_path={p}" for p in sorted(writable_paths)]
     cmd += [f"--copt={c}" for c in copts]
     cmd.append(target)
     return cmd, target
@@ -245,8 +276,6 @@ def main():
     env = dict(os.environ)
     env["PATH"] = bin_dir + os.pathsep + env.get("PATH", "")
 
-    cmd, target = build_command(args)
-
     # Turn termination signals into KeyboardInterrupt so the finally below runs
     # (SIGINT already raises KeyboardInterrupt by default).
     for sig in ("SIGTERM", "SIGHUP"):
@@ -264,19 +293,34 @@ def main():
         subprocess.run(["git", "apply", patch], cwd=root, check=True)
         applied = True
 
-        info(f"Target: {target}")
-        rc, output = run_test(root, cmd, env, holder)
+        # Run the test, and if the bazel sandbox rejects a path as read-only
+        # (e.g. ccache's per-user temp dir), extract that path from the output,
+        # add it via --sandbox_writable_path and retry. The path is
+        # user/machine-specific, so it is discovered here rather than hardcoded.
+        writable = set()
+        for attempt in range(1, MAX_SANDBOX_RETRIES + 2):
+            cmd, target = build_command(args, writable)
+            info(f"Target: {target}")
+            rc, output = run_test(root, cmd, env, holder)
 
-        if rc == 0:
-            print(colorize("[run_chip_verilator_test] RESULT: TEST PASSED",
-                           GREEN + BOLD, sys.stdout), flush=True)
-            return 0
-        if looks_like_build_failure(output):
-            fail(f"BUILD FAILED (exit {rc}) -- aborting. The patch will be "
-                 "removed.", code=4)
-        print(colorize(f"[run_chip_verilator_test] RESULT: TEST FAILED (exit {rc})",
-                       RED + BOLD, sys.stdout), flush=True)
-        return 5
+            if rc == 0:
+                print(colorize("[run_chip_verilator_test] RESULT: TEST PASSED",
+                               GREEN + BOLD, sys.stdout), flush=True)
+                return 0
+
+            new_paths = readonly_paths(output) - writable
+            if new_paths and attempt <= MAX_SANDBOX_RETRIES:
+                writable |= new_paths
+                info("Sandbox reported read-only path(s); retrying with "
+                     "--sandbox_writable_path for: " + ", ".join(sorted(new_paths)))
+                continue
+
+            if looks_like_build_failure(output):
+                fail(f"BUILD FAILED (exit {rc}) -- aborting. The patch will be "
+                     "removed.", code=4)
+            print(colorize(f"[run_chip_verilator_test] RESULT: TEST FAILED (exit {rc})",
+                           RED + BOLD, sys.stdout), flush=True)
+            return 5
     finally:
         # Make cleanup uninterruptible so the patch is always removed, even if
         # the user keeps sending signals (Ctrl-C, kill). Only SIGKILL can
