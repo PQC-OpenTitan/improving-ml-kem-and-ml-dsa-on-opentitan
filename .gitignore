@@ -97,3 +97,6 @@ book
 
 # cocotb/pytest
 hw/ip/otbn/rtl/sim_build/
+
+# VM
+vm/.vagrant/
